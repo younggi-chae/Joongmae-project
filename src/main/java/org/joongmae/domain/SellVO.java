@@ -25,3 +25,4 @@ public class SellVO implements Serializable{
 	private String MediumClassifier;
 	private String BigClassifier;
 }
+

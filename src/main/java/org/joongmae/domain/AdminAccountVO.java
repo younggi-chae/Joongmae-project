@@ -19,3 +19,4 @@ public class AdminAccountVO implements Serializable{
 	private String withdrawDate;
 	private int balance;
 }
+

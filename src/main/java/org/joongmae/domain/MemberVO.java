@@ -1,9 +1,9 @@
 package org.joongmae.domain;
 
+
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberVO implements Serializable{
-
 	private String id;
 	private String password;
 	private String name;
@@ -29,3 +28,4 @@ public class MemberVO implements Serializable{
 	
 	
 }
+

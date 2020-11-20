@@ -19,3 +19,4 @@ public class DealVO implements Serializable{
 	private String regDate;
 	private String status;
 }
+

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.joongmae.mapper.BuyBoardMapper">
+	
+	<insert id="register" parameterType="org.joongmae.domain.BuyVO">
+		insert into buy values (seq_buyno_buy.nextval, #{id}, #{title}, #{keyword1}, #{keyword2}, 
+		#{keyword3}, #{type}, #{region}, #{minPrice}, #{maxPrice}, '등록', #{bigClassifier}, #{mediumClassifier})
+	</insert>
+	
+	<!-- <select id="list" parameterType="org.joongmae.domain.BuyCriteria" resultType="org.joongmae.domain.BuyVO">
+		<![CDATA[
+			
+			select buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice,
+			status, bigclassifier, mediumclassifier 
+			from 
+				(select rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
+						minprice, maxprice,	status, bigclassifier, mediumclassifier
+					from buy where rownum <= #{pageNum} * #{amount} and status = '등록' order by buyno desc)
+				where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select> -->
+	
+	<select id="list" parameterType="org.joongmae.domain.BuyCriteria" resultType="org.joongmae.domain.BuyVO">
+		
+			
+			select buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice,
+			status, bigclassifier, mediumclassifier 
+			from 
+				(select rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
+						minprice, maxprice,	status, bigclassifier, mediumclassifier
+					from buy where
+					
+					<if test="bigClassifier != null">
+					<![CDATA[
+						bigclassifier = #{bigClassifier} and mediumclassifier = #{mediumClassifier} 
+					    and minprice >= #{minPrice} and maxprice <= #{maxPrice} 
+					    and (keyword1 like '%'||#{keyword1}||'%' or keyword1 like '%'||#{keyword2}||'%' or keyword1 like '%'||#{keyword3}||'%'
+					    or keyword2 like '%'||#{keyword1}||'%' or keyword2 like '%'||#{keyword2}||'%' or keyword2 like '%'||#{keyword3}||'%'
+					    or keyword3 like '%'||#{keyword1}||'%' or keyword3 like '%'||#{keyword2}||'%' or keyword3 like '%'||#{keyword3}||'%') 
+					    and
+					    ]]>
+					</if>
+					
+				<![CDATA[rownum <= #{pageNum} * #{amount} and status = '등록' order by buyno desc)
+				where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="detail" resultType="org.joongmae.domain.BuyVO">
+		select * from buy where buyno = #{buyno}
+	</select>
+	
+	<select id="buyTotalCount" parameterType="org.joongmae.domain.BuyCriteria" resultType="int">
+		select count(*) from 
+		(select rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
+						minprice, maxprice,	status, bigclassifier, mediumclassifier
+					from buy where
+					
+					<if test="bigClassifier != null">
+					<![CDATA[
+						bigclassifier = #{bigClassifier} and mediumclassifier = #{mediumClassifier} 
+					    and minprice >= #{minPrice} and maxprice <= #{maxPrice} 
+					    and (keyword1 like '%'||#{keyword1}||'%' or keyword1 like '%'||#{keyword2}||'%' or keyword1 like '%'||#{keyword3}||'%'
+					    or keyword2 like '%'||#{keyword1}||'%' or keyword2 like '%'||#{keyword2}||'%' or keyword2 like '%'||#{keyword3}||'%'
+					    or keyword3 like '%'||#{keyword1}||'%' or keyword3 like '%'||#{keyword2}||'%' or keyword3 like '%'||#{keyword3}||'%') 
+					    and
+					    ]]>
+					</if>
+					
+				status = '등록')
+	</select>
+	
+	<select id="memberList" resultType="org.joongmae.domain.MemberVO">
+		select * from member
+	</select>
+	
+	<select id="memberDetail" parameterType="String" resultType="org.joongmae.domain.MemberVO">
+		select * from member where id = #{id}
+	</select>
+	
+	<update id="delete" parameterType="org.joongmae.domain.BuyVO">
+		update buy set status='삭제' where buyno = #{buyNo}
+	</update>
+
+</mapper>

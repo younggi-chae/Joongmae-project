@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberAccountVO implements Serializable{
-
 	private String accountNo;
 	private String id;
 	private String bankName;
-	
-	
-
 }
+

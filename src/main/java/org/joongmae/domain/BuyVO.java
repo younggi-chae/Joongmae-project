@@ -25,3 +25,4 @@ public class BuyVO implements Serializable{
 	private String mediumClassifier;
 	
 }
+

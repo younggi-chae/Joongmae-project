@@ -15,3 +15,4 @@ public class ReviewVO implements Serializable{
 	private String contents;
 	private int score;
 }
+

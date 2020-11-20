@@ -98,7 +98,7 @@ a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #ffffff;
+	color: black;
 }
 
 ul,
@@ -110,6 +110,11 @@ ol {
 /*---------------------
   Helper CSS
 -----------------------*/
+
+
+.detail{
+	color: black;
+}
 
 .section-title {
 	margin-bottom: 75px;
@@ -1573,7 +1578,7 @@ ol {
 	position: absolute;
 	right: -15px;
 	top: 0;
-	content: "";
+	content: "�꼨";
 	font-family: "FontAwesome";
 }
 

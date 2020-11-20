@@ -15,3 +15,4 @@ public class WishListVO implements Serializable{
 	private int sellNo;
 	private String sellId;
 }
+

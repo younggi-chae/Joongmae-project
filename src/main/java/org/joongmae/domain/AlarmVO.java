@@ -17,3 +17,4 @@ public class AlarmVO implements Serializable{
 	private int sellNo;
 	private String status;
 }
+
