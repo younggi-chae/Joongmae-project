@@ -98,7 +98,7 @@ a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
-	color: black;
+	color: #ffffff;
 }
 
 ul,
@@ -110,11 +110,6 @@ ol {
 /*---------------------
   Helper CSS
 -----------------------*/
-
-
-.detail{
-	color: black;
-}
 
 .section-title {
 	margin-bottom: 75px;

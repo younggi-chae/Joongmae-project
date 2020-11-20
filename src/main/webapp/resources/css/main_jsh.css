@@ -192,6 +192,7 @@ iframe {
   border-radius: 10px;
   position: relative;
   margin: auto;
+  text-align: center;
 }
 
 
@@ -497,5 +498,6 @@ iframe {
   .wrap-login100 {
     padding-left: 15px;
     padding-right: 15px;
+    text-align: center;
   }
 }
