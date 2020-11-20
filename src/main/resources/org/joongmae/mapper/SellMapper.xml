@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.joongmae.mapper.SellMapper">
+	
+	<select id="temp" resultType="org.joongmae.domain.BuyVO">
+		select * from buy order by buyNo desc
+	</select>
+	
+	<select id="detail" resultType="org.joongmae.domain.SellVO">
+		select * from sell where sellNo = #{sellNo}
+	</select>
+
+	<insert id="register" parameterType="org.joongmae.domain.SellVO">
+		insert into sell values (seq_sellno_sell.nextval, #{id}, #{itemName}, #{keyword1}, #{keyword2}, #{keyword3}, #{type}, #{region}, #{itemCondition}, #{price}, #{picture, jdbcType=VARCHAR}, #{status}, #{bigClassifier}, #{MediumClassifier})
+	</insert>
+	
+	<update id="modify" parameterType="org.joongmae.domain.SellVO">
+		update sell set id = #{id}, itemName = #{itemName}, keyword1 = #{keyword1}, keyword2 = #{keyword2}, keyword3 = #{keyword3}, type = #{type}, region = #{region}, itemCondition = #{itemCondition}, price = #{price}, picture = #{picture, jdbcType=VARCHAR}, status = #{status}, bigClassifier = #{bigClassifier}, mediumClassifier = #{mediumClassifier} where sellNo = #{sellNo}
+	</update>
+	
+	<update id="delete">
+		update sell set status = '삭제' where sellNo = #{sellNo}
+	</update>
+	
+	<select id="list" resultType="org.joongmae.domain.SellVO">
+		select * from sell order by sellNo desc
+	</select>
+	
+	<insert id="registerAlarm" parameterType="org.joongmae.domain.AlarmVO">
+		insert into alarm values (SEQ_ALARMNO_ALARM.nextval, #{buyId}, #{buyNo}, #{sellId}, #{sellNo}, #{status})
+	</insert>
+	
+	<select id="count" resultType="int">
+		select max(sellno) from sell
+	</select>
+	
+	<insert id="reRegister" parameterType="int">
+		insert into sell select SEQ_SELLNO_SELL.nextval as sellNo, s.id, s.ITEMNAME, s.keyword1, s.keyword2, s.keyword3, s.type, s.region, s.ITEMCONDITION, s.price, s.picture, '등록' as status, s.bigClassifier, s.MEDIUMCLASSIFIER  from sell s where sellno = #{sellNo}
+	</insert>
+
+</mapper>

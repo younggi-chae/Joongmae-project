@@ -1,11 +1,15 @@
 package org.joongmae.domain;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class DealVO {
+@NoArgsConstructor
+public class DealVO implements Serializable{
 	private int dealNo;
 	private String buyId;
 	private int buyNo;

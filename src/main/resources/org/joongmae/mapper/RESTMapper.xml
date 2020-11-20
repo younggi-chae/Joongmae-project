@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.joongmae.mapper.RESTMapper">
+
+	<insert id="registerReview" parameterType="org.joongmae.domain.ReviewVO">
+		insert into review values (#{dealNo}, #{id}, #{contents}, #{score})
+	</insert>
+	
+	<select id="showScore" parameterType="String" resultType="String">
+		select avg(score) from review group by id having id = #{id}
+	</select>
+	
+	<update id="readAlarm" parameterType="int">
+		update alarm set status = '읽음' where alarmNo = #{alarmNo}
+	</update>
+
+</mapper>
