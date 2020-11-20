@@ -82,4 +82,120 @@
     });
     
 
+
+
 })(jQuery);
+
+
+
+
+
+$('#sendPhoneNumber').on('click',function(){
+
+
+    var phoneNumber = $('#phoneNo').val();
+    /*Swal.fire('인증번호 발송 완료!')*/
+
+
+    $.ajax({
+        type: "GET",
+        url: "/member/check/sendSMS",
+        data: {
+            "phoneNumber" : phoneNumber
+        },
+      /*  beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },*/
+        success: function(res){
+        	
+        	
+       
+            $('#checkBtn').click(function(){
+                if($.trim(res) ==$('#inputCertifiedNumber').val()){
+                    alert("인증성공");
+                	/*Swal.fire(
+                        '인증성공!',
+                        '휴대폰 인증이 정상적으로 완료되었습니다.',
+                        'success'
+                    )*/
+
+    /*                 $.ajax({
+                        type: "GET",
+                        url: "/update/phone",
+                        data: {
+                            "phoneNumber" : $('#inputPhoneNumber').val()
+                        }
+                    })
+                    document.location.href="/home"; */
+                }else{
+                    /*Swal.fire({
+                        icon: 'error',
+                        title: '인증오류',
+                        text: '인증번호가 올바르지 않습니다!',
+                        footer: '<a href="#">다음에 인증하기</a>'
+                    })*/
+                	alert("인증실패");
+                }
+            })
+
+
+        }//success
+    })//ajax
+});
+
+
+
+$('#temp').click(function () {
+
+
+
+    $.ajax({
+        type: "GET",
+        url: "/member/idCheck",
+        data: {
+            "id": $('#id').val()
+        },
+     /*   beforeSend: function(xhr){
+            xhr.setRequestHeader(header, token);
+        },*/
+        success: function (data) {	
+         
+    
+        	if ($.trim(data) == "yes") {
+                if ($('#id').val() != '') {
+                	
+                    $('#checkMsg').html('<p style="color:blue">사용가능한 ID 입니다!</p>');
+                }
+            } else if(($.trim(data) == "no") ){
+                if ($('#id').val() != '') {
+                	
+                    $('#checkMsg').html('<p style="color:red">이미 사용중인 ID 입니다. 다른 ID를 입력하세요.</p>');
+                    $('#id').val('');
+                    $('#id').focus();
+                }
+            }
+        }
+    })
+});
+
+var header = $("meta[name='_csrf_header']").attr('content');
+var token = $("meta[name='_csrf']").attr('content');
+ 
+
+$.ajax({
+	type:"post",
+	url:"/member/auth/join",
+	data:JSON.stringify(data),
+	contentType:"application/json;charset=utf-8",
+	dataType:"json"
+	
+	
+}).done(function(resp){
+	alert("회원가입이 완료되었습니다.");
+	
+});
+
+
+
+
+

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -124,36 +125,21 @@
                         </nav>
                         <div class="header__nav__widget">
 
-    <c:if test="${sessionScope.id!=null}">
-         <a href="logoutAction.sh" class="primary-btn" >로그아웃</a>
-         
-         <!--  
-         		<c:if test="${member.picture != null }">
-         		<div class="avatar-sm rounded-circle">
-						<c:set var="head" value="${fn:substring(member.picture, 
-												0, fn:length(member.picture)-4) }"></c:set>
-						<c:set var="pattern" value="${fn:substring(member.picture, 
-						fn:length(head) +1, fn:length(member.picture)) }"></c:set>
-					
-						<c:choose>
-							<c:when test="${pattern == 'jpg' || pattern == 'gif' }">
-							  <img src="/Architecture-kosta202/upload/${head}_small.${pattern}">      
-							</c:when>
-							<c:otherwise>
-								<c:out value="NO IMAGE"></c:out>
-							</c:otherwise> 
-						</c:choose>
-					</div>
-					</c:if>-->
-         
-         
-         
-        </c:if>
-           <c:if test="${sessionScope.id==null}">
-           
-            <a href="http://192.168.0.156:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
-               </c:if>
 
+ 
+ 
+ 
+ <c:choose>
+ 
+           <c:when test="${empty principal}">
+           
+            <a href="/member/auth/login" class="primary-btn">로그인/회원가입</a>
+               </c:when>
+               <c:otherwise>
+                        <a href="/member/logout" class="primary-btn" >로그아웃</a>
+               
+               </c:otherwise>
+</c:choose>
 
 
         
