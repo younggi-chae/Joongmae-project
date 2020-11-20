@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.joongmae.mapper.DealMapper">
+	
+	<insert id="registerDeal" parameterType="org.joongmae.domain.DealVO">
+		insert into deal values (SEQ_DEALNO_DEAL.nextval, #{buyId}, #{buyNo}, #{sellId}, #{sellNo}, #{price}, sysdate, #{status})
+	</insert>
+
+	<update id="cancel" parameterType="int">
+		update deal set status = '취소' where dealNo = #{dealNo}
+	</update>
+	
+	<update id="send" parameterType="int">
+		update deal set status = '배송중' where dealNo = #{dealNo}
+	</update>
+	
+	<update id="done" parameterType="int">
+		update deal set status = '완료' where dealNo = #{dealNo}
+	</update>
+	
+	<insert id="registerPay" parameterType="org.joongmae.domain.PayVO">
+		insert into pay values (#{dealNo}, sysdate, #{price}, #{sellAccount}, #{status})
+	</insert>
+	
+	<update id="refund" parameterType="int">
+		update pay set status = '환불' where dealNo = #{dealNo}
+	</update>
+	
+	<update id="payDone" parameterType="int">
+		update pay set status = '완료' where dealNo = #{dealNo}
+	</update>
+
+</mapper>
