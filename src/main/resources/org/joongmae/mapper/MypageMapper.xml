@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.joongmae.mapper.MypageMapper">
+	<cache />
+	
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'I'.toString()">
+							itemname like '%'||#{keyword}||'%'
+						</when>								
+					</choose>
+				</trim>
+			</foreach>
+		</trim>	
+	</sql>			
+	
+	<!-- buy 구매등록 -->
+	<select id="getBuyList" resultType="org.joongmae.domain.BuyVO">
+		<![CDATA[
+		select
+		 	buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier
+		 from 
+		 	( select /*+ INDEX_DESC(buy pk_buy) */
+		 		rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier 
+		 	  from buy
+		 	  where
+		 ]]>
+		 
+		 <include refid="criteria"></include>	
+		 <![CDATA[	
+		 	rownum <= #{pageNum} * #{amount}
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>      
+	</select>
+	
+	<select id="countBuy" resultType="int">
+		select count(*) from buy where
+		<include refid="criteria"></include>
+		buyno > 0		
+	</select>
+	
+	<select id="getBuyDetail" parameterType="int" resultType="org.joongmae.domain.BuyVO">
+		select * from buy where buyno = #{buyNo}
+	</select>
+	
+	<!-- Sell 견적서  -->
+	<select id="getSellList" resultType="org.joongmae.domain.SellVO">		
+		<![CDATA[
+		select
+		 	sellno, id, itemname, keyword1, keyword2, keyword3, type, region, itemcondition, price, picture, status, MediumClassifier, bigClassifier
+		 from 
+		 	( select /*+ INDEX_DESC(sell pk_sell) */
+		 		rownum rn, sellno, id, itemname, keyword1, keyword2, keyword3, type, region, itemcondition, price, picture, status, MediumClassifier, bigClassifier
+		 	  from sell
+		 	  where
+		 ]]>
+		 
+		 <include refid="criteria"></include>	
+		 <![CDATA[	
+		 	rownum <= #{pageNum} * #{amount}
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>      
+   </select>   
+	
+	<select id="countSell" resultType="int">
+		select count(*) from sell where
+		<include refid="criteria"></include>
+		sellno > 0		
+	</select>
+	
+	<select id="getSellDetail" parameterType="int" resultType="org.joongmae.domain.SellVO">
+		select * from sell where sellno = #{sellNo}
+	</select>	
+	
+	 <!-- Deal 거래내역 -->
+	<select id="getDealList" resultType="org.joongmae.domain.DealAndSell">		
+		<![CDATA[
+		select
+		 	dealno, buyid, sellid, itemname, picture, keyword1, keyword2, keyword3, price, regdate, status
+		 from 
+		 	( select /*+ INDEX_DESC(deal pk_deal) */
+		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3
+		 	  from deal d, sell s
+		 	  where
+		 ]]>
+		 
+		 <include refid="criteria"></include>	
+		 <![CDATA[	
+		 	rownum <= #{pageNum} * #{amount} and d.sellno = s.sellno
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>      
+	</select>
+	
+	<select id="countDeal" resultType="int">
+		select count(*) from deal d, sell s where 
+		<include refid="criteria"></include>
+		d.sellno = s.sellno		
+	</select>
+	
+	<select id="getDealDetail" parameterType="int" resultType="org.joongmae.domain.DealAndSell">
+		select d.*, s.* from deal d , sell s where d.sellno = s.sellno and dealno = #{dealNo}
+	</select>	
+		
+	<!-- Member 개인정보  -->
+	<select id="getMemberDetail" parameterType="String" resultType="org.joongmae.domain.MemberVO">
+		select * from member where id = #{id}
+	</select>
+	
+	<update id="modifyMember" parameterType="org.joongmae.domain.MemberVO">
+		update member 
+		set name = #{name}, password = #{password}, 
+		email = #{email}, phoneNo = #{phoneNo}, 
+		address = #{address}, introduction = #{introduction}, 
+		picture = #{picture}
+		where id = #{id}
+	</update>
+	
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from member where id = #{id}
+	</delete>	
+	
+	<!-- WishList 관심리스트 -->
+	<select id="getWishList" resultType="org.joongmae.domain.WishAndSell">
+		<![CDATA[
+		select
+		 	wishno, sellno, sellid, itemname, keyword1, keyword2, keyword3, type ,region, itemcondition, price, picture, status
+		 from 
+		 	(select /*+ INDEX_DESC(wishList pk_wishList) */
+		 		rownum rn, w.wishno, w.id, w.sellno, w.sellid, s.id, s.itemname, s.keyword1, s.keyword2, s.keyword3, s.type, s.region, s.itemcondition, s.price, s.picture, s.status
+		 	  from wishlist w, sell s
+		 	  where
+		 ]]>
+		 
+		 <include refid="criteria"></include>	
+		 <![CDATA[	
+		 	rownum <= #{pageNum} * #{amount} and w.sellno = s.sellno and w.sellid = s.id
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>      
+	</select>
+	
+   <select id="countWish" resultType="int">
+		select count(*) from wishlist where
+		<include refid="criteria"></include>
+		wishno > 0		
+	</select>
+	
+	<insert id="addWishList" parameterType="org.joongmae.domain.WishListVO">
+		insert into wishlist
+    		select seq_wishno_wishlist.nextval as wishno, m.id, s.sellno, s.id as sellid 
+    		from member m , sell s where s.id = m.id and s.sellno = #{sellNo}
+	</insert>
+	
+	<delete id="deleteWishList" parameterType="int">
+		delete from wishlist w where w.wishno = (select distinct w.wishno
+ 		from wishlist w, sell s where w.sellNo = #{sellNo})
+	</delete>
+	
+	<select id="completeDeal" resultType="org.joongmae.domain.DealAndSell">
+		select d.*, s.* from deal d , sell s where d.sellno = s.sellno and d.status = '완료'
+	</select>
+	
+	<select id="progressDeal" resultType="org.joongmae.domain.DealAndSell">
+		select d.*, s.* from deal d , sell s where d.sellno = s.sellno and d.status = '진행중'
+	</select>
+	
+	<!--  <delete id="deleteWish" parameterType="SelectedWishNo">
+		delete from wishlist where		
+			<foreach collection="list" item="WishNo" separator="OR">
+				wishNo = #{WishNo}
+			</foreach>		
+	</delete>	 -->
+	
+	
+</mapper>
