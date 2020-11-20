@@ -38,6 +38,8 @@
     <tx:annotation-driven/>
 		
 	<mybatis-spring:scan base-package="org.joongmae.mapper"/>
+	
+	<context:annotation-config/>
 	<context:component-scan base-package="org.joongmae.service"/>	
 		
 </beans>

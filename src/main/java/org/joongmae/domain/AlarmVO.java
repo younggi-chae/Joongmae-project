@@ -1,11 +1,15 @@
 package org.joongmae.domain;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class AlarmVO {
+@NoArgsConstructor
+public class AlarmVO implements Serializable{
 	private int alarmNo;
 	private String buyId;
 	private int buyNo;

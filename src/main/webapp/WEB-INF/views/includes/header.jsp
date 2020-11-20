@@ -96,8 +96,8 @@
                         <nav class="header__menu">
                             <ul>
                                 <li class="active"><a href="http://192.168.0.156:8080/Architecture-kosta202/controller_jsh/mainAction.sh">Home</a></li>
-                                <li><a href="http://192.168.0.156:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
-                                <li><a href="http://192.168.0.156:8080/Architecture-kosta202/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
+                                <li><a href="/buyBoard/list">구매 게시판</a></li>
+                                <li><a href="/buyBoard/registerForm">구매 등록</a></li>
                                 
                                 
                                 <li><a href=
