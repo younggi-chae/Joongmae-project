@@ -16,4 +16,19 @@
 		update alarm set status = '읽음' where alarmNo = #{alarmNo}
 	</update>
 
+	<update id="setAlarm" parameterType="org.joongmae.domain.MemberAlarmSetVO">
+		update member set isAlarm = #{isAlarm}, alarmStartTime = #{alarmStartTime}, alarmEndTime = #{alarmEndTime} where id = #{id}
+	</update>
+	
+	<select id="getAlarmConfig" resultType="org.joongmae.domain.MemberAlarmSetVO">
+		select id, isAlarm, alarmStartTime, alarmEndTime from member where id = #{id}
+	</select>
+	
+	<select id="getAlarmCount" parameterType="String" resultType="int">
+		select count(a.alarmNo) from member m, alarm a where (m.id = a.buyid or m.id = a.sellid) and m.id = #{id} and a.STATUS != '읽음'
+	</select>
+	
+	<select id="alarmList" parameterType="String" resultType="org.joongmae.domain.AlarmVO">
+		select * from alarm where sellId = #{id} or buyId = #{id} order by alarmNo
+	</select>
 </mapper>

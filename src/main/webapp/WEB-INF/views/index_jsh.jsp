@@ -3,7 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = auth.getPrincipal();
+ 
+    String id = "";
+    if(principal != null) {
+        id = auth.getName();
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,33 +32,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <!-- css Styles -->
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/style_jsh.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/style_jsh.css" type="text/css">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/animsition/css/animsition.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/select2/select2.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/css/util_jsh.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/css/main_jsh.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="/resources/css/util_jsh.css">
+	<link rel="stylesheet" type="text/css" href="/resources/css/main_jsh.css">
 
 </head>
 <body>
-
 
     <!-- Page Preloder -->
     <div id="preloder">
@@ -60,7 +70,7 @@
         <div class="offcanvas__widget">
 
         
-        <c:if test="${sessionScope.id!=null}">
+        <c:if test="${sessionScope.username!=null}">
          <a href="logoutAction.sh" class="primary-btn">로그아웃</a>
          
      
@@ -69,16 +79,16 @@
          
          
         </c:if>
-           <c:if test="${sessionScope.id==null}">
+           <c:if test="${sessionScope.username==null}">
            
-            <a href="http://localhost:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+            <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
             
         </div>
         <div class="offcanvas__logo">
         
     
-            <a href="mainAction.sh"><img src="/Architecture-kosta202/resources/img/logo.png" alt=""></a>
+            <a href="mainAction.sh"><img src="/resources/img/logo.png" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
    </div>
@@ -91,21 +101,21 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="controller_jsh/mainAction.sh"><img src="/Architecture-kosta202/resources/img/logo.png" alt=""></a>
+                        <a href="controller_jsh/mainAction.sh"><img src="/resources/img/logo.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-10">
                     <div class="header__nav">
                         <nav class="header__menu">
                             <ul>
-                                <li class="active"><a href="http://localhost:8080/Architecture-kosta202/controller_jsh/mainAction.sh">Home</a></li>
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
+                                <li class="active"><a href="http://localhost:8080/controller_jsh/mainAction.sh">Home</a></li>
+                                <li><a href="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
+                                <li><a href="http://localhost:8080/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
                                 
                                 
                                 <li><a href=
                                  <c:if test="${sessionScope.id !=null}">
-                                "http://localhost:8080/Architecture-kosta202/kjj/registerFormAction.kjj"
+                                "http://localhost:8080/kjj/registerFormAction.kjj"
                                 </c:if>
                               
                                  <c:if test="${sessionScope.id ==null}">
@@ -114,7 +124,7 @@
                                 >판매 등록</a></li>
                                 
                                 <c:if test="${sessionScope.id !=null}">
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Mypage/mypageMainAction.cyg">마이페이지</a></li>
+                                <li><a href="http://localhost:8080/Mypage/mypageMainAction.cyg">마이페이지</a></li>
                                 </c:if>
                                 
                                 <c:if test="${sessionScope.id ==null}">
@@ -126,7 +136,8 @@
                         
                         </nav>
                         <div class="header__nav__widget">
-
+                        <img id="alarmImg" src="" onclick="alarmClick()">
+						
     <c:if test="${sessionScope.id!=null}">
          <a href="logoutAction.sh" class="primary-btn" >로그아웃</a>
          
@@ -140,7 +151,7 @@
 					
 						<c:choose>
 							<c:when test="${pattern == 'jpg' || pattern == 'gif' }">
-							  <img src="/Architecture-kosta202/upload/${head}_small.${pattern}">      
+							  <img src="/upload/${head}_small.${pattern}">      
 							</c:when>
 							<c:otherwise>
 								<c:out value="NO IMAGE"></c:out>
@@ -154,7 +165,7 @@
         </c:if>
            <c:if test="${sessionScope.id==null}">
            
-            <a href="http://localhost:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+            <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
 
 
@@ -173,7 +184,7 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <section class="hero spad set-bg" data-setbg="/Architecture-kosta202/resources/img_jsh/111.png">
+    <section class="hero spad set-bg" data-setbg="/resources/img_jsh/111.png">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
@@ -188,7 +199,7 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="hero__tab__form">
                                     <h2>팔고싶은 물건 검색</h2>
-                                    <form action="http://localhost:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">
+                                    <form action="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">
                                         <div class="select-list">
                                             <div class="select-list-item">
                                                 <p>대분류</p>
@@ -352,7 +363,7 @@
 
 
     <!-- Footer Section Begin -->
-    <footer class="footer set-bg" data-setbg="/Architecture-kosta202/resources/img_jsh/footer.png">
+    <footer class="footer set-bg" data-setbg="/resources/img_jsh/footer.png">
         <div class="container">
             <div>
                 <div class="row">
@@ -373,7 +384,7 @@
                 <div class="col-lg-4 col-md-4">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="/Architecture-kosta202/resources/img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="/resources/img/footer-logo.png" alt=""></a>
                         </div>
                         <p>Any questions? Let us know in store at 625 Gloria Union, California, United Stated or call us
                             on (+1) 96 123 8888</p>
@@ -447,21 +458,143 @@
 
     <!-- Search End -->
     
-    
+    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">알람 목록</h5>
+        <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div  id="modalBody">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal()" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>   
 
     <!-- Js Plugins -->
-    <script src="/Architecture-kosta202/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/bootstrap.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery.nice-select.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery-ui.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery.magnific-popup.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/mixitup.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery.slicknav.js"></script>
-    <script src="/Architecture-kosta202/resources/js/owl.carousel.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/main.js"></script>
-    <script src="/Architecture-kosta202/resources/js/main_kgj.js"></script>
+    <script src="/resources/js/jquery-3.3.1.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
+    <script src="/resources/js/jquery.nice-select.min.js"></script>
+    <script src="/resources/js/jquery-ui.min.js"></script>
+    <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+    <script src="/resources/js/mixitup.min.js"></script>
+    <script src="/resources/js/jquery.slicknav.js"></script>
+    <script src="/resources/js/owl.carousel.min.js"></script>
+    <script src="/resources/js/main.js"></script>
+    <script src="/resources/js/main_kgj.js"></script>
     
     
 </body>
 
 </html>
+
+<script type="text/javascript">
+function readAlarm() {
+	
+}
+
+function alarmClick() {
+	var id = "<%=id%>";
+	var header = "${_csrf.headerName}";
+	var token = "${_csrf.token}";
+	var count;
+	
+	$('#myModal').show();
+	$('#modalBody').empty();
+	$.ajax({
+		url : "/REST/alarmList",
+		data : "id=" + id,
+		type : "GET",
+		success : function(data){
+			$.each(data, function (i, item) {
+				if (item.status == '등록') {
+					var str = "<div onclick='readAlarm()'  style='background-color: aqua;margin-bottom:5px;'>";
+				} else {
+					var str = "<div onclick='readAlarm()'  style='background-color: white;margin-bottom:5px;'>";
+				}
+				if (item.buyId == id) {
+					str += "<a href = 'sell/detail?sellNo=" +item.sellNo + "'>판매자 <b>" + item.sellId + "</b> 님이 ";
+					str += "구매자 <b>" + item.buyId + "</b>님께 매칭되었습니다.</a><br></div>"
+				} else if (item.sellId == id) {
+					str += "<a href = 'buyBoard/detail?buyNo=" +item.buyNo + "&id=" + item.buyId + "'>판매자 <b>" + item.sellId + "</b> 님이 ";
+					str += "구매자 <b>" + item.buyId + "</b>님께 매칭되었습니다.</a><br></div>"
+				}
+				
+				$('#modalBody').prepend(str);
+            })
+		}				
+	});
+}
+
+function closeModal() {
+	$('#myModal').hide();
+}
+
+$(document).ready(function() {
+	var id = "<%=id%>";
+	var header = "${_csrf.headerName}";
+	var token = "${_csrf.token}";
+	var count;
+	console.log(id);
+	if (id != "anonymousUser") {
+		$.ajax({
+			url : "/REST/getAlarmCount",
+			data : "id=" + id,
+			type : "GET",
+			success : function(result){
+				count = result;
+				console.log(count);
+			}				
+		});
+		
+		$.ajax({
+			url : "/REST/getAlarmConfig",
+			data : "id=" + id,
+			type : "GET",
+			success : function(result){
+				var date = new Date();
+				var hours = ("00" + date.getHours()).slice(-2);
+				var minutes = ("00" + date.getMinutes()).slice(-2);
+				var currentTime = hours + ":" + minutes;
+				var startTime = result.alarmStartTime;
+				var endTime = result.alarmEndTime;
+				
+				console.log(startTime);
+				console.log(endTime);
+				console.log(currentTime);
+				
+				console.log(result.isAlarm);
+				
+				console.log(currentTime >= startTime && currentTime < endTime);
+				
+				if (result.isAlarm == 'false') {
+					$('#alarmImg').attr("src","/resources/img/alarm_icon.png");
+				} else if (id == "") {
+					$('#alarmImg').attr("src","");
+				} else if (result.isAlarm == 'true') {
+					if (currentTime >= startTime && currentTime < endTime) {
+						if (count > 0) {
+							$('#alarmImg').attr("src","/resources/img/new_icon.png");
+						} else {
+							$('#alarmImg').attr("src","/resources/img/alarm_icon.png");
+						}
+					} else {
+						$('#alarmImg').attr("src","/resources/img/alarm_icon.png");
+					}
+				}
+			}				
+		});
+	}
+	
+	
+	
+})
+</script>

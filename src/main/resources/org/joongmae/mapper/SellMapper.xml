@@ -13,7 +13,7 @@
 	</select>
 
 	<insert id="register" parameterType="org.joongmae.domain.SellVO">
-		insert into sell values (seq_sellno_sell.nextval, #{id}, #{itemName}, #{keyword1}, #{keyword2}, #{keyword3}, #{type}, #{region}, #{itemCondition}, #{price}, #{picture, jdbcType=VARCHAR}, #{status}, #{bigClassifier}, #{MediumClassifier})
+		insert into sell values (seq_sellno_sell.nextval, #{id}, #{itemName}, #{keyword1}, #{keyword2}, #{keyword3}, #{type}, #{region}, #{itemCondition}, #{price}, #{picture, jdbcType=VARCHAR}, #{status}, #{bigClassifier}, #{MediumClassifier}, sysdate)
 	</insert>
 	
 	<update id="modify" parameterType="org.joongmae.domain.SellVO">

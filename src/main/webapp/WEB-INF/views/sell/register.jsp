@@ -133,6 +133,7 @@
             <div class="col-lg-5 col-md-6">
                <div class="hero__tab__form">
                   <form action="register" enctype="multipart/form-data" method="post">
+                     <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
                      <div class="select-list">
                         <div class="register-row">
                            <p style="font-size: 20px">제품명</p>
