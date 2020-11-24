@@ -13,8 +13,8 @@
 	</select>
 	
 	
-	<insert id="insertMember" parameterType="org.joongmae.domain.MemberVO">
-	insert into member values (#{id},#{password},#{name},#{phoneNo},#{email},#{sex},#{address},' ',' ',0,'y',' ',' ',' ')  
+	<insert id="insertMember" parameterType="org.joongmae.domain.MemberAuthDTO">
+	insert into member values (#{id},#{password},#{name},#{phoneNo},#{email},#{sex},#{address},' ',' ',0,'y',' ',' ',' ','1')  
 	</insert>
 	
 	<!-- <select id="loginMember" parameterType="String" resultType="String">
@@ -50,10 +50,46 @@
 	</update>
 	
 	
-	<insert id="memberAuth" parameterType="org.joongmae.domain.MemberAuthDTO">
-	  insert into member_auth (id,password,enabled) values(#{id},#{password},1)
+	<insert id="memberAuth" parameterType="org.joongmae.domain.MemberVO">
+	  insert into member_auth (id,password) values(#{id},#{password})
 	</insert>
 	
+	
+	<resultMap type="org.joongmae.domain.MemberVO" id="memberMap">
+   <id property="id" column="id"/>
+    <result property="id" column="id"/>
+    <result property="password" column="password"/>
+    <result property="name" column="name"/>
+    <result property="phoneNo" column="phoneNo"/>
+    <result property="email" column="email"/>
+	<result property="sex" column="sex"/>
+    <result property="address" column="address"/>
+    <result property="picture" column="picture"/>
+    <result property="introduction" column="introduction"/>
+    <result property="avgScore" column="avgScore"/>
+    <result property="isMember" column="isMember"/>
+    <result property="isAlarm" column="isAlarm"/>
+    <result property="alarmStartTime" column="alarmStartTime"/>
+    <result property="alarmEndTime" column="alarmEndTime"/> 
+    <result property="enabled" column="enabled"/>
+    <collection property="authList" resultMap="authMap"/>
+  </resultMap>
+  
+  <resultMap type="org.joongmae.domain.AuthVO" id="authMap">
+    <result property="id" column="id"/>
+    <result property="auth" column="auth"/>
+
+  </resultMap>
+  
+  <select id="read" resultMap="memberMap">
+SELECT 
+  mem.id,  auth.password, mem.name, phoneNo,email,sex,address,picture,introduction,avgScore,isMember,isAlarm,alarmStartTime,alarmEndTime,mem.enabled, auth.auth
+FROM 
+  member mem LEFT OUTER JOIN member_auth auth on mem.id = auth.id  WHERE mem.id = #{id} 
+  </select>
+  
+
+  
 	
 	
 </mapper>

@@ -2,6 +2,7 @@ package org.joongmae.domain;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class MemberVO implements Serializable{
 	private String isAlarm;
 	private String alarmStartTime;
 	private String alarmEndTime;
+	
+	private boolean enabled;
+	private List<AuthVO> authList;
 	
 	
 }

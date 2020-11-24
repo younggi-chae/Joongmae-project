@@ -16,4 +16,5 @@ public interface MemberService {
 	public String restore(MultipartFile file);
 	public String getAccessToken (String authorize_code);
 	public void registerAuth(MemberAuthDTO userInfo);
+	
 }

@@ -229,6 +229,7 @@ public class MemberServiceImpl implements MemberService {
 		  
 		  userInfo.setPassword(endcodedPassword); 
 		  mapper.memberAuth(userInfo);
+	
 		 
 	  
 	  

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,13 +57,19 @@
         <div class="offcanvas__widget">
 
         
-       <c:if test="${principal.member==null }">
-                    <a href="http://192.168.0.156:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
-        
+        <c:if test="${sessionScope.id!=null}">
+         <a href="logoutAction.sh" class="primary-btn">로그아웃</a>
+         
+     
+         	
+         
+         
+         
         </c:if>
-        <c:if test="${principal.member!=null }">
-        <a href="logoutAction.sh" class="primary-btn">로그아웃</a>
-        </c:if>
+           <c:if test="${sessionScope.id==null}">
+           
+            <a href="http://192.168.0.156:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+               </c:if>
             
         </div>
         <div class="offcanvas__logo">
