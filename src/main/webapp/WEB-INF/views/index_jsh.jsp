@@ -71,7 +71,7 @@
         </c:if>
            <c:if test="${sessionScope.id==null}">
            
-            <a href="http://localhost:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+            <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
             
         </div>
@@ -98,14 +98,14 @@
                     <div class="header__nav">
                         <nav class="header__menu">
                             <ul>
-                                <li class="active"><a href="http://localhost:8080/Architecture-kosta202/controller_jsh/mainAction.sh">Home</a></li>
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
+                                <li class="active"><a href="http://localhost:8080/controller_jsh/mainAction.sh">Home</a></li>
+                                <li><a href="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
+                                <li><a href="http://localhost:8080/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
                                 
                                 
                                 <li><a href=
                                  <c:if test="${sessionScope.id !=null}">
-                                "http://localhost:8080/Architecture-kosta202/kjj/registerFormAction.kjj"
+                                "http://localhost:8080/kjj/registerFormAction.kjj"
                                 </c:if>
                               
                                  <c:if test="${sessionScope.id ==null}">
@@ -114,7 +114,7 @@
                                 >판매 등록</a></li>
                                 
                                 <c:if test="${sessionScope.id !=null}">
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Mypage/mypageMainAction.cyg">마이페이지</a></li>
+                                <li><a href="http://localhost:8080/Mypage/mypageMainAction.cyg">마이페이지</a></li>
                                 </c:if>
                                 
                                 <c:if test="${sessionScope.id ==null}">
@@ -140,7 +140,7 @@
 					
 						<c:choose>
 							<c:when test="${pattern == 'jpg' || pattern == 'gif' }">
-							  <img src="/Architecture-kosta202/upload/${head}_small.${pattern}">      
+							  <img src="/upload/${head}_small.${pattern}">      
 							</c:when>
 							<c:otherwise>
 								<c:out value="NO IMAGE"></c:out>
@@ -154,7 +154,7 @@
         </c:if>
            <c:if test="${sessionScope.id==null}">
            
-            <a href="http://localhost:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+            <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
 
 
@@ -188,7 +188,7 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="hero__tab__form">
                                     <h2>팔고싶은 물건 검색</h2>
-                                    <form action="http://localhost:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">
+                                    <form action="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">
                                         <div class="select-list">
                                             <div class="select-list-item">
                                                 <p>대분류</p>
@@ -464,4 +464,5 @@
     
 </body>
 
+>>>>>>> kgj
 </html>

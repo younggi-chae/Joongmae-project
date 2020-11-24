@@ -140,6 +140,7 @@
             <div class="col-lg-6 col-md-6">
                <div class="hero__tab__form">
                   <form action="reRegister?buyNo=${buy.buyNo }" method="post">
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                      <div class="select-list">
                         <div class="register-row">
                            <p>제목</p>
