@@ -26,26 +26,22 @@
 	<select id="getBuyList" resultType="org.joongmae.domain.BuyVO">
 		<![CDATA[
 		select
-		 	buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier
+		 	buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
 		 from 
-		 	( select /*+ INDEX_DESC(buy pk_buy) */
-		 		rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier 
+		 	( select /*+ INDEX_ASC(buy pk_buy) */
+		 		rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
 		 	  from buy
-		 	  where
-		 ]]>
-		 
-		 <include refid="criteria"></include>	
-		 <![CDATA[	
-		 	rownum <= #{pageNum} * #{amount}
+		 	  where		
+		 	rownum <= #{pageNum} * #{amount} and regdate BETWEEN TRUNC(ADD_MONTHS(sysdate,-#{month})+1) - TO_CHAR(sysdate,'DD')
+			and TRUNC(LAST_DAY(sysdate)) +0.99999421
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>      
 	</select>
 	
 	<select id="countBuy" resultType="int">
-		select count(*) from buy where
-		<include refid="criteria"></include>
-		buyno > 0		
+		select count(*) from buy where buyno > 0 and regdate BETWEEN TRUNC(ADD_MONTHS(sysdate,-#{month})+1) - TO_CHAR(sysdate,'DD')
+			and TRUNC(LAST_DAY(sysdate)) +0.99999421		
 	</select>
 	
 	<select id="getBuyDetail" parameterType="int" resultType="org.joongmae.domain.BuyVO">
@@ -127,9 +123,9 @@
 	</update>
 	
 	
-	<delete id="deleteMember" parameterType="String">
-		delete from member where id = #{id}
-	</delete>	
+	<update id="deleteMember" parameterType="String">
+		update memeber set status = '탈퇴'  where id = #{id}
+	</update>	
 	
 	<!-- WishList 관심리스트 -->
 	<select id="getWishList" resultType="org.joongmae.domain.WishAndSell">
@@ -176,12 +172,32 @@
 		select d.*, s.* from deal d , sell s where d.sellno = s.sellno and d.status = '진행중'
 	</select>
 	
-	<!--  <delete id="deleteWish" parameterType="SelectedWishNo">
+	<delete id="deleteWish" parameterType="org.joongmae.domain.SelectDTO">
 		delete from wishlist where		
 			<foreach collection="list" item="WishNo" separator="OR">
 				wishNo = #{WishNo}
 			</foreach>		
-	</delete>	 -->
+	</delete>	
 	
+	<select id="dateSearchRange" resultType="org.joongmae.domain.BuyVO">
+		<![CDATA[
+		select
+		 	buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
+		 from 
+		 	( select /*+ INDEX_ASC(buy pk_buy) */
+		 		rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
+		 	  from buy
+		 	  where		
+		 	rownum <= #{pageNum} * #{amount} and regdate BETWEEN TO_DATE( #{startDate} , 'YYMMDD') 
+                   AND TO_DATE( #{endDate}, 'YYMMDD') 
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>  		 
+	</select>
+	
+	<select id="dateCntRange" resultType="int">
+		select count(*) from buy where regdate BETWEEN TO_DATE( #{startDate} , 'YYMMDD') 
+                   AND TO_DATE( #{endDate}, 'YYMMDD') 
+	</select>
 	
 </mapper>

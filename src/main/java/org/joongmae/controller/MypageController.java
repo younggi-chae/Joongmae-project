@@ -8,16 +8,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joongmae.domain.BuyListWithPaging;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;
+import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.domain.PageDTO;
+import org.joongmae.domain.SelectDTO;
 import org.joongmae.domain.SellVO;
 
 import org.joongmae.domain.WishListVO;
 import org.joongmae.service.MypageService;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -46,17 +51,12 @@ public class MypageController {
 
 	@GetMapping("/main")
 	public String main(@RequestParam("id") String id, Model model) {
-		model.addAttribute("member", service.getMemberDetail(id));
-		
+		model.addAttribute("member", service.getMemberDetail(id));		
 		return "mypage/myPage_main";
 	}
 
 	@GetMapping("/buyList")
-	public String getBuyList(Criteria cri, Model model) {
-		model.addAttribute("list", service.getBuyList(cri));
-
-		int total = service.countBuy(cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, total));
+	public String getBuyList(Criteria cri, Model model) {		
 		return "mypage/myPage_buy";
 	}
 
@@ -96,7 +96,7 @@ public class MypageController {
 	@RequestMapping(value="/deleteMember", method={RequestMethod.POST, RequestMethod.GET})
 	public String deleteMember(@RequestParam("id") String id){
 		service.deleteMember(id);
-		return "redirect:/myPage/main";
+		return "redirect:/myPage/main?id=" + id;
 	}
 	
 	@GetMapping("/wishList")
@@ -119,18 +119,24 @@ public class MypageController {
 	@ResponseBody
 	public void deleteWishList(@PathVariable("sellNo") int sellNo){
 		service.deleteWishList(sellNo);
-	}	
+	}
+	
+	@RequestMapping("/deleteWish")
+	public void deleteWish(@RequestParam("list") String str,SelectDTO wishNo){		
+		wishNo.setList(Arrays.asList(str.split(",")));
+		service.deleteWish(wishNo);
+	}
 	
 	@GetMapping("/heartColor")
 	@ResponseBody
-	public Map<String,List<?>> heartColor(Criteria cri, Model model) {			
+	public Map<String,List<?>> heartColor(Criteria cri) {			
 		
 		HashMap<String, List<?>> jsonMap = new HashMap<>();		
 		jsonMap.put("wishList", service.getWishList(cri));
 		jsonMap.put("sellList", service.getSellList(cri));		
 		
 		return jsonMap;
-	}
+	}	
 	
 	@GetMapping("/sellDetail/{sellNo}")
 	@ResponseBody
@@ -156,14 +162,32 @@ public class MypageController {
 		return vo;
 	}
 	
-	@GetMapping("/dealListAjax")
+	@GetMapping("/dealListAjax/{page}")
 	@ResponseBody
-	public Map<String,List<DealAndSell>> dealList(Criteria cri, Model model) {			
+	public ResponseEntity<DealListWithPaging> dealList(@PathVariable("page") int page) {			
 		
-		HashMap<String, List<DealAndSell>> jsonMap = new HashMap<>();		
-		jsonMap.put("list", service.getDealList(cri));	
-		
-		return jsonMap;
+		Criteria cri = new Criteria(page, 9);				
+		return new ResponseEntity<>(service.getDealListWithPaging(cri), HttpStatus.OK);
+	}
+	
+	@GetMapping("/buyListAjax/{page}/{month}")
+	@ResponseBody
+	public ResponseEntity<BuyListWithPaging> buyList(@PathVariable("page") int page,
+				Criteria cri ,@PathVariable("month") int month) {		
+		cri = new Criteria(page, 10);			
+		cri.setMonth(month);
+		System.out.println(month);
+		return new ResponseEntity<>(service.getBuyListWithPaging(cri), HttpStatus.OK);
+	}
+	
+	@GetMapping("/dateSearchRange/{page}/{startDate}/{endDate}")
+	@ResponseBody
+	public ResponseEntity<BuyListWithPaging> dateSearchRange(@PathVariable("page") int page,
+			Criteria cri, @PathVariable String startDate, @PathVariable String endDate){			
+			cri = new Criteria(page, 10);	
+			cri.setStartDate(startDate);
+			cri.setEndDate(endDate);
+			return new ResponseEntity<>(service.dateSearchRange(cri), HttpStatus.OK);
 	}
 	
 	@GetMapping("/completeDeal")
@@ -185,6 +209,7 @@ public class MypageController {
 		
 		return jsonMap;
 	}
+	
 	
 	@PostMapping("/uploadAjaxAction")
 	@ResponseBody

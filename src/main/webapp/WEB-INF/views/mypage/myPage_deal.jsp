@@ -44,14 +44,73 @@
 									  <input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
 									  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
 									  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
-									 <button class="btn btn-sm btn-primary" name="btnSearch" id="btnSearch">검색</button>
+									  <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>
 								</form>
 							  </div>  
 							</div>				
 						</div>
 					</div>
 					<div class="row" id="selectList">
-			
+						<%-- <c:choose>
+							<c:when test="${empty list }">
+								<div class="col-lg-12 col-md-4" align="center">
+									<h4>데이터가 없습니다.</h4>
+								</div>
+							</c:when>
+							<c:when test="${!empty list }">
+								<c:forEach var="deal" items="${list }">
+									<div class="col-lg-4 col-md-4">
+										<div class="car__item">
+											<div class="car__item__pic__slider owl-carousel">
+												<c:choose>
+													<c:when test="${!empty deal.picture }">
+														<img style="height: 330px"
+															src="/resources/img/upload_cyg/${deal.picture }"
+															alt="">
+													</c:when>
+													<c:otherwise>
+														<img style="height: 330px"
+															src="/resources/img/upload_cyg/noImg.jpg"
+															alt="">
+													</c:otherwise>
+												</c:choose>
+											</div>
+											<div class="car__item__text">
+												<div class="car__item__text__inner">
+													<div class="label-date">${deal.buyId }</div>
+													<div class="label-date">${deal.sellId }</div>
+													<h5>
+														<a href="dealDetailAction.cyg?dealNo=${deal.dealNo }"
+															data-toggle="modal" data-target="#myModal">${deal.itemName }</a>
+													</h5>
+													<ul>
+														<li><span>${deal.keyword1 }</span></li>
+														<li><span>${deal.keyword2 }</span></li>
+														<li><span>${deal.keyword3 }</span></li>
+													</ul>
+												</div>
+												<div class="car__item__price">
+													<span class="car-option">${deal.status }</span>
+													<c:choose>
+														<c:when test="${deal.status == '진행중' }">
+															<span class="car-option">${deal.status }</span>
+														</c:when>
+														<c:otherwise>
+															<span class="car-option sale">${deal.status }</span>
+														</c:otherwise>
+													</c:choose>
+													<h6>
+														<fmt:formatNumber type="number" maxFractionDigits="3"
+															value="${deal.price }" />
+													</h6>
+												</div>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
+							</c:when>
+						</c:choose> --%>
+					</div>
 					</div>
 					<div class='pagination__option'>
 					<ul class="pagination">
@@ -81,14 +140,13 @@
 					</ul>
 				</div>
 				<!--  end Pagination -->
-				</div>
+			</div>
 				<form id='actionForm' action="/myPage/dealList" method='get'>
 					<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 					<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 					<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
 					<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
-			    </form>
-			</div>
+			    </form>			
 		</div>
 	</section>
 	<!-- Car Section End -->
@@ -117,9 +175,9 @@
 <script src="/resources/js/jquery-3.3.1.min.js"></script>	
 <script type="text/javascript">		
 
-	$(document).ready(function(){				
-			
-		showList()	
+	$(document).ready(function(){			
+		
+		showList();
 		
 		$(".selectDeal").on("change", function(){
 			var str = "";
@@ -127,7 +185,7 @@
 			
 			if($(".selectDeal option:selected").val() == 'whole'){
 				
-				showList()
+				showList();
 			
 			} else if($(".selectDeal option:selected").val() == 'complete'){
 				$.ajax({
@@ -139,8 +197,12 @@
 						 $('#selectList').html("");
 						result.complete.forEach(function(element){
 							str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';
-							str += '<div class="car__item__pic__slider">';
-							str += '<img style="height: 330px" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+							str += '<div class="car__item__pic__slider .owl-carousel">';
+							if(element.picture != null){
+							  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+							  } else {
+								str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
+							  }
 							str += '<div class="car__item__text"><div class="car__item__text__inner">';
 							str += '<div class="label-date">' + element.buyId +'</div>';
 							str += '<div class="label-date">' + element.sellId +'</div>';
@@ -149,7 +211,7 @@
 							str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 							str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 							str += '<div class="car__item__price"><span class="car-option sale">'+ element.status+'</span>';							
-							str += '<h6>'+ commas(element.price) +'</h6></div></div></div></div>';
+							str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';
 							
 							 $('#selectList').append(str);
 						});
@@ -165,8 +227,12 @@
 						 $('#selectList').html("");
 						result.progress.forEach(function(element){
 							str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';
-							str += '<div class="car__item__pic__slider">';	
-							str += '<img style="height: 330px" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+							str += '<div class="car__item__pic__slider .owl-carousel">';	
+							if(element.picture != null){
+							  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+							  } else {
+								str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
+							  }
 							str += '<div class="car__item__text"><div class="car__item__text__inner">';
 							str += '<div class="label-date">' + element.buyId +'</div>';
 							str += '<div class="label-date">' + element.sellId +'</div>';
@@ -175,7 +241,7 @@
 							str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 							str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 							str += '<div class="car__item__price"><span class="car-option">'+ element.status+'</span>';							
-							str += '<h6>'+ commas(element.price) +'</h6></div></div></div></div>';
+							str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';
 							console.log(element.picture);
 							 $('#selectList').append(str);					 
 							});
@@ -219,23 +285,27 @@
 		
 		function showList(){
 			var str = "";
-			var selectVar = "";			
+			var selectVar = "";	
+			var page = actionForm.find("input[name='pageNum']").val();
 			
 			$.ajax({
-				url : "/myPage/dealListAjax",
+				url : "/myPage/dealListAjax/" + page,
 				dataType : "json",
 				data : selectVar,
 				type : "GET",
-				success : function(result){					
-					 $('#selectList').html("");
-					result.list.forEach(function(element){				
+				success : function(result){						
+					 
+					 $('#selectList').html("");		
+					//Initialize  owl-carousel Plugin
+					
+					 result.list.forEach(function(element){				
 						
 						str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';						
-						str += '<div class="car__item__pic__slider">';
+						str += '<div class="car__item__pic__slider .owl-carousel">';
 						if(element.picture != null){
-						  	str += '<img style="height: 330px" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+						  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
 						  } else {
-							str += '<img style="height: 330px" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
+							str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
 						  }
 						str += '<div class="car__item__text"><div class="car__item__text__inner">';
 						str += '<div class="label-date">' + element.buyId +'</div>';
@@ -249,7 +319,7 @@
 						} else {
 							str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
 						}													
-						str += '<h6>'+ commas(element.price) +'</h6></div></div></div></div>';						
+						str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';						
 					
 						 	$('#selectList').append(str);	
 						});

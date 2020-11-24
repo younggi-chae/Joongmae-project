@@ -32,7 +32,8 @@
 					</div>
 				
 					<h5>						
-						${member.id } 고객님&emsp; <span class=".detail"><a href="detailMember?id=${member.id }">정보 수정</a></span>								
+						${member.id } 고객님&emsp; <span class=".detail">	                       								
+						<a href="detailMember?id=${member.id }">정보 수정</a></span>							
 					</h5>															
 					<span>${member.email }</span>					
 				</div>

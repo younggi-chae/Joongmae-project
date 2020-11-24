@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@include file="../includes/header.jsp"%>
- 
+
    <section class="services spad">
       <div class="container">
          <div class="row">
@@ -26,8 +26,8 @@
                   style="height: 74px; background-color: white;">
                   <div class="row">
                      <div class="col-lg-8 col-md-6">
-                        <a href="#" class="primary-btn" onclick="deleteSelected()">선택삭제</a>&emsp;
-                        <a href="#" class="primary-btn">전체삭제</a>
+                        <a href="#" class="btn btn-danger" onclick="deleteSelected()">선택삭제</a>&emsp;
+                        <a href="#" class="btn btn-danger">전체삭제</a>
                      </div>
                       <div class="col-lg-4 col-md-6">										
 							<div class="pull-right">
@@ -39,7 +39,7 @@
 									  <input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
 									  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
 									  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
-									 <button class="btn btn-sm btn-primary" name="btnSearch" id="btnSearch">검색</button>
+									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>
 								</form>
 							</div>
 						</div>					
@@ -77,27 +77,25 @@
                                           	<input id="modalNo" name="modalNo" type="hidden" value="${sell.sellNo }">                                        
 											<a class="targetModal" id="targetModal" href="#" 
 												data-toggle="modal" data-target="#myModal">${sell.itemName }</a>
+												&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+												<label class="btn btn-light active">
+	   											<input type="checkbox" onchange="selectFunction(this, ${sell.sellNo})" autocomplete="off">선택
+	  											</label>          									
 										  </h5>
 												
                                           <ul>
                                              <li><span>${sell.keyword1 }</span></li>
                                              <li><span>${sell.keyword2 }</span></li>
                                              <li><span>${sell.keyword3 }</span></li>
-                                          </ul>
+                                          </ul>                                          	
                                        </div>
-                                       <div class="car__item__price">
-                                          <span class="car-option sale"
-                                             style="background-color: #d2d2d2;"><input
-                                             type="checkbox"
-                                             onchange="selectFunction(this, ${sell.sellNo})"></span>
-                                          <h6>
-                                             <fmt:formatNumber type="number" maxFractionDigits="3"
-                                                value="${sell.price }" />
-                                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                                              
+                                       <div class="car__item__price">                                         
+                                          <h6 style="font-size: 25px;">                                                                       	
+                                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${sell.price }" />원&emsp;                                          
                                              <span class="sellNoValue">                                             
                                              	<input id="sellNo" name="sellNo" type="hidden" value="${sell.sellNo }">                                        	 	
                                         		<a class="addWish" id ="heart${sell.sellNo}" href="#" style="color: black"> 
-                                        		<i class="fa fa-heart" aria-hidden="true">찜하기</i></a>
+                                        		<i class="fa fa-heart" id="heart" aria-hidden="true">찜하기</i></a>
                                              </span>                                                                                 
                                           </h6>
                                        </div>
@@ -150,8 +148,7 @@
    <!-- Car Section End -->
    
    	<!-- modal창 정보 -->	
-	<!--  큰창:<div class="modal-dialog"> 작은창 :<div class="modal-dialog modal-sm">  -->
-		
+	<!--  큰창:<div class="modal-dialog"> 작은창 :<div class="modal-dialog modal-sm">  -->		
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -271,7 +268,7 @@ $(document).ready(function () {
 				 $('.modal-body').append(str);
 		   }
 		});
-	});
+	});	
 });		
 	
 	

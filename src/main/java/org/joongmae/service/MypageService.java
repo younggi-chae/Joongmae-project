@@ -3,21 +3,26 @@ package org.joongmae.service;
 
 import java.util.List;
 
+import org.joongmae.domain.BuyListWithPaging;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;
+import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
-
+import org.joongmae.domain.SelectDTO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 
 import org.joongmae.domain.WishListVO;
+
 
 public interface MypageService {
 	
 	public List<BuyVO> getBuyList(Criteria cri);
 	public int countBuy(Criteria cri);
 	public BuyVO getBuyDetail(int buyNo);
+	public BuyListWithPaging getBuyListWithPaging(Criteria cri);
+	public BuyListWithPaging dateSearchRange(Criteria cri);
 	
 	public List<SellVO> getSellList(Criteria cri);
 	public int countSell(Criteria cri);
@@ -26,16 +31,19 @@ public interface MypageService {
 	public List<DealAndSell> getDealList(Criteria cri);
 	public int countDeal(Criteria cri);
 	public DealAndSell getDealDetail(int dealNo);
+	public DealListWithPaging getDealListWithPaging(Criteria cri);
 	
 	public List<WishAndSell> getWishList(Criteria cri);
 	public int countWish(Criteria cri);
 	public int addWishList(WishListVO wishList);
-	public int deleteWishList(int sellNo);	
+	public int deleteWishList(int sellNo);
+	public int deleteWish(SelectDTO wishNo);
 	
 	public MemberVO getMemberDetail(String id);
 	public boolean modifyMember(MemberVO member);
 	public int deleteMember(String id);
 	
 	public List<DealAndSell> completeDeal();
-	public List<DealAndSell> progressDeal();
+	public List<DealAndSell> progressDeal();	
+	
 }

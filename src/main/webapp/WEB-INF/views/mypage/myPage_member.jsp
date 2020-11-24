@@ -80,58 +80,57 @@
     </header>
     <!-- Header Section End -->
 	
-	<!-- Services Section Begin -->
-	<section class="services spad">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="section-title">
-						<h2>회원 정보</h2>
-						<span>Member Information</span>
-					</div>
+    <!-- Contact Section Begin -->   
+    <section class="contact spad">
+	    <div class="container">
+	         <div class="row">
+	            <div class="col-lg-12">
+	               <div class="section-title">
+	                  <h2>회원정보</h2>
+	                  <span>Member Information</span>
+	               </div>
+	            </div>
+	         </div>
+	    </div><br><br>
+        <div class="container">
+            <div class="row">            	
+                <div class="col-lg-7 col-md-6">
+                <div class="section-title">						
+						<h2>${member.id } 회원님</h2>						
 				</div>
-			</div>			
-			<div class="row">
-				<div class="col-lg-12 col-md-6 col-sm-6">
-					<div class="services__item">										
-				
-			
-			<div class="col-lg-12">
-				<div class="section-title">	
-					<div class="testimonial__item__author__text">			
-						<h4>${member.id } 회원님</h4>									
-					</div><br>					
-						<div class="imgPreview">	
-							<img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/s_${member.picture }" style="width: 140px; height: 140px;">							
-				 	</div><br>				  
-				  <div class="uploadDiv" align="center">
-					<input type="file" id="uploadFile" name="picture" onchange="uploadImg(this)" style="display: none;"/>	
-					<input type="button" value="프로필 사진 변경" onclick="document.getElementById('uploadFile').click();"/>
-					<button id="uploadBtn">변경하기</button>				
-				 </div>	
-								 
-				</div>				
-			</div>											
-			<form role="form" action="/myPage/modifyMember" method="post">		
-				<input type="hidden" name="id" value="${member.id }">
-				<p>이름</p><div><input type="text" name="name" value="${member.name }" placeholder="이름 변경.."></div><br>
-				<p>비밀번호</p><div><input type="password" name="password" value="${member.password }" placeholder="비밀번호 변경.."></div><br>		
-				<p>이메일</p><div><input type="text" name="email" value="${member.email }" placeholder="이메일 변경.."></div><br>
-				<p>전화번호</p><div><input type="text" name="phoneNo" value="${member.phoneNo }" placeholder="전화번호 변경.."></div><br>				
-				<p>주소</p><div><input type="text" name="address" id="sample4_jibunAddress"  value="${member.address }" placeholder="주소 변경.."></div>
-						  <div> <input type="button" onclick="sample4_execDaumPostcode()" value="지역 찾기"></div><br>				
-				<p>한줄소개</p><div><input type="text" name="introduction" value="${member.introduction }" placeholder="한줄소개 변경.."></div><br>				
-				<input type="hidden" id="uploadResult" name="picture">
-				<button id="modifyBtn" type="submit">정보수정</button>			
-			</form>									
-		</div>
-	</div>			
-</div>
-		</div>
-		<div align="center" id="delete">
-			<a href="/myPage/deleteMember?id=${member.id }" class="primary-btn">회원탈퇴</a>
-		</div>	
-	</section>
+                    <div class="car__details__pic__large">
+	                    <div class="imgPreview">	
+							<img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/s_${member.picture }" style="height: 450px; width: 450px;">							
+					 	</div>
+					</div>
+				 	<div class="uploadDiv" align="center">
+						<input type="file" id="uploadFile" name="picture" onchange="uploadImg(this)" style="display: none;"/>	
+						<input type="button" class="btn btn-success" value="프로필 사진 변경" onclick="document.getElementById('uploadFile').click();"/>
+					<button id="uploadBtn" class="btn btn-danger">변경하기</button>				
+				 	</div>				 	
+                </div>
+            <div class="col-lg-5 col-md-6">
+               <div class="hero__tab__form">
+                  <form role="form" action="/myPage/modifyMember" method="post">		
+					<input type="hidden" name="id" value="${member.id }">
+					<p>이름</p><div><input type="text" name="name" value="${member.name }" placeholder="이름 변경.."></div><br>
+					<p>비밀번호</p><div><input type="password" name="password" value="${member.password }" placeholder="비밀번호 변경.."></div><br>	
+					<p>성별</p><div><input type="text" name="sex" value="${member.sex }" disabled></div><br>	
+					<p>이메일</p><div><input type="text" name="email" value="${member.email }" placeholder="이메일 변경.."></div><br>
+					<p>전화번호</p><div><input type="text" name="phoneNo" value="${member.phoneNo }" placeholder="전화번호 변경.."></div><br>				
+					<p>주소</p><div><input type="text" name="address" id="sample4_jibunAddress"  value="${member.address }" placeholder="주소 변경..">
+							       <input type="button" onclick="sample4_execDaumPostcode()" value="지역 찾기"></div><br>				
+					<p>한줄소개</p><div><input type="text" name="introduction" value="${member.introduction }" placeholder="한줄소개 변경.."></div><br>				
+					<input type="hidden" id="uploadResult" name="picture">
+					<button id="modifyBtn" class="btn btn-success" type="submit">정보수정</button>&emsp;
+					<button id="deleteMember" class="btn btn-danger" type="submit">회원탈퇴</button>		
+				 </form>				 				
+               </div>
+            </div>
+         </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
 		
 	<!-- Services Section End -->
 	
@@ -160,19 +159,15 @@
 				data : formData,
 				type : 'POST',
 				success : function(result){	
-					console.log(files[0].name);
-					
+					console.log(files[0].name);					
 					/* var preView = $('#imgPreview');
-					var str = "";
-					
+					var str = "";					
 					if(files[0] != null){
 						str += '<img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/s_' + ${member.picture } + "'>'
 					} else {
 						str += '<img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/noImage.jpg">';
-					}
-					
-					preView.append(str); */
-					
+					}					
+					preView.append(str); */					
 					$('#uploadResult').attr("value", files[0].name);					
 				}
 			});
@@ -214,6 +209,13 @@
 	 	$('#uploadBtn').on("click", function(){
 	 		alert("이미지가 변경되었습니다.")
 	 	});
+	 	
+	 	
+	 	$('#deleteMember').on('click', function(){
+	 		comfirm("정말로 회원을 탈퇴 하시겠습니까?");
+	 		
+	 		location.href = "myPage/deleteMember";
+	 	});	 	
 	
 	 </script>
 	 

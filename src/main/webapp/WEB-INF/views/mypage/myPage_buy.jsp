@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@include file="../includes/header.jsp"%>
-
+	
 	<!-- Header Section End -->
 	<section class="services spad">
 		<div class="container">
@@ -16,117 +16,59 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div><br><br>
 		<div class="container">	
 			<div class='row'>
 					<div class="col-lg-12">
-						<div class="pull-right">
-							<form id='searchForm' action="/myPage/buyList" method='get'>
-								<select name='type'>
-									<option value=""
-										<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
-									<option value="T"
-										<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>								
-								</select> 
-								  <input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
-								  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
-								  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
-								 <button class="btn btn-sm btn-primary" name="btnSearch" id="btnSearch">검색</button>
-							</form>
-						</div>
+						<button class="btn btn-danger" id="searchWhole">전체기간</button>
+						<button class="btn btn-danger" id="search3month">최근 3개월</button>
+						<button class="btn btn-danger" id="search6month">최근 6개월</button>&emsp;&emsp;					
+						<span><b>조회기간</b> : <input type="text" name="startDate" id="startDate" /> - 
+						<input type="text" name="endDate" id="endDate" />
+						<button class="btn btn-success" id="searchRange">조회</button></span> 									
 					</div>					
-				</div>		
+				</div><br><br>		
 		 
 			<div class="row">				
-				<div class="col-lg-12">					
+		 		<div class="col-lg-12">					
 					<div class="row">
 						<div class="col-lg-12 col-md-12">
-							<table class="table table-striped table-sm">
-								<colgroup>
+							<table class="table table-hover">
+								<colgroup>								
 									<col style="width: 10%;" />
-									<col style="width: auto;" />
-									<col style="width: 10%;" />
+									<col style="width: auto;" />									
 									<col style="width: 10%;" />									
 									<col style="width: 10%;" />
 									<col style="width: 10%;" />
+									<col style="width: 10%;" />
+									<col style="width: 20%;" />
+									<col style="width: 10%;" />
 								</colgroup>
 								<thead>
-									<tr>
-										<th>No</th>
+									<tr class="danger" style="background-color: #8FBC8F;">									
+										<th>카테고리</th>
 										<th>제목</th>
-										<th>거래방식</th>
+										<th>거래방식</th>																			
 										<th>키워드1</th>
 										<th>키워드2</th>
 										<th>키워드3</th>
+										<th>가격</th>
+										<th>등록일</th>
 									</tr>
 								</thead>
-								<tbody>
-									<c:choose>
-										<c:when test="${empty list }">
-											<tr>
-												<td colspan="5" align="center">데이터가 없습니다.</td>
-											</tr>
-
-										</c:when>
-										<c:when test="${!empty list }">
-											<c:forEach var="buy" items="${list }">
-												<tr>
-													<td>${buy.buyNo }</td>
-													<td><h5 style="font-weight: bold;">
-														<input id="modalNo" name="modalNo" type="hidden" value="${buy.buyNo }">                                        
-														<a class="targetModal" id="targetModal" href="#" 
-														data-toggle="modal" data-target="#myModal">${buy.title }</a>														
-													</h5>											
-													<td>${buy.type }</td>
-													<td>${buy.keyword1 }</td>
-													<td>${buy.keyword2 }</td>
-													<td>${buy.keyword3 }</td>
-												</tr>
-											</c:forEach>
-										</c:when>
-									</c:choose>
+						        <tbody id="list">
+									
 								</tbody>
 							</table>
 						</div>
-					</div>	
-				<div class='pagination__option'>
-					<ul class="pagination">
-						<c:if test="${pageMaker.prev}">
-							<li class="paginate_button previous"><a
-								href="${pageMaker.startPage -1}">Previous</a></li>
-						</c:if>						
-						<c:forEach var="num" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">							
-						   <c:choose>
-		                     <c:when test="${pageMaker.cri.pageNum == num }">
-		                     <li class="paginate_button">
-		                        <a class="active" href="${num }">${num }</a>
-		                     </li>
-		                     </c:when>
-		                     <c:otherwise>
-		                     <li class="paginate_button">
-		                        <a href="${num }">${num }</a>
-		                     </li>
-		                     </c:otherwise>
-		                  </c:choose>								
-						</c:forEach>
-						<c:if test="${pageMaker.next}">
-							<li class="paginate_button next"><a
-								href="${pageMaker.endPage +1 }">Next</a></li>
-						</c:if>
-					</ul>
-				</div>
-				<!--  end Pagination -->
-				</div>
-				<form id='actionForm' action="/myPage/buyList" method='get'>
-					<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-					<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-					<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
-					<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
-			    </form>
-			</div>
-		</div>    	
-	</section>
+					</div>
+				  </div> 
+				</div>	
+				<div class='pagination__option' id="pagenation">
+					 
+				</div>				 
+			 </div>    	
+		</section>
 	
 	<!-- modal창 정보 -->	
 	<!--  큰창:<div class="modal-dialog"> 작은창 :<div class="modal-dialog modal-sm">  -->		
@@ -146,40 +88,210 @@
 					</div>
 				</div>					
 			</div>				
-		  </div>			
+		 </div>			
 	<!-- /.modal -->		
 	
 	<script src="/resources/js/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript">	
 	
+	var monthCheck = 0;
 	
-	var actionForm = $("#actionForm");
+	$(document).ready(function(){
+		monthCheck = "all";
+		buyList(pageNum, 1000);		
+	});		
+	
+	$('#search3month').on('click', function(){
+		monthCheck = "3";
+		buyList(pageNum, 2);	
+	});
+	
+	$('#search6month').on('click', function(){
+		monthCheck = "6";
+		buyList(pageNum, 5);		
+	});
+	
+	$('#searchWhole').on('click', function(){
+		monthCheck = "all";
+		buyList(pageNum, 1000);
+	});
+		
+	$('#searchRange').on('click', function(){		
+		monthCheck = "range"
+		searchRangeList();		
+	});
+	
+	 function buyList(page, month){
+		var str = "";		
+		var param = new Object();
+		param.page = page || 1;
+		param.month = month;		
+		
+		$.ajax({
+			url : "/myPage/buyListAjax/" + page + "/" + month,
+			dataType : "json",
+			data : param,
+			type : "GET",
+			success : function(result){				
+				var buyCnt = result.buyCnt;				
+				$('#list').html("");
+				
+				result.list.forEach(function(element){					
+				if(element == null){
+					str = '<tr><td colspan="5" align="center">데이터가 없습니다.</td></tr>';
+				} else {
+					str =  '<tr>';
+					str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
+					str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
+					str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a></h5>';
+					str += '<td>'+element.type+'</td>';
+					str += '<td>'+element.keyword1+'</td>';
+					str += '<td>'+element.keyword2+'</td>';
+					str += '<td>'+element.keyword3+'</td>';
+					str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
+					str += '<td>'+element.regDate+'</td></tr></tbody></table></div></div></div>';							  
+				
+						$('#list').append(str);						
+						showPage(buyCnt);						
+				     }
+				});
+			}			
+		});			
+	}
+	 
+	 $("#pagenation").on("click","li a", function(e){
+	        e.preventDefault();      
+	        
+	        var targetPageNum = $(this).attr("href");
+	        
+	        console.log("targetPageNum: " + targetPageNum);
+	        
+	        pageNum = targetPageNum;
+	        
+	        if(monthCheck == "3"){
+	        	buyList(pageNum, 2);
+	        }else if( monthCheck == "6"){
+	        	buyList(pageNum, 5);
+	        }else if( monthCheck == "all"){
+	        	buyList(pageNum, 1000);
+	        }else if(monthCheck == "range"){
+	        	searchRangeList(pageNum);
+	        }
+	       
+	      }); 
 
-	$(".paginate_button a").on("click",	function(e) {
-			e.preventDefault();
-			console.log('click');
-			actionForm.find("input[name='pageNum']")
-			.val($(this).attr("href"));
-				actionForm.submit();
-			});
-	
-	var searchForm = $("#searchForm");
-	$("#searchForm button").on("click",	function(e) {
-		if (!searchForm.find("option:selected").val()) {
-				alert("검색종류를 선택하세요");
-				return false;
-		}
-			if (!searchForm.find("input[name='keyword']").val()) {
-					alert("키워드를 입력하세요");
-					return false;
+	 
+ 	 function searchRangeList(page){
+			var str = "";
+			var startDate = $('#startDate').val();
+			var endDate = $('#endDate').val();
+			
+			var page = page || 1 ;	
+		
+			$.ajax({
+				url : "/myPage/dateSearchRange/" + page + "/" + startDate + "/" + endDate,
+				dataType : "json",
+				data : {startDate : startDate, endDate : endDate},
+				type : "GET",
+				success : function(result){
+					$('#list').html("");
+					var buyCnt = result.buyCnt;
+					result.list.forEach(function(element){
+						console.log(element);
+						if(element == null){
+							str = '<tr><td colspan="5" align="center">데이터가 없습니다.</td></tr>';
+						} else {
+							str =  '<tr>';
+							str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
+							str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
+							str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a></h5>';
+							str += '<td>'+element.type+'</td>';
+							str += '<td>'+element.keyword1+'</td>';
+							str += '<td>'+element.keyword2+'</td>';
+							str += '<td>'+element.keyword3+'</td>';
+							str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
+							str += '<td>'+element.regDate+'</td></tr></tbody></table></div></div></div>';							  
+						
+								$('#list').append(str);	
+								console.log(page);
+								showPage(buyCnt);								
+						}
+					});					
 				}
-
-				searchForm.find("input[name='pageNum']").val("1");
-				e.preventDefault();
-				searchForm.submit();
 			});
+	     }
+		
+	 
+	  var pageNum = 1;
+	 
+	 function showPage(buyCnt){      
+	      var endNum = Math.ceil(pageNum / 10.0) * 10;  
+	      var startNum = endNum - 9;       
+	      var prev = startNum != 1;
+	      var next = false;
+	      
+	      if(endNum * 10 >= buyCnt){
+	        endNum = Math.ceil(buyCnt/10.0);
+	      }
+	      
+	      if(endNum * 10 < buyCnt){
+	        next = true;
+	      }
+	      
+	      var str = "<ul class='pagination pull-right'>";
+	      
+	      if(prev){
+	        str+= "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>Previous</a></li>";
+	      }
+	           
+	      
+	      for(var i = startNum ; i <= endNum; i++){   
+	    	  console.log(pageNum);
+	    	  console.log(i);
+	        var active = pageNum == i? "active":"";        
+	        str+= "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+	      }
+	      
+	      if(next){
+	        str+= "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
+	      }
+	      
+	      str += "</ul>";
+	      
+	      console.log(str);      
+	      $("#pagenation").html(str);
+	    }
+	     
+	    
 	
+	   
+	    
+	    
+	    $(function() { 
+	    	  $("#startDate").datepicker({
+	    		dateFormat: 'yymmdd',
+	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	    	     dayNamesMin: ['일','월','화','수','목','금','토'],
+	    		 changeMonth: true, 
+	    	     changeYear: true, 
+	    		 showMonthAfterYear: true,
+	    	  });
+	    	  $("#endDate").datepicker({
+		    	dateFormat: 'yymmdd',
+		    	monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		    	dayNamesMin: ['일','월','화','수','목','금','토'],
+		    	changeMonth: true, 
+		    	changeYear: true, 
+		    	showMonthAfterYear: true,
+	    	 });
+	    });
+	    
 	
 
-</script>
+	function commas(num) {
+	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+
+ </script>
 <%@include file="../includes/footer.jsp"%>

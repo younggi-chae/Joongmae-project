@@ -16,6 +16,9 @@ public class Criteria {
 	
 	private String type;
 	private String keyword;
+	private String startDate;
+	private String endDate;
+	private int month;
 	
 	public Criteria(){
 		this(1, 9);
@@ -40,5 +43,5 @@ public class Criteria {
 				.queryParam("keyword", this.getKeyword());
 		
 		return builder.toUriString();
-	}
+	}	
 }

@@ -2,11 +2,15 @@ package org.joongmae.service;
 
 import java.util.List;
 
+import org.joongmae.domain.BuyListWithPaging;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.Criteria;
 
 import org.joongmae.domain.DealAndSell;
+import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
+
+import org.joongmae.domain.SelectDTO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 import org.joongmae.domain.WishListVO;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+
 
 @Service
 @Log4j
@@ -113,6 +118,26 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public List<DealAndSell> progressDeal() {		
 		return mapper.progressDeal();
+	}	
+
+	@Override
+	public BuyListWithPaging getBuyListWithPaging(Criteria cri) {		
+		return new BuyListWithPaging(mapper.countBuy(cri), mapper.getBuyList(cri));
+	}
+
+	@Override
+	public DealListWithPaging getDealListWithPaging(Criteria cri) {		
+		return new DealListWithPaging(mapper.countDeal(cri), mapper.getDealList(cri));
+	}
+
+	@Override
+	public int deleteWish(SelectDTO wishNo) {		
+		 return mapper.deleteWish(wishNo);
 	}
 	
+	@Override
+	public BuyListWithPaging dateSearchRange(Criteria cri) {
+		log.info(cri);
+		return new BuyListWithPaging(mapper.dateCntRange(cri), mapper.dateSearchRange(cri));
+	}
 }

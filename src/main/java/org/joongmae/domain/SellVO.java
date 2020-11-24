@@ -24,5 +24,6 @@ public class SellVO implements Serializable{
 	private String status;
 	private String MediumClassifier;
 	private String BigClassifier;
+	private String regDate;
 }
 
