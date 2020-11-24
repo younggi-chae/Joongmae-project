@@ -103,7 +103,7 @@ $('#sendPhoneNumber').on('click',function(){
         data: {
             "phoneNumber" : phoneNumber
         },
-      /*  beforeSend: function(xhr){
+       /* beforeSend: function(xhr){
             xhr.setRequestHeader(header, token);
         },*/
         success: function(res){
@@ -155,7 +155,7 @@ $('#temp').click(function () {
         data: {
             "id": $('#id').val()
         },
-     /*   beforeSend: function(xhr){
+      /*  beforeSend: function(xhr){
             xhr.setRequestHeader(header, token);
         },*/
         success: function (data) {   
@@ -182,7 +182,7 @@ var header = $("meta[name='_csrf_header']").attr('content');
 var token = $("meta[name='_csrf']").attr('content');
  
 
-$.ajax({
+/*$.ajax({
    type:"post",
    url:"/member/auth/join",
    data:JSON.stringify(data),
@@ -193,5 +193,4 @@ $.ajax({
 }).done(function(resp){
    alert("회원가입이 완료되었습니다.");
    
-});
-
+});*/

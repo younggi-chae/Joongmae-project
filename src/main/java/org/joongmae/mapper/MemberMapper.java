@@ -17,7 +17,9 @@ public interface MemberMapper {
 	public void insertAccount(MemberAccountVO account);
 	public MemberAuthDTO getMember(String id);
 	public void addOption(MemberVO member);
-	public void memberAuth(MemberAuthDTO auth);
+	public void memberAuth(MemberAuthDTO userInfo);
 
+	public MemberVO read(String userId);
+	public void addAuth(MemberAuthDTO userInfo);
 
 }

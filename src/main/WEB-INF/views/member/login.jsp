@@ -7,9 +7,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
- <meta id="_csrf" name="_csrf"   th:content="${_csrf.token}"/>
-<!-- default header name is X-CSRF-TOKEN -->
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Insert title here</title>
 
 
@@ -39,7 +36,7 @@
 			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55"
 				style="float: left; clear: both">
 				<span class="login100-form-title p-b-32" style="">
-					<h3>중매에 오신것을 환영합니다</h3> <br> <br> <br>
+					<h3>ㅇㅇ에 오신것을 환영합니다</h3> <br> <br> <br>
 				</span>
 
 
@@ -56,7 +53,7 @@
 				<form class="login100-form validate-form flex-sb flex-w"
 					action="/member/login" method="post">
 
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
 
 
 					<span class="txt1 p-b-11"> Username </span>
@@ -76,9 +73,7 @@
 
 					<div class="flex-sb-m w-full p-b-48">
 						<div class="contact100-form-checkbox">
-							<input class="input-checkbox100" id="ckb1" type="checkbox"
-								name="remember-me"> <label class="label-checkbox100"
-								for="ckb1"> Remember me </label>
+							<input class="input-checkbox100"  type="checkbox" name="remember-me"> <label class="label-checkbox100"> Remember me </label>
 						</div>
 
 						<div>
@@ -101,7 +96,10 @@
 							href="https://kauth.kakao.com/oauth/authorize?client_id=a714095760769a00001b4e03b10b2c3e&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code"_blank">
 							<img width="250px" src="/resources/img_jsh/kakao_login.png" />
 						</a>
-					</div>		
+					</div>	
+					
+					
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 				</form>
 
 
