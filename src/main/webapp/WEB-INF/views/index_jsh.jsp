@@ -3,7 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = auth.getPrincipal();
+ 
+    String id = "";
+    if(principal != null) {
+        id = auth.getName();
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,7 +59,6 @@
 </head>
 <body>
 
-
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -60,7 +70,7 @@
         <div class="offcanvas__widget">
 
         
-        <c:if test="${sessionScope.id!=null}">
+        <c:if test="${sessionScope.username!=null}">
          <a href="logoutAction.sh" class="primary-btn">로그아웃</a>
          
      
@@ -69,7 +79,7 @@
          
          
         </c:if>
-           <c:if test="${sessionScope.id==null}">
+           <c:if test="${sessionScope.username==null}">
            
             <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
@@ -126,7 +136,8 @@
                         
                         </nav>
                         <div class="header__nav__widget">
-
+                        <img id="alarmImg" src="" onclick="alarmClick()">
+						
     <c:if test="${sessionScope.id!=null}">
          <a href="logoutAction.sh" class="primary-btn" >로그아웃</a>
          
@@ -447,7 +458,26 @@
 
     <!-- Search End -->
     
-    
+    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">알람 목록</h5>
+        <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div  id="modalBody">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal()" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>   
 
     <!-- Js Plugins -->
     <script src="/resources/js/jquery-3.3.1.min.js"></script>
@@ -464,5 +494,107 @@
     
 </body>
 
->>>>>>> kgj
 </html>
+
+<script type="text/javascript">
+function readAlarm() {
+	
+}
+
+function alarmClick() {
+	var id = "<%=id%>";
+	var header = "${_csrf.headerName}";
+	var token = "${_csrf.token}";
+	var count;
+	
+	$('#myModal').show();
+	$('#modalBody').empty();
+	$.ajax({
+		url : "/REST/alarmList",
+		data : "id=" + id,
+		type : "GET",
+		success : function(data){
+			$.each(data, function (i, item) {
+				if (item.status == '등록') {
+					var str = "<div onclick='readAlarm()'  style='background-color: aqua;margin-bottom:5px;'>";
+				} else {
+					var str = "<div onclick='readAlarm()'  style='background-color: white;margin-bottom:5px;'>";
+				}
+				if (item.buyId == id) {
+					str += "<a href = 'sell/detail?sellNo=" +item.sellNo + "'>판매자 <b>" + item.sellId + "</b> 님이 ";
+					str += "구매자 <b>" + item.buyId + "</b>님께 매칭되었습니다.</a><br></div>"
+				} else if (item.sellId == id) {
+					str += "<a href = 'buyBoard/detail?buyNo=" +item.buyNo + "&id=" + item.buyId + "'>판매자 <b>" + item.sellId + "</b> 님이 ";
+					str += "구매자 <b>" + item.buyId + "</b>님께 매칭되었습니다.</a><br></div>"
+				}
+				
+				$('#modalBody').prepend(str);
+            })
+		}				
+	});
+}
+
+function closeModal() {
+	$('#myModal').hide();
+}
+
+$(document).ready(function() {
+	var id = "<%=id%>";
+	var header = "${_csrf.headerName}";
+	var token = "${_csrf.token}";
+	var count;
+	console.log(id);
+	if (id != "anonymousUser") {
+		$.ajax({
+			url : "/REST/getAlarmCount",
+			data : "id=" + id,
+			type : "GET",
+			success : function(result){
+				count = result;
+				console.log(count);
+			}				
+		});
+		
+		$.ajax({
+			url : "/REST/getAlarmConfig",
+			data : "id=" + id,
+			type : "GET",
+			success : function(result){
+				var date = new Date();
+				var hours = ("00" + date.getHours()).slice(-2);
+				var minutes = ("00" + date.getMinutes()).slice(-2);
+				var currentTime = hours + ":" + minutes;
+				var startTime = result.alarmStartTime;
+				var endTime = result.alarmEndTime;
+				
+				console.log(startTime);
+				console.log(endTime);
+				console.log(currentTime);
+				
+				console.log(result.isAlarm);
+				
+				console.log(currentTime >= startTime && currentTime < endTime);
+				
+				if (result.isAlarm == 'false') {
+					$('#alarmImg').attr("src","/resources/img/alarm_icon.png");
+				} else if (id == "") {
+					$('#alarmImg').attr("src","");
+				} else if (result.isAlarm == 'true') {
+					if (currentTime >= startTime && currentTime < endTime) {
+						if (count > 0) {
+							$('#alarmImg').attr("src","/resources/img/new_icon.png");
+						} else {
+							$('#alarmImg').attr("src","/resources/img/alarm_icon.png");
+						}
+					} else {
+						$('#alarmImg').attr("src","/resources/img/alarm_icon.png");
+					}
+				}
+			}				
+		});
+	}
+	
+	
+	
+})
+</script>

@@ -2,6 +2,7 @@ package org.joongmae.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,8 +57,8 @@ public class SellController {
 	}
 	
 	@PostMapping("/register")
-	public String register(@ModelAttribute SellVO sell, @RequestParam("fileName") MultipartFile[] files){
-		sell.setId("test");
+	public String register(@ModelAttribute SellVO sell, @RequestParam("fileName") MultipartFile[] files, Principal principal){
+		sell.setId(principal.getName());
 		sell.setStatus("등록");
 		
 		String picture = "";
