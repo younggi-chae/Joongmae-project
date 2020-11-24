@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -139,6 +140,9 @@
             <div class="col-lg-6 col-md-6">
                <div class="hero__tab__form">
                   <form action="/buyBoard/register" method="post">
+                  <sec:authentication property="principal" var="pinfo"/>
+                  <input type="hidden" name="writer" value="${pinfo.username}" />
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                      <div class="select-list">
                         <div class="register-row">
                            <p>제목</p>

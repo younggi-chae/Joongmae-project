@@ -23,6 +23,7 @@ public class BuyVO implements Serializable{
 	private String status;
 	private String bigClassifier;
 	private String mediumClassifier;
+	private String regDate;
 	
 }
 

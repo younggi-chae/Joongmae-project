@@ -18,6 +18,9 @@ public class BuyCriteria {
 	private int minPrice;
 	private int maxPrice;
 	
+	private String highPrice;
+	private String lowPrice;
+	
 	public BuyCriteria(){
 		this(1, 3);
 	}

@@ -13,9 +13,9 @@ $(document).ready(function(){
 	});//end 페이징 코드
 	
 	//검색시 1페이지 이동 코드
-	$("#searchFrom button").on("click", function(e){
+	$("#searchForm button").on("click", function(e){
 		
-		$("#searchFrom").find("input[name='pageNum']").val("1");
+		$("#searchForm").find("input[name='pageNum']").val("1");
 		
 	});//end 검색시 1페이지 이동코드
 	
@@ -48,9 +48,15 @@ $(document).ready(function(){
 		
 	});//end 페이지 보기 컨트롤 코드
 	
+	/*$("#sortControl").on("change", function(){
+		
+		$("#sortControlForm").submit();
+		alert("aa");
+	});*/
+	
 	
 	//대분류 선택시 중분류 바뀌는 코드
-	$("#searchFrom #bigSelectBox").on("change", function(){
+	$("#searchForm #bigSelectBox").on("change", function(){
 		
 		$('#mediumSelectBox').empty();
 	    

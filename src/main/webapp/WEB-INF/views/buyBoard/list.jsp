@@ -35,7 +35,7 @@
                         <div class="car__filter">
                             <h5>Searching</h5>
                             <br>
-                            <form id="searchFrom" action="/buyBoard/list" method="post">
+                            <form id="searchForm" action="/buyBoard/list" method="post">
                                <p>대분류</p>
                                 <select id="bigSelectBox" name="bigClassifier">
                                     <option value="의류" selected="selected">의류</option>
@@ -76,6 +76,7 @@
                                 <div class="car__filter__btn">
                                 	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                     				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <button type="submit" class="site-btn">Reset FIlter</button>
                                 </div>
                             </form>
@@ -109,6 +110,7 @@
                                     </select>
                                     <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                     				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     				<c:if test="${pageMaker.cri.bigClassifier != null }">
 			                    	<input type="hidden" name="bigClassifier" value='<c:out value="${ pageMaker.cri.bigClassifier }"/>'>
 			                    	<input type="hidden" name="mediumClassifier" value='<c:out value="${ pageMaker.cri.mediumClassifier }"/>'>
@@ -122,14 +124,15 @@
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="car__filter__option__item car__filter__option__item--right">
-                                <form id="sortControlForm" action="/buyBoard/list" method="post" onchange="selectSort()">
+                                <form id="sortControlForm" action="/buyBoard/list" method="get">
                                     <h6>정렬</h6>
-                                    <select id="sortControl">
+                                    <select id="sortControl" onchange="sortThis()">
                                         <option value="highPrice">높은 가격순</option>
                                         <option value="lowPrice">낮은 가격순</option>
                                     </select>
                                     <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                     				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     				<c:if test="${pageMaker.cri.bigClassifier != null }">
 			                    	<input type="hidden" name="bigClassifier" value='<c:out value="${ pageMaker.cri.bigClassifier }"/>'>
 			                    	<input type="hidden" name="mediumClassifier" value='<c:out value="${ pageMaker.cri.mediumClassifier }"/>'>
@@ -228,6 +231,7 @@
                     <form id="actionForm" action="/buyBoard/list" method="get">
                     	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                     	<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     	<c:if test="${pageMaker.cri.bigClassifier != null }">
                     	<input type="hidden" name="bigClassifier" value='<c:out value="${ pageMaker.cri.bigClassifier }"/>'>
                     	<input type="hidden" name="mediumClassifier" value='<c:out value="${ pageMaker.cri.mediumClassifier }"/>'>
@@ -242,22 +246,20 @@
         </div>
     </section>
     <!-- Car Section End -->
+    
+    <script type="text/javascript">
+    	
+    	function sortThis(){
+    
+    		alert($("#sortControl option:selected").val());
+    		$("#sortControlForm").submit();
+    			
+    	}
+    
+    </script>
 
 <%@ include file="../includes/footer.jsp" %>
    	
-   	<!-- 정렬 컨트롤 코드 -->
-   	<script type="text/javascript">
-   	function selectSort() {
-   		
-		var buy = '<c:out value="${list}"/>';
-		console.log(buy);
-		
-		buy.sort(function(a, b){
-			return a.minPrice < b.minPrice ? -1 : a.minPrice > b.minPrice ? 1 : 0;
-		});
-		
-	}
-   	</script>
     <script src="/resources/js/main_kgj.js"></script>
     <script src="/resources/js/buyBoard/list.js"></script>
     

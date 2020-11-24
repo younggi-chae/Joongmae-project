@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ include file="../includes/header.jsp" %>
 	
@@ -49,6 +50,7 @@
 					</div>
                 </div>
                 <div class="col-lg-6">
+                <sec:authentication property="principal" var="pinfo"/>
                     <div class="car__details__sidebar">
                         <div class="car__details__sidebar__model">
                             <ul>
@@ -61,15 +63,26 @@
                                 	</c:when>
                                 </c:choose>
                             </ul>
-                            <a href="#" class="primary-btn">판매 등록</a>
+                            <sec:authorize access="isAnonymous()">
+                            <c:choose>
+                            	<c:when test="${pinfo.username ne null }">
+                            		<a href="#" class="primary-btn">견적서 보내기</a>
+                            	</c:when>
+                            	<c:when test="${pinfo.username eq null }">
+                            		<a href="/sell/registerForm" class="primary-btn">판매 등록</a>
+                            	</c:when>
+                            </c:choose>
+                            </sec:authorize>
                         </div>
                     </div>
+                    <%-- <sec:authentication property="principal" var="pinfo"/> --%>
                     <c:choose>
-                    	<c:when test="${member.id eq buy.id }">
+                    	<c:when test="${pinfo.username eq buy.id }">
                     		<br>
 		                    <div style="float: right;">
-		                    	<form action="/buyBoard/delete">
+		                    	<form action="/buyBoard/delete" method="get">
 		                    	<input type="hidden" name="buyNo" value="${buy.buyNo }">
+		                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                     	<button type="submit" class="site-btn">삭제</button>
 		                     	</form>
 		                     </div>
@@ -79,12 +92,21 @@
 	                     </c:when>
                      </c:choose>
                      <div style="float: right; margin-right: 10px;">
+                     <c:if test="${pageMaker.cri.bigClassifier ne null }">
                      	<form action="/buyBoard/list?pageNum=${pageMaker.cri.
 		                     	pageNum}&amount=${pageMaker.cri.amount}&bigClassifier=${pageMaker.cri.bigClassifier }&mediumClassifier=${pageMaker.cri.
 		                     	mediumClassifier }&keyword1=${pageMaker.cri.keyword1 }&keyword2=${pageMaker.cri.keyword2 }&keyword3=${pageMaker
 		                     	.cri.keyword3 }&price=${price}" method="post">
+		                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                     	<button type="submit" class="site-btn">목록</button>
 		                </form>
+                     </c:if>
+                     <c:if test="${pageMaker.cri.bigClassifier eq null }">
+                     	<form action="/buyBoard/list?pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}" method="post">
+                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		                     	<button type="submit" class="site-btn">목록</button>
+		                </form>
+                     </c:if>
 		             </div>
                 </div>
             </div>

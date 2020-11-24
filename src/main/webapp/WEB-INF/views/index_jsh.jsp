@@ -21,29 +21,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <!-- css Styles -->
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/Architecture-kosta202/resources/css/style_jsh.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/resources/css/style_jsh.css" type="text/css">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/animate/animate.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/animsition/css/animsition.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/select2/select2.min.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/vendor_jsh/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/css/util_jsh.css">
-	<link rel="stylesheet" type="text/css" href="/Architecture-kosta202/resources/css/main_jsh.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/resources/vendor_jsh/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="/resources/css/util_jsh.css">
+	<link rel="stylesheet" type="text/css" href="/resources/css/main_jsh.css">
 
 </head>
 <body>
@@ -71,14 +71,14 @@
         </c:if>
            <c:if test="${sessionScope.id==null}">
            
-            <a href="http://localhost:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+            <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
             
         </div>
         <div class="offcanvas__logo">
         
     
-            <a href="mainAction.sh"><img src="/Architecture-kosta202/resources/img/logo.png" alt=""></a>
+            <a href="mainAction.sh"><img src="/resources/img/logo.png" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
    </div>
@@ -91,21 +91,21 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="controller_jsh/mainAction.sh"><img src="/Architecture-kosta202/resources/img/logo.png" alt=""></a>
+                        <a href="controller_jsh/mainAction.sh"><img src="/resources/img/logo.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-10">
                     <div class="header__nav">
                         <nav class="header__menu">
                             <ul>
-                                <li class="active"><a href="http://localhost:8080/Architecture-kosta202/controller_jsh/mainAction.sh">Home</a></li>
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
+                                <li class="active"><a href="http://localhost:8080/controller_jsh/mainAction.sh">Home</a></li>
+                                <li><a href="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">구매 게시판</a></li>
+                                <li><a href="http://localhost:8080/Controller_kgj/insertBuyRegistrationForm.kgj">구매 등록</a></li>
                                 
                                 
                                 <li><a href=
                                  <c:if test="${sessionScope.id !=null}">
-                                "http://localhost:8080/Architecture-kosta202/kjj/registerFormAction.kjj"
+                                "http://localhost:8080/kjj/registerFormAction.kjj"
                                 </c:if>
                               
                                  <c:if test="${sessionScope.id ==null}">
@@ -114,7 +114,7 @@
                                 >판매 등록</a></li>
                                 
                                 <c:if test="${sessionScope.id !=null}">
-                                <li><a href="http://localhost:8080/Architecture-kosta202/Mypage/mypageMainAction.cyg">마이페이지</a></li>
+                                <li><a href="http://localhost:8080/Mypage/mypageMainAction.cyg">마이페이지</a></li>
                                 </c:if>
                                 
                                 <c:if test="${sessionScope.id ==null}">
@@ -140,7 +140,7 @@
 					
 						<c:choose>
 							<c:when test="${pattern == 'jpg' || pattern == 'gif' }">
-							  <img src="/Architecture-kosta202/upload/${head}_small.${pattern}">      
+							  <img src="/upload/${head}_small.${pattern}">      
 							</c:when>
 							<c:otherwise>
 								<c:out value="NO IMAGE"></c:out>
@@ -154,7 +154,7 @@
         </c:if>
            <c:if test="${sessionScope.id==null}">
            
-            <a href="http://localhost:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+            <a href="http://localhost:8080/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
                </c:if>
 
 
@@ -173,7 +173,7 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <section class="hero spad set-bg" data-setbg="/Architecture-kosta202/resources/img_jsh/111.png">
+    <section class="hero spad set-bg" data-setbg="/resources/img_jsh/111.png">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
@@ -188,7 +188,7 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="hero__tab__form">
                                     <h2>팔고싶은 물건 검색</h2>
-                                    <form action="http://localhost:8080/Architecture-kosta202/Controller_kgj/listBuyBoard.kgj">
+                                    <form action="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">
                                         <div class="select-list">
                                             <div class="select-list-item">
                                                 <p>대분류</p>
@@ -352,7 +352,7 @@
 
 
     <!-- Footer Section Begin -->
-    <footer class="footer set-bg" data-setbg="/Architecture-kosta202/resources/img_jsh/footer.png">
+    <footer class="footer set-bg" data-setbg="/resources/img_jsh/footer.png">
         <div class="container">
             <div>
                 <div class="row">
@@ -373,7 +373,7 @@
                 <div class="col-lg-4 col-md-4">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="/Architecture-kosta202/resources/img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="/resources/img/footer-logo.png" alt=""></a>
                         </div>
                         <p>Any questions? Let us know in store at 625 Gloria Union, California, United Stated or call us
                             on (+1) 96 123 8888</p>
@@ -450,16 +450,16 @@
     
 
     <!-- Js Plugins -->
-    <script src="/Architecture-kosta202/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/bootstrap.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery.nice-select.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery-ui.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery.magnific-popup.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/mixitup.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/jquery.slicknav.js"></script>
-    <script src="/Architecture-kosta202/resources/js/owl.carousel.min.js"></script>
-    <script src="/Architecture-kosta202/resources/js/main.js"></script>
-    <script src="/Architecture-kosta202/resources/js/main_kgj.js"></script>
+    <script src="/resources/js/jquery-3.3.1.min.js"></script>
+    <script src="/resources/js/bootstrap.min.js"></script>
+    <script src="/resources/js/jquery.nice-select.min.js"></script>
+    <script src="/resources/js/jquery-ui.min.js"></script>
+    <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+    <script src="/resources/js/mixitup.min.js"></script>
+    <script src="/resources/js/jquery.slicknav.js"></script>
+    <script src="/resources/js/owl.carousel.min.js"></script>
+    <script src="/resources/js/main.js"></script>
+    <script src="/resources/js/main_kgj.js"></script>
     
     
 </body>

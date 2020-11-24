@@ -1,10 +1,8 @@
 package org.joongmae.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyDTO;
@@ -15,7 +13,6 @@ import org.joongmae.service.BuyBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,17 +30,17 @@ public class BuyBoardController {
 	
 	@GetMapping("/registerForm")
 	public String registerForm(){
-		
+		System.out.println("333333333333333333333333333333");
 		return "buyBoard/registerForm";
 	}
 	
 	@PostMapping("/register")
-	public String register(BuyDTO dto){
+	public String register(BuyDTO dto, String writer){
 		System.out.println(dto);
 		
 		BuyVO vo = new BuyVO();
 		
-		vo.setId("test");
+		vo.setId(writer);
 		vo.setTitle(dto.getTitle());
 		vo.setKeyword1(dto.getKeyword1());
 		vo.setKeyword2(dto.getKeyword2());
@@ -64,7 +61,7 @@ public class BuyBoardController {
 	
 	@RequestMapping("/list")
 	public String list(BuyCriteria cri, Model model, HttpServletRequest request){
-		
+		System.out.println("111111111111111111111111111111111111111111111111111111111");
 		if(cri.getBigClassifier() != null){
 			String price = request.getParameter("price");
 			model.addAttribute("price", price);
@@ -75,8 +72,15 @@ public class BuyBoardController {
 			cri.setMaxPrice(maxPrice);
 		}
 		
+		if(request.getParameter("highPrice") != null){
+			cri.setHighPrice(request.getParameter("highPrice"));
+		}else if(request.getParameter("lowPrice") != null){
+			cri.setLowPrice(request.getParameter("lowPrice"));
+		}
+		System.out.println("2222222222222222222222222222222222222222222222222222222222222");
 		model.addAttribute("list", service.list(cri));
 		System.out.println(cri);
+		log.info(cri);
 		
 		int total = service.buyTotalCount(cri);
 		log.info(service.buyTotalCount(cri));
