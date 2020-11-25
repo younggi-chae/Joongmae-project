@@ -20,23 +20,28 @@
       <!-- Car Section Begin -->
       <div class="container">
          <div class="row">
-            <div class="col-lg-12"></div>
+            <div class="col-lg-12">
+            	<div style="text-align: center; font-size: 20px;">
+                    <b>${count }건의 견적서를 확인해보세요!!</b>
+                    <input type="hidden" id="count" value="${count }">                    	
+                </div><br>                 
+           </div>
+         </div>
             <div class="col-lg-12">
                <div class="car__filter__option"
                   style="height: 74px; background-color: white;">
                   <div class="row">
-                     <div class="col-lg-8 col-md-6">
-                        <a href="#" class="btn btn-danger" onclick="deleteSelected()">선택삭제</a>&emsp;
-                        <a href="#" class="btn btn-danger">전체삭제</a>
+                     <div class="col-lg-8 col-md-6">                        
+                        <a href="#" class="btn btn-danger" id="deleteAll">전체삭제</a>
                      </div>
                       <div class="col-lg-4 col-md-6">										
 							<div class="pull-right">
 								<form id='searchForm' action="/myPage/sellList" method='get'>
 									<select name='type'>										
 										<option value="I"
-											<c:out value="${pageMaker.cri.type eq 'I'?'selected':''}"/>>상품명</option>								
-									</select> 
-									  <input type='text' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
+											<c:out value="${pageMaker.cri.type eq 'I'?'selected':''}"/>>상품명</option>																	
+									</select>									
+									  <input type='text' name='keyword' placeholder="상품명을 입력해주세요." value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
 									  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
 									  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
 									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>
@@ -73,16 +78,16 @@
                                     <div class="car__item__text">
                                        <div class="car__item__text__inner">
                                           <div class="label-date">${sell.id }</div>
-                                          <h5>  
+                                          <h5>
+                                           <label>  
                                           	<input id="modalNo" name="modalNo" type="hidden" value="${sell.sellNo }">                                        
-											<a class="targetModal" id="targetModal" href="#" 
-												data-toggle="modal" data-target="#myModal">${sell.itemName }</a>
-												&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-												<label class="btn btn-light active">
-	   											<input type="checkbox" onchange="selectFunction(this, ${sell.sellNo})" autocomplete="off">선택
-	  											</label>          									
-										  </h5>
-												
+											<a class="targetModal" id="targetModal" href="#" style="font-size: 30px;" 
+												data-toggle="modal" data-target="#myModal">${sell.itemName }</a>																				
+												&emsp;&emsp;	
+												<button id="dealBtn" class="btn btn-success">거래하기</button>
+	   											<button class="btn btn-danger deleteBtn" value="${sell.sellNo }">삭제</button>	   											   											
+	   										</label>	   										     	  										       									
+										  </h5>												
                                           <ul>
                                              <li><span>${sell.keyword1 }</span></li>
                                              <li><span>${sell.keyword2 }</span></li>
@@ -93,10 +98,10 @@
                                           <h6 style="font-size: 25px;">                                                                       	
                                             <fmt:formatNumber type="number" maxFractionDigits="3" value="${sell.price }" />원&emsp;                                          
                                              <span class="sellNoValue">                                             
-                                             	<input id="sellNo" name="sellNo" type="hidden" value="${sell.sellNo }">                                        	 	
+                                             	<input id="sellNo" name="sellNo" type="hidden" value="${sell.sellNo }">                                      	 	
                                         		<a class="addWish" id ="heart${sell.sellNo}" href="#" style="color: black"> 
                                         		<i class="fa fa-heart" id="heart" aria-hidden="true">찜하기</i></a>
-                                             </span>                                                                                 
+                                             </span>                                                                            
                                           </h6>
                                        </div>
                                     </div>
@@ -142,8 +147,7 @@
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
 				<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
-			</form>		
-      </div>
+			</form>	     
    </section>
    <!-- Car Section End -->
    
@@ -170,20 +174,31 @@
 			
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">   
-   
+ 
+
+
 $(document).ready(function () {		
 	
-	getWishList();
+	getWishList();	
 	
+	
+	//위시리스트 추가 및 삭제 (하트색 변경)
 	$(".addWish").on("click", function(){		
 		var sellNo = $(this).prev().val();		
 		var heart = $(this);			
-		
+		var header = "${_csrf.headerName}";
+	    var token = "${_csrf.token}";
+	    
 		if(heart.attr("style") === "color: black"){
 			$.ajax({
 				url : "/myPage/addWishList/" + sellNo,
 				data : sellNo,
+				contentType: "application/json; charset-utf-8",
 				type : "POST",
+				beforeSend : function(xhr)
+	            { 
+	            xhr.setRequestHeader(header, token);
+	            },
 				success : function(result){
 					alert(sellNo + " 추가");
 					heart.attr("style", "color: red");	
@@ -194,16 +209,20 @@ $(document).ready(function () {
 				url : "/myPage/deleteWishList/" + sellNo,
 				data : sellNo,
 				type : "POST",
+				beforeSend : function(xhr)
+	            {   
+	            xhr.setRequestHeader(header, token);
+	            },
 				success : function(result){
 					alert(sellNo + " 삭제");
 					heart.attr("style", "color: black");
 				}
 			});
-		}
-		
+		  }		
 		});
-	});		
-	
+	});
+
+	//위시리스트에 담긴 상품 하트색 유지
 	function getWishList(){		
 		var sellNo = "";
 		
@@ -228,54 +247,98 @@ $(document).ready(function () {
 			}
 		});	
 	}
+
+	
+	//견적서 삭제
+	$('.deleteBtn').on("click", function(){
+		 var sellNo = $(this).val();		 
+		 var header = "${_csrf.headerName}";
+		 var token = "${_csrf.token}";		 
+		 console.log(sellNo);
+		 $.ajax({
+			 url : "/myPage/deleteSell/" + sellNo,			 
+			 data : sellNo,
+			 contentType: "application/json; charset-utf-8",
+			 type : "POST",				 
+			 beforeSend : function(xhr)
+	           {   
+	        xhr.setRequestHeader(header, token);
+	           },
+	        success : function(result){
+	       	 if(confirm("해당 견적서를 삭제하시겠습니까?")) {	        		 
+		     		location.reload();
+	            } else {
+	                return false;
+	            }        	
+			 }, error : function(err) {
+				 alert("실패");
+			 }
+		 });
+	});
+	
+	 //견적서 전체삭제
+	 var count = $('#count').val();	 
+	 $('#deleteAll').on('click', function(){
+		 if(count == 0){
+			 alert("견적서가 없습니다.")
+		 }		 
+		 else if(confirm("총 "+count+"개의 견적서를 삭제하시겠습니까??")) {
+			 location.href = "/myPage/deleteAllSell";	
+        } else {
+            return false;
+        }	 
+	 });
 	
 	
-$(document).ready(function () {			
-	$('.targetModal').on("click", function(){
-		var modalNo = $(this).prev().val();
-		console.log(modalNo);
-		var list = "";
-		var str = "";
-		$.ajax({
-		   url : "/myPage/sellDetail/" + modalNo,
-		   dataType : "json",
-		   data : modalNo,
-		   type : "GET",
-		   success : function(result){			 
-			   
-			  $('.modal-body').html("");
-			  
-			  if(result.picture != null){
-			  	str += '<div class="car__details__pic"><img id="pic" src="/resources/img/upload_cyg/'+result.picture+'"></div>';
-			  } else {
-				str += '<div class="car__details__pic"><img id="pic" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
-			  }
-			  str += '<div class="car__details__sidebar__model"><ul><li>상품명 :<span>' + result.itemName + '</span></li>';
-			  str += '<li>판매자 :<span>' + result.id + '</span></li></ul></div>';			 
-			  str += '<div class="car__details__sidebar__model">';
-			  str += '<ul><li>거래방식 :<span>' + result.type + '</span></li>';
-			  str += '<li>거래지역 :<span>' + result.region + '</span></li>';
-			  str += '<li>상품상태 :<span>' + result.itemCondition + '</span></li></ul></div>';
-			  str += '<div class="car__details__sidebar__model">';
-			  str += '<ul><li>키워드 :<span>' + result.keyword1 +'</span></li><li><span>' + result.keyword2 + '</span></li>';
-			  str += '<li><span>' + result.keyword3 +'</span></li></ul></div>';
-			  str += '<div class="car__details__sidebar__model">';
-			  str += '<ul><li>대분류 :<span>' + result.bigClassifier + '</span></li><li>중분류 :<span>' + result.mediumClassifier + '</span></li></ul></div>';
-			  str += '<div class="car__details__sidebar__payment">';
-			  str += '<ul><li>가격 :<span>' + commas(result.price) +'원</span></li></ul>';
-			  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';				  
-			  
-				 $('.modal-body').append(str);
-		   }
-		});
-	});	
-});		
-	
-	
+	//Sell 상세보기 모달
+	$(document).ready(function () {			
+		$('.targetModal').on("click", function(){
+			var modalNo = $(this).prev().val();
+			console.log(modalNo);
+			var list = "";
+			var str = "";
+			$.ajax({
+			   url : "/myPage/sellDetail/" + modalNo,
+			   dataType : "json",
+			   data : modalNo,
+			   type : "GET",
+			   success : function(result){			 
+				   
+				  $('.modal-body').html("");
+				  
+				  if(result.picture != null){
+				  	str += '<div class="car__details__pic"><img id="pic" src="/resources/img/upload_cyg/'+result.picture+'"></div>';
+				  } else {
+					str += '<div class="car__details__pic"><img id="pic" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
+				  }
+				  str += '<div class="car__details__sidebar__model"><ul><li>상품명 :<span>' + result.itemName + '</span></li>';
+				  str += '<li>판매자 :<span>' + result.id + '</span></li></ul></div>';			 
+				  str += '<div class="car__details__sidebar__model">';
+				  str += '<ul><li>거래방식 :<span>' + result.type + '</span></li>';
+				  str += '<li>거래지역 :<span>' + result.region + '</span></li>';
+				  str += '<li>상품상태 :<span>' + result.itemCondition + '</span></li></ul></div>';
+				  str += '<div class="car__details__sidebar__model">';
+				  str += '<ul><li>키워드 :<span>' + result.keyword1 +'</span></li><li><span>' + result.keyword2 + '</span></li>';
+				  str += '<li><span>' + result.keyword3 +'</span></li></ul></div>';
+				  str += '<div class="car__details__sidebar__model">';
+				  str += '<ul><li>대분류 :<span>' + result.bigClassifier + '</span></li><li>중분류 :<span>' + result.mediumClassifier + '</span></li></ul></div>';
+				  str += '<div class="car__details__sidebar__payment">';
+				  str += '<ul><li>가격 :<span>' + commas(result.price) +'원</span></li></ul>';
+				  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';				  
+				  
+					 $('.modal-body').append(str);
+			   }
+			});
+		});	
+	});		
+		
+	//숫자 콤마 찍기
 	function commas(num) {
 	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}	
 	
+	
+	//페이지 이동
     var actionForm = $("#actionForm");
 
 	$(".paginate_button a").on("click",	function(e) {
@@ -286,6 +349,7 @@ $(document).ready(function () {
 				actionForm.submit();
 			});
 	
+	//상품명 검색
 	var searchForm = $("#searchForm");
 	$("#searchForm button").on("click",	function(e) {
 		if (!searchForm.find("option:selected").val()) {
@@ -301,31 +365,6 @@ $(document).ready(function () {
 			e.preventDefault();
 			searchForm.submit();
 		});	
-	
-	
-	var list = new Array();
-
-	 function selectFunction(input, sellNo) {
-	   if (input.checked == true) {
-	      list.push(sellNo);
-	      console.log(list);
-	   } else {
-	      var index = list.indexOf(sellNo);
-	      if (index > -1) {
-	         list.splice(index, 1);
-	         console.log(list);
-	      }
-	   }
-	}
-	 function deleteSelected() {
-	    if (list != "") {
-	       console.log("삭제 시작");
-	         location.href = "../kjj/deleteSelectedSell.kjj?list=" + list;
-	   }
-	    else {
-	       console.log("선택된 항목이 없습니다.");
-	    }
-	} 
  
 </script>
  <%@include file="../includes/footer.jsp"%>   

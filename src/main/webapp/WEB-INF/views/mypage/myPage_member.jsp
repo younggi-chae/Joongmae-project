@@ -106,12 +106,13 @@
 				 	<div class="uploadDiv" align="center">
 						<input type="file" id="uploadFile" name="picture" onchange="uploadImg(this)" style="display: none;"/>	
 						<input type="button" class="btn btn-success" value="프로필 사진 변경" onclick="document.getElementById('uploadFile').click();"/>
-					<button id="uploadBtn" class="btn btn-danger">변경하기</button>				
+						<button id="uploadBtn" class="btn btn-danger">변경하기</button>				
 				 	</div>				 	
                 </div>
             <div class="col-lg-5 col-md-6">
                <div class="hero__tab__form">
-                  <form role="form" action="/myPage/modifyMember" method="post">		
+                  <form role="form" action="/myPage/modifyMember" method="post">
+                  	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>		
 					<input type="hidden" name="id" value="${member.id }">
 					<p>이름</p><div><input type="text" name="name" value="${member.name }" placeholder="이름 변경.."></div><br>
 					<p>비밀번호</p><div><input type="password" name="password" value="${member.password }" placeholder="비밀번호 변경.."></div><br>	
@@ -122,10 +123,12 @@
 							       <input type="button" onclick="sample4_execDaumPostcode()" value="지역 찾기"></div><br>				
 					<p>한줄소개</p><div><input type="text" name="introduction" value="${member.introduction }" placeholder="한줄소개 변경.."></div><br>				
 					<input type="hidden" id="uploadResult" name="picture">
-					<button id="modifyBtn" class="btn btn-success" type="submit">정보수정</button>&emsp;
-					<button id="deleteMember" class="btn btn-danger" type="submit">회원탈퇴</button>		
-				 </form>				 				
-               </div>
+					
+					<button type="submit" data-oper='main' class="btn btn-info">목록</button>&emsp;
+					<button type="submit" data-oper='modify' class="btn btn-success">정보수정</button>&emsp;
+	  				<button type="submit" data-oper='delete' class="btn btn-danger">회원탈퇴</button>																
+				 </form>				 			 	 		 			 				
+               </div>             
             </div>
          </div>
         </div>
@@ -137,13 +140,40 @@
 	
 	<script src="/resources/js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
+	  
+	  //회원탈퇴, 수정, 리스트이동
+	  var formObj = $("form");
+
+	  $('form button').on("click", function(e){	    
+	    e.preventDefault(); 	    
+	    var operation = $(this).data("oper");    
+	    
+	    if(operation === 'delete'){	      
+	      if(confirm("정말로 탈퇴하시겠습니까??")) {
+	    	  formObj.attr("action", "/myPage/deleteMember");	
+	        } else {
+	            return false;
+	        }	    
+	      
+	    }else if(operation === 'list'){      
+	      formObj.attr("action", "/myPage/main").attr("method","get");      
+	      
+	    } else if(operation === 'modify'){	        	       
+	        formObj.submit();
+        }   
+	    formObj.submit();
+	  });
+	
 		
+	 //사진 업로드
 	 $(document).ready(function(){
 		$('#uploadBtn').on("click", function(e){
 			var formData = new FormData();
 			var inputFile = $('input[name="picture"]');
-			var files = inputFile[0].files
-			
+			var files = inputFile[0].files;
+			var header = "${_csrf.headerName}";
+		    var token = "${_csrf.token}";
+		    
 			console.log(files[0]);
 			
 			if(!checkExtension(files[0].name, files[0].size)){
@@ -158,23 +188,19 @@
 				contentType : false,
 				data : formData,
 				type : 'POST',
+				beforeSend : function(xhr)
+	            {  
+	            xhr.setRequestHeader(header, token);
+	            },
 				success : function(result){	
-					console.log(files[0].name);					
-					/* var preView = $('#imgPreview');
-					var str = "";					
-					if(files[0] != null){
-						str += '<img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/s_' + ${member.picture } + "'>'
-					} else {
-						str += '<img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/noImage.jpg">';
-					}					
-					preView.append(str); */					
+					console.log(files[0].name);									
 					$('#uploadResult').attr("value", files[0].name);					
 				}
 			});
 		});
 	
 	   
-			
+	   //업로드 사이즈, 확장자 제한	
        var regex = new RegExp("(.*?)\.(txt|zip|exe|pptx|xls|xlsx|xlsm)");
 	   var maxSize = 5242880;
 	   
@@ -212,9 +238,8 @@
 	 	
 	 	
 	 	$('#deleteMember').on('click', function(){
-	 		comfirm("정말로 회원을 탈퇴 하시겠습니까?");
-	 		
-	 		location.href = "myPage/deleteMember";
+	 		confirm("정말로 회원을 탈퇴 하시겠습니까?");
+	 		location.href = "/myPage/deleteMember"	 				
 	 	});	 	
 	
 	 </script>

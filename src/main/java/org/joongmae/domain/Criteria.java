@@ -19,6 +19,7 @@ public class Criteria {
 	private String startDate;
 	private String endDate;
 	private int month;
+	private String status;
 	
 	public Criteria(){
 		this(1, 9);

@@ -10,13 +10,14 @@ import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 
-import org.joongmae.domain.SelectDTO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 import org.joongmae.domain.WishListVO;
+import org.joongmae.domain.WishListWithPaging;
 import org.joongmae.mapper.MypageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -43,6 +44,22 @@ public class MypageServiceImpl implements MypageService {
 	public BuyVO getBuyDetail(int buyNo) {		
 		return mapper.getBuyDetail(buyNo);
 	}
+	
+	@Override
+	public int deleteBuy(int buyNo) {		
+		return mapper.deleteBuy(buyNo);
+	}
+	
+	@Override
+	public BuyListWithPaging getBuyListWithPaging(Criteria cri) {		
+		return new BuyListWithPaging(mapper.countBuy(cri), mapper.getBuyList(cri));
+	}
+	
+	@Override
+	public BuyListWithPaging dateSearchRange(Criteria cri) {
+		log.info(cri);
+		return new BuyListWithPaging(mapper.dateCntRange(cri), mapper.dateSearchRange(cri));
+	}
 
 	@Override
 	public List<SellVO> getSellList(Criteria cri) {		
@@ -58,6 +75,20 @@ public class MypageServiceImpl implements MypageService {
 	public SellVO getSellDetail(int sellNo) {		
 		return mapper.getSellDetail(sellNo);
 	}
+	
+	@Transactional
+	@Override
+	public int deleteSell(int sellNo) {	
+		mapper.deleteWishList(sellNo);
+		return mapper.deleteSell(sellNo);
+	}
+	
+	@Transactional
+	@Override
+	public int deleteAllSell() {
+		mapper.deleteAllWish();
+		return mapper.deleteAllSell();
+	}	
 
 	@Override
 	public List<DealAndSell> getDealList(Criteria cri) {				
@@ -72,6 +103,16 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public DealAndSell getDealDetail(int dealNo) {		
 		return mapper.getDealDetail(dealNo);
+	}
+	
+	@Override
+	public DealListWithPaging selectDeal(Criteria cri) {		
+		return new DealListWithPaging(mapper.countSelectDeal(cri), mapper.selectDeal(cri));
+	}
+	
+	@Override
+	public DealListWithPaging getDealListWithPaging(Criteria cri) {		
+		return new DealListWithPaging(mapper.countDeal(cri), mapper.getDealList(cri));
 	}
 
 	@Override
@@ -108,36 +149,22 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int deleteWishList(int sellNo) {		
 		return mapper.deleteWishList(sellNo);
-	}
-
-	@Override
-	public List<DealAndSell> completeDeal() {		
-		return mapper.completeDeal();
-	}
-
-	@Override
-	public List<DealAndSell> progressDeal() {		
-		return mapper.progressDeal();
 	}	
 
 	@Override
-	public BuyListWithPaging getBuyListWithPaging(Criteria cri) {		
-		return new BuyListWithPaging(mapper.countBuy(cri), mapper.getBuyList(cri));
-	}
-
-	@Override
-	public DealListWithPaging getDealListWithPaging(Criteria cri) {		
-		return new DealListWithPaging(mapper.countDeal(cri), mapper.getDealList(cri));
-	}
-
-	@Override
-	public int deleteWish(SelectDTO wishNo) {		
-		 return mapper.deleteWish(wishNo);
+	public int deleteWish(List<String> checkArr) {	
+		System.out.println(checkArr);
+		 return mapper.deleteWish(checkArr);
 	}
 	
 	@Override
-	public BuyListWithPaging dateSearchRange(Criteria cri) {
-		log.info(cri);
-		return new BuyListWithPaging(mapper.dateCntRange(cri), mapper.dateSearchRange(cri));
+	public int deleteAllWish() {		
+		return mapper.deleteAllWish();
 	}
+
+	@Override
+	public WishListWithPaging getWishListWithPaging(Criteria cri) {		
+		return new WishListWithPaging(mapper.countWish(cri), mapper.getWishList(cri));
+	}
+	
 }

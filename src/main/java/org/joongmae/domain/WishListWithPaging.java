@@ -4,12 +4,13 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class SelectDTO {
-	
-	private List<String> list;
+@Getter
+public class WishListWithPaging {
+
+	private int wishCnt;
+	private List<WishAndSell> list;
 }

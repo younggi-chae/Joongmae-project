@@ -117,7 +117,7 @@
       </div>
     </div>
   </div>
-  <sec:authentication property="principal.username" var="id" />
+  <%-- <sec:authentication property="principal.username" var="id" /> --%>
 </div>
 </div>   	
 	<!-- Services Section End -->

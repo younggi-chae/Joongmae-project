@@ -15,14 +15,15 @@ import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.domain.PageDTO;
-import org.joongmae.domain.SelectDTO;
 import org.joongmae.domain.SellVO;
 
 import org.joongmae.domain.WishListVO;
+import org.joongmae.domain.WishListWithPaging;
 import org.joongmae.service.MypageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -64,6 +65,7 @@ public class MypageController {
 	public String getSellList(Criteria cri, Model model) {
 		model.addAttribute("list", service.getSellList(cri));
 		model.addAttribute("wishlist", service.getWishList(cri));
+		model.addAttribute("count", service.countSell(cri));
 		int total = service.countSell(cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));	
 		
@@ -72,10 +74,16 @@ public class MypageController {
 
 	@GetMapping("/dealList")
 	public String getDealList(Criteria cri ,Model model) {
-		model.addAttribute("list", service.getDealList(cri));
-		int total = service.countDeal(cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, total));	
 		return "mypage/myPage_deal";
+	}
+	
+	@GetMapping("/wishList")
+	public String getWishList(Criteria cri, Model model) {
+		model.addAttribute("list", service.getWishList(cri));
+		model.addAttribute("count", service.countWish(cri));
+		int total = service.countWish(cri);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		return "mypage/myPage_wishList";
 	}
 
 	@GetMapping({ "/detailMember", "/modifyMember" })
@@ -87,31 +95,42 @@ public class MypageController {
 
 	@PostMapping("/modifyMember")
 	public String modifyMember(@RequestParam(value="id", required=false) String id,
-			MemberVO member, RedirectAttributes rttr) {
+			MemberVO member) {
 		System.out.println(member);
 		service.modifyMember(member);
 		return "redirect:/myPage/main?id=" + id;
 	}
 	
-	@RequestMapping(value="/deleteMember", method={RequestMethod.POST, RequestMethod.GET})
-	public String deleteMember(@RequestParam("id") String id){
+	@PostMapping("/deleteMember")
+	public String deleteMember(@RequestParam(value="id", required=false) String id){
 		service.deleteMember(id);
-		return "redirect:/myPage/main?id=" + id;
+		return "redirect:/main";
 	}
 	
-	@GetMapping("/wishList")
-	public String getWishList(Criteria cri, Model model) {
-		model.addAttribute("list", service.getWishList(cri));
-
-		int total = service.countWish(cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, total));
-		return "mypage/myPage_wishList";
+	@PostMapping("/deleteBuy/{buyNo}")
+	@ResponseBody
+	public void deleteBuy(@PathVariable("buyNo") int buyNo){
+		service.deleteBuy(buyNo);		
 	}
+	
+	@PostMapping("/deleteSell/{sellNo}")	
+	@ResponseBody
+	public void deleteSell(@PathVariable("sellNo") int sellNo){
+		service.deleteWishList(sellNo);
+		service.deleteSell(sellNo);		
+	}
+	
+	@RequestMapping("/deleteAllSell")
+	@Transactional
+	public String deleteAllSell(){
+		service.deleteAllSell();		
+		return "redirect:/myPage/sellList";
+	}
+	
 	
 	@RequestMapping("/addWishList/{sellNo}")
 	@ResponseBody
-	public void addWishList(WishListVO wishList, @PathVariable("sellNo") int sellNo){
-		log.info(wishList);		
+	public void addWishList(WishListVO wishList, @PathVariable("sellNo") int sellNo){		
 		service.addWishList(wishList);			
 	}
 	
@@ -121,10 +140,17 @@ public class MypageController {
 		service.deleteWishList(sellNo);
 	}
 	
-	@RequestMapping("/deleteWish")
-	public void deleteWish(@RequestParam("list") String str,SelectDTO wishNo){		
-		wishNo.setList(Arrays.asList(str.split(",")));
-		service.deleteWish(wishNo);
+	@RequestMapping(value="/deleteWish", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public void deleteWish(@RequestParam(value="checkArr[]", required=false) List<String> checkArr){	
+		System.out.println(checkArr);
+		service.deleteWish(checkArr);		
+	}
+	
+	@RequestMapping("/deleteAllWish")
+	public String deleteAllWish(){
+		service.deleteAllWish();
+		return "redirect:/myPage/wishList";
 	}
 	
 	@GetMapping("/heartColor")
@@ -190,26 +216,23 @@ public class MypageController {
 			return new ResponseEntity<>(service.dateSearchRange(cri), HttpStatus.OK);
 	}
 	
-	@GetMapping("/completeDeal")
+	@GetMapping("/wishListAjax/{page}")
 	@ResponseBody
-	public Map<String,List<DealAndSell>> completeDeal() {			
-		
-		HashMap<String, List<DealAndSell>> jsonMap = new HashMap<>();		
-		jsonMap.put("complete", service.completeDeal());			
-		
-		return jsonMap;
+	public ResponseEntity<WishListWithPaging> wishList(@PathVariable("page") int page,
+			Criteria cri, Model model) {
+		cri = new Criteria(page, 10);
+		model.addAttribute("count", service.countWish(cri));
+		return new ResponseEntity<>(service.getWishListWithPaging(cri), HttpStatus.OK);
 	}
 	
-	@GetMapping("/progressDeal")
+	@GetMapping("/selectDeal/{page}/{status}")
 	@ResponseBody
-	public Map<String,List<DealAndSell>> progressDeal() {			
-		
-		HashMap<String, List<DealAndSell>> jsonMap = new HashMap<>();		
-		jsonMap.put("progress", service.progressDeal());			
-		
-		return jsonMap;
-	}
-	
+	public ResponseEntity<DealListWithPaging> selectDeal(@PathVariable("page") int page,
+				Criteria cri, @PathVariable("status") String status) {			
+		cri = new Criteria(page, 10);
+		cri.setStatus(status);		
+		return new ResponseEntity<>(service.selectDeal(cri), HttpStatus.OK);
+	}	
 	
 	@PostMapping("/uploadAjaxAction")
 	@ResponseBody

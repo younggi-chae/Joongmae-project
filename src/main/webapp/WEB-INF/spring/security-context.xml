@@ -16,7 +16,7 @@
       <security:intercept-url pattern="/user" access="hasRole('ROLE_ADMIN')"/>
       <security:form-login login-page="/member/login"
                       login-processing-url="/member/login" 
-                      default-target-url="/main"/>  
+                      default-target-url="/user/main"/>  
                   
                       
             <!-- <security:csrf disabled="true"/>    --> 

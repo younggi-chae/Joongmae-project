@@ -6,7 +6,6 @@ import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.MemberVO;
-import org.joongmae.domain.SelectDTO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 import org.joongmae.domain.WishListVO;
@@ -18,27 +17,30 @@ public interface MypageMapper {
 	BuyVO getBuyDetail(int buyNo);
 	List<BuyVO> dateSearchRange(Criteria cri);
 	int dateCntRange(Criteria cri);
+	int deleteBuy(int buyNo);
 	
 	List<SellVO> getSellList(Criteria cri);	
 	int countSell(Criteria cri);
 	SellVO getSellDetail(int sellNo);
+	int deleteSell(int sellNo);
+	int deleteAllSell();
 	
 	List<DealAndSell> getDealList(Criteria cri);
 	int countDeal(Criteria cri);
-	DealAndSell getDealDetail(int dealNo);	
+	DealAndSell getDealDetail(int dealNo);
+	List<DealAndSell> selectDeal(Criteria cri);
+	int countSelectDeal(Criteria cri);
 	
 	List<WishAndSell> getWishList(Criteria cri);
 	int countWish(Criteria cri);
 	int addWishList(WishListVO wishList);
 	int deleteWishList(int sellNo);
-	int deleteWish(SelectDTO wishNo);
+	int deleteWish(List<String> checkArr);
+	int deleteAllWish();
 
 	MemberVO getMemberDetail(String id);
 	int modifyMember(MemberVO member);
 	int deleteMember(String id);
-	
-	List<DealAndSell> completeDeal();
-	List<DealAndSell> progressDeal();
-	
+		
 }
 
