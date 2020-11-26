@@ -39,9 +39,11 @@
 								<form id='searchForm' action="/myPage/sellList" method='get'>
 									<select name='type'>										
 										<option value="I"
-											<c:out value="${pageMaker.cri.type eq 'I'?'selected':''}"/>>상품명</option>																	
+											<c:out value="${pageMaker.cri.type eq 'I'?'selected':''}"/>>상품명</option>
+										<option value="S"
+											<c:out value="${pageMaker.cri.type eq 'S'?'selected':''}"/>>판매자ID</option>																		
 									</select>									
-									  <input type='text' name='keyword' placeholder="상품명을 입력해주세요." value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
+									  <input type='text' name='keyword' placeholder="검색어를 입력해주세요." value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
 									  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
 									  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
 									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>
@@ -85,7 +87,7 @@
 												data-toggle="modal" data-target="#myModal">${sell.itemName }</a>																				
 												&emsp;&emsp;	
 												<button id="dealBtn" class="btn btn-success">거래하기</button>
-	   											<button class="btn btn-danger deleteBtn" value="${sell.sellNo }">삭제</button>	   											   											
+	   											<button class="btn btn-danger deleteBtn" value="${sell.sellNo }">삭제</button>	   												   											   											
 	   										</label>	   										     	  										       									
 										  </h5>												
                                           <ul>

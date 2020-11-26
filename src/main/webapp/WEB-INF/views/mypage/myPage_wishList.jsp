@@ -237,20 +237,20 @@
 	      }	      
 	      if(endNum * 10 < wishCnt){
 	        next = true;
-	      }	      
-	      var str = "<ul class='pagination pull-right'>";
+	      }		  
+	      var str = "<ul class='pagination pull-left'>";	      
 	      
 	      if(prev){
-	        str+= "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>Previous</a></li>";
+	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
 	      }         
 	      
 	      for(var i = startNum ; i <= endNum; i++){ 	    	  
 	        var active = pageNum == i? "active":"";        
-	        str+= "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
 	      }
 	      
 	      if(next){
-	        str+= "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
+	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
 	      }
 	      
 	      str += "</ul>";

@@ -125,7 +125,8 @@
 					str += '<div class="label-date">' + element.buyId +'</div>';
 					str += '<div class="label-date">' + element.sellId +'</div>';
 					str += '<h5><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
-					str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">' + element.itemName +'</a></h5>';
+					str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal" style="font-size: 25px;">' + element.itemName +'</a>';
+					str += '&emsp;&emsp;&emsp;&emsp;<span>'+ formatDate(element.regDate) +'</span></h5>';
 					str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 					str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 					if(element.status === "진행중"){
@@ -170,15 +171,16 @@
 						str += '<div class="label-date">' + element.buyId +'</div>';
 						str += '<div class="label-date">' + element.sellId +'</div>';
 						str += '<h5><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
-						str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">' + element.itemName +'</a></h5>';
+						str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal" style="font-size: 25px;">' + element.itemName +'</a>';
+						str += '&emsp;&emsp;&emsp;&emsp;<span>'+ formatDate(element.regDate) +'</span></h5>';
 						str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 						str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 						if(element.status === "진행중"){
 							str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
 						} else {
 							str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
-						}											
-						str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';
+						}													
+						str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';	
 						
 						 $('#dealList').append(str);
 						 showPage(dealCnt);
@@ -276,26 +278,37 @@
 	        next = true;
 	      }
 	      
-	      var str = "<ul class='pagination pull-right'>";
+		  var str = "<ul class='pagination pull-left'>";
 	      
 	      if(prev){
-	        str+= "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>Previous</a></li>";
-	      }	      
-	      for(var i = startNum ; i <= endNum; i++){   
-	    	  console.log(pageNum);
-	    	  console.log(i);
+	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
+	      }         
+	      
+	      for(var i = startNum ; i <= endNum; i++){ 	    	  
 	        var active = pageNum == i? "active":"";        
-	        str+= "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
 	      }
 	      
 	      if(next){
-	        str+= "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
-	      }	      
+	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
+	      }
 	      str += "</ul>";
 	         
 	      $("#pagenation").html(str);
 	    }
-		
+	
+	 
+	//날짜 포맷팅
+	 function formatDate(dateVal){
+   		var date = new Date(dateVal);
+		var year = date.getFullYear();              
+   		 var month = (1 + date.getMonth());          
+   		 	 month = month >= 10 ? month : '0' + month;  
+    	 var day = date.getDate();                  
+   		     day = day >= 10 ? day : '0' + day;      
+    	return  year + '-' + month + '-' + day;       
+	}
+	 
 	//숫자 콤마 찍기
 	function commas(num) {
 	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

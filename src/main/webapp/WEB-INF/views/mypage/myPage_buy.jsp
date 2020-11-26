@@ -162,7 +162,7 @@
 					str += '<td>'+element.keyword1+'</td>';
 					str += '<td>'+element.keyword2+'</td>';					
 					str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
-					str += '<td>'+dateFormat(element.regDate)+'</td>';
+					str += '<td>'+formatDate(element.regDate)+'</td>';
 					str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
 					str += '</tr></tbody></table></div></div></div>';									  
 				    
@@ -206,7 +206,7 @@
 							str += '<td>'+element.keyword1+'</td>';
 							str += '<td>'+element.keyword2+'</td>';							
 							str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
-							str += '<td>'+dateFormat(element.regDate)+'</td>';
+							str += '<td>'+formatDate(element.regDate)+'</td>';
 							str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
 							str += '</tr></tbody></table></div></div></div>';							  
 							
@@ -283,19 +283,19 @@
 	      if(endNum * 10 < buyCnt){
 	        next = true;
 	      }	      
-	      var str = "<ul class='pagination pull-right'>";
+	      var str = "<ul class='pagination pull-left'>";
 	      
 	      if(prev){
-	        str+= "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>Previous</a></li>";
+	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
 	      }         
 	      
 	      for(var i = startNum ; i <= endNum; i++){ 	    	  
 	        var active = pageNum == i? "active":"";        
-	        str+= "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
 	      }
 	      
 	      if(next){
-	        str+= "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
+	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
 	      }
 	      
 	      str += "</ul>";
@@ -325,12 +325,16 @@
     });
 	 
 	   
-	 //날짜 포맷팅
-	 function dateFormat(){
-		 var date = new Date();
-		 return date.getFullYear() + "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0"+date.getDate()).slice(-2);
-	 }
-	    
+	 //날짜 포맷팅	 
+	 function formatDate(dateVal){
+   		var date = new Date(dateVal);
+		var year = date.getFullYear();              
+   		 var month = (1 + date.getMonth());          
+   		 	 month = month >= 10 ? month : '0' + month;  
+    	 var day = date.getDate();                  
+   		     day = day >= 10 ? day : '0' + day;      
+    	return  year + '-' + month + '-' + day;       
+	}	    
 	
 	//숫자 콤마 찍기
 	function commas(num) {

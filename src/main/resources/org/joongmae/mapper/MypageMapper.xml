@@ -212,7 +212,10 @@
 					<choose>						
 						<when test="type == 'I'.toString()">
 							itemname like '%'||#{keyword}||'%'
-						</when>								
+						</when>
+						<when test="type == 'S'.toString()">
+							id like '%'||#{keyword}||'%'
+						</when>											
 					</choose>
 				</trim>
 			</foreach>

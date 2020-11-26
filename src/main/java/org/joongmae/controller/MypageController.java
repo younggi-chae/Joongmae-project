@@ -78,17 +78,13 @@ public class MypageController {
 	}
 	
 	@GetMapping("/wishList")
-	public String getWishList(Criteria cri, Model model) {
-		model.addAttribute("list", service.getWishList(cri));
-		model.addAttribute("count", service.countWish(cri));
-		int total = service.countWish(cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, total));
+	public String getWishList(Criteria cri, Model model) {		
+		model.addAttribute("count", service.countWish(cri));		
 		return "mypage/myPage_wishList";
 	}
 
 	@GetMapping({ "/detailMember", "/modifyMember" })
 	public String getMemberDetail(@RequestParam("id") String id, Model model) {
-
 		model.addAttribute("member", service.getMemberDetail(id));
 		return "mypage/myPage_member";
 	}
