@@ -140,8 +140,6 @@
             <div class="col-lg-6 col-md-6">
                <div class="hero__tab__form">
                   <form action="/buyBoard/register" method="post">
-                  <sec:authentication property="principal" var="pinfo"/>
-                  <input type="hidden" name="writer" value="${pinfo.username}" />
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                      <div class="select-list">
                         <div class="register-row">

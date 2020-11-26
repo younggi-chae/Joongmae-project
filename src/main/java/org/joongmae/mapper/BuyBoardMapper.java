@@ -2,6 +2,7 @@ package org.joongmae.mapper;
 
 import java.util.List;
 
+import org.joongmae.domain.AlarmVO;
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
@@ -21,5 +22,7 @@ public interface BuyBoardMapper {
 	public MemberVO memberDetail(String id);
 	
 	public int delete(int buyNo);
+	
+	public List<AlarmVO> alarmList(String id);
 	
 }

@@ -2,6 +2,7 @@ package org.joongmae.service;
 
 import java.util.List;
 
+import org.joongmae.domain.AlarmVO;
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
@@ -72,6 +73,12 @@ public class BuyBoardServiceImpl implements BuyBoardService {
 		mapper.delete(buyNo);
 		mapper.register(buy);
 		
+	}
+
+	@Override
+	public List<AlarmVO> alarmList(String id) {
+		
+		return mapper.alarmList(id);
 	}
 
 }

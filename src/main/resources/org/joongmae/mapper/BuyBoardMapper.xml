@@ -9,39 +9,13 @@
 		#{keyword3}, #{type}, #{region}, #{minPrice}, #{maxPrice}, '등록', #{bigClassifier}, #{mediumClassifier}, sysdate)
 	</insert>
 	
-	<!-- <select id="list" parameterType="org.joongmae.domain.BuyCriteria" resultType="org.joongmae.domain.BuyVO">
-		
-			
-			select buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice,
-			status, bigclassifier, mediumclassifier, regdate 
-			from 
-				(select rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
-						minprice, maxprice,	status, bigclassifier, mediumclassifier, regdate
-					from buy where
-					
-					<if test="bigClassifier != null">
-					<![CDATA[
-						bigclassifier = #{bigClassifier} and mediumclassifier = #{mediumClassifier} 
-					    and minprice >= #{minPrice} and maxprice <= #{maxPrice} 
-					    and (keyword1 like '%'||#{keyword1}||'%' or keyword1 like '%'||#{keyword2}||'%' or keyword1 like '%'||#{keyword3}||'%'
-					    or keyword2 like '%'||#{keyword1}||'%' or keyword2 like '%'||#{keyword2}||'%' or keyword2 like '%'||#{keyword3}||'%'
-					    or keyword3 like '%'||#{keyword1}||'%' or keyword3 like '%'||#{keyword2}||'%' or keyword3 like '%'||#{keyword3}||'%') 
-					    and
-					    ]]>
-					</if>
-					
-				<![CDATA[rownum <= #{pageNum} * #{amount} and status = '등록' order by buyno desc)
-				where rn > (#{pageNum} -1) * #{amount}
-		]]>
-	</select> -->
-	
 	<select id="list" parameterType="org.joongmae.domain.BuyCriteria" resultType="org.joongmae.domain.BuyVO">
 		
 			
 			select buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice,
 			status, bigclassifier, mediumclassifier, regdate 
 			from 
-				(select rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
+				(select /*+ INDEX_DESC (buy pk_buy) */ rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
 						minprice, maxprice,	status, bigclassifier, mediumclassifier, regdate
 					from buy where
 					
@@ -56,26 +30,10 @@
 					    ]]>
 					</if>
 					
-				<![CDATA[rownum <= #{pageNum} * #{amount} and status = '등록' ]]>
-				
-				<choose>
-					<when test="highPrice != null">
-						order by maxprice desc)
-					</when>
-					<when test="lowPrice != null">
-						order by minprice)
-					</when>
-					<otherwise>
-						order by buyno desc)
-					</otherwise>
-				</choose>
-				
-				<![CDATA[
+				<![CDATA[rownum <= #{pageNum} * #{amount} and status = '등록')
 				where rn > (#{pageNum} -1) * #{amount}
 				]]>
 	</select>
-	
-	
 	
 	<select id="detail" resultType="org.joongmae.domain.BuyVO">
 		select * from buy where buyno = #{buyno}
@@ -112,5 +70,9 @@
 	<update id="delete" parameterType="org.joongmae.domain.BuyVO">
 		update buy set status='삭제' where buyno = #{buyNo}
 	</update>
+	
+	<select id="alarmList" parameterType="String" resultType="org.joongmae.domain.AlarmVO">
+		select distinct buyno from alarm where sellid = #{id}
+	</select>
 
 </mapper>
