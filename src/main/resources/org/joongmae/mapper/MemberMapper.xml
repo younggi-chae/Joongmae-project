@@ -16,20 +16,7 @@
 	insert into member values (#{id},#{password},#{name},#{phoneNo},#{email},#{sex},#{address},' ',' ',0,'y',' ',' ',' ','1')  
 	</insert>
 	
-	<!-- <select id="loginMember" parameterType="String" resultType="String">
-	  select password from member where id=#{id}
-	</select>
-	
-	<update id="detailInfo" parameterType="Member">
-	  update member set picture=#{picture},introduction=#{introduction} where id=#{id}
-	
-	</update>
-	
-	<select id="getMember" parameterType="String" resultType="Member">
-	  select * from member where id=#{id}
-	</select>
-	-->
-	
+
 	
 	<select id="chk_id" parameterType="String" resultType="int">
 	  select count(id) from member where id=#{chk_id}
@@ -82,10 +69,20 @@
   
   <select id="read" resultMap="memberMap">
 SELECT 
-  mem.id,  auth.password, mem.name, phoneNo,email,sex,address,picture,introduction,avgScore,isMember,isAlarm,alarmStartTime,alarmEndTime,mem.enabled, auth.auth
-FROM 
-  member mem LEFT OUTER JOIN member_auth auth on mem.id = auth.id  WHERE mem.id = #{id} 
+  mem.id, auth.password, mem.name, phoneNo,email,sex,address,picture,introduction,avgScore,isMember,isAlarm,alarmStartTime,alarmEndTime,mem.enabled, auth.auth
+FROM member mem LEFT OUTER JOIN member_auth auth on mem.id = auth.id  WHERE mem.id = #{id} 
   </select>
+   
+   <select id="findId" parameterType="hashmap" resultType="String">
+   select nvl(id,0) from member where name=#{name} and phoneNo=#{phoneNo}
+   </select>
+
+<select id="getPassword" parameterType="map" resultType="String">
+select password from member where id=#{id} and email=#{emailId}
+</select>
+
+
+
 
 </mapper>
 

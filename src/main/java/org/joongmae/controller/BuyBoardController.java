@@ -11,6 +11,7 @@ import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.service.BuyBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,7 +62,7 @@ public class BuyBoardController {
 	
 	@RequestMapping("/list")
 	public String list(BuyCriteria cri, Model model, HttpServletRequest request){
-		System.out.println("111111111111111111111111111111111111111111111111111111111");
+		
 		if(cri.getBigClassifier() != null){
 			String price = request.getParameter("price");
 			model.addAttribute("price", price);

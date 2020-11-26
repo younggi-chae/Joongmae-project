@@ -8,7 +8,6 @@
 <head>
 <meta charset="UTF-8">
  <meta id="_csrf" name="_csrf"   th:content="${_csrf.token}"/>
-<!-- default header name is X-CSRF-TOKEN -->
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>Insert title here</title>
 
@@ -82,26 +81,27 @@
 						</div>
 
 						<div>
-							<a href="#" class="txt3"> Forgot Password? </a>
+							<a href="/member/findMember" class="txt3"> Forgot Password? </a>
 						</div>
 					</div>
-
-					<div class="container-login100-form-btn">
+<br><br><br><br>
+					<div class="container-login100-form-btn"><br><br><br>
 						<input type="submit" class="login100-form-btn"
-							style="margin: auto" value="로그인">
+							style="margin: auto; width: 250px" value="로그인">
 
 					</div>
 
 
 					
-
-					<!-- #######소셜로그인 버튼 들어갈 자리 -->
-					<div class="kakao_login" style="text-align: center">
-						<a
-							href="https://kauth.kakao.com/oauth/authorize?client_id=a714095760769a00001b4e03b10b2c3e&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code"_blank">
-							<img width="250px" src="/resources/img_jsh/kakao_login.png" />
+<!-- #######소셜로그인 버튼 들어갈 자리 -->
+				<div class="container-login100-form-btn" style="text-align: center;">
+					
+						<a href="https://kauth.kakao.com/oauth/authorize?client_id=a714095760769a00001b4e03b10b2c3e&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code"_blank">
+							
+							<img  width="250px" src="/resources/img_jsh/kakao_login.png" style="margin-left: 70px"/>
 						</a>
-					</div>		
+					</div>	
+					
 				</form>
 
 

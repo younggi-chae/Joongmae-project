@@ -59,13 +59,23 @@
         <div class="offcanvas__widget">
 
         
-       <c:if test="${principal.member==null }">
-                    <a href="http://192.168.0.156:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
-        
-        </c:if>
-        <c:if test="${principal.member!=null }">
-        <a href="logoutAction.sh" class="primary-btn">로그아웃</a>
-        </c:if>
+   			 			<sec:authorize access="isAnonymous()">
+   			 			 <c:if test="${userId eq null}">
+				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
+				</c:if>
+					 <c:if test="${userId ne null}">
+				<a href="/member/logout" class="primary-btn">로그아웃</a>
+				</c:if>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+				
+				<form action="/member/logout" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<button class="primary-btn">로그아웃</button>
+
+</form>
+
+			</sec:authorize>
             
         </div>
         <div class="offcanvas__logo">
@@ -84,7 +94,7 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="controller_jsh/mainAction.sh"><img src="/resources/img/logo.png" alt=""></a>
+                        <a href="/main"><img src="/resources/img/logo.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -120,36 +130,24 @@
                         </nav>
                         <div class="header__nav__widget">
 
-    <c:if test="${sessionScope.id!=null}">
-         <a href="logoutAction.sh" class="primary-btn" >로그아웃</a>
-         
-         <!--  
-         		<c:if test="${member.picture != null }">
-         		<div class="avatar-sm rounded-circle">
-						<c:set var="head" value="${fn:substring(member.picture, 
-												0, fn:length(member.picture)-4) }"></c:set>
-						<c:set var="pattern" value="${fn:substring(member.picture, 
-						fn:length(head) +1, fn:length(member.picture)) }"></c:set>
-					
-						<c:choose>
-							<c:when test="${pattern == 'jpg' || pattern == 'gif' }">
-							  <img src="/Architecture-kosta202/upload/${head}_small.${pattern}">      
-							</c:when>
-							<c:otherwise>
-								<c:out value="NO IMAGE"></c:out>
-							</c:otherwise> 
-						</c:choose>
-					</div>
-					</c:if>-->
-         
-         
-         
-        </c:if>
-           <c:if test="${sessionScope.id==null}">
-           
-            <a href="http://192.168.0.156:8080/Architecture-kosta202/controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
-               </c:if>
+ 			<sec:authorize access="isAnonymous()">
+ 			
+				 			 <c:if test="${userId eq null}">
+				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
+				</c:if>
+					 <c:if test="${userId ne null}">
+				<a href="/member/logout" class="primary-btn">로그아웃</a>
+				</c:if>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+				
+				<form action="/member/logout" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<button class="primary-btn">로그아웃</button>
 
+</form>
+
+			</sec:authorize>
 
 
         

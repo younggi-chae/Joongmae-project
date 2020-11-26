@@ -7,12 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1> Logout Page</h1>
-
-<form action="/logout" method='post'>
-<input type="hidden"name="${_csrf.parameterName}"value="${_csrf.token}"/>
-<button>로그아웃</button>
-</form>
-
+<a href="https://kauth.kakao.com/oauth/authorize?client_id=a714095760769a00001b4e03b10b2c3e&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code">로그인</a>
 </body>
 </html>
