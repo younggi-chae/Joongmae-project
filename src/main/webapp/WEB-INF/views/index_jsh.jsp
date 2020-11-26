@@ -471,9 +471,6 @@
       <div  id="modalBody">
       
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeModal()" data-dismiss="modal">취소</button>
-      </div>
     </div>
   </div>
 </div>
@@ -497,8 +494,15 @@
 </html>
 
 <script type="text/javascript">
-function readAlarm() {
-	
+function readAlarm(alarmNo) {
+	$.ajax({
+		url : "/REST/readAlarm",
+		data : "alarmNo=" + alarmNo,
+		type : "GET",
+		success : function(data){
+			console.log(data);
+		}
+	})
 }
 
 function alarmClick() {
@@ -516,9 +520,9 @@ function alarmClick() {
 		success : function(data){
 			$.each(data, function (i, item) {
 				if (item.status == '등록') {
-					var str = "<div onclick='readAlarm()'  style='background-color: aqua;margin-bottom:5px;'>";
+					var str = "<div onclick='readAlarm(" + item.alarmNo + ")'  style='background-color: aqua;margin-bottom:5px;'>";
 				} else {
-					var str = "<div onclick='readAlarm()'  style='background-color: white;margin-bottom:5px;'>";
+					var str = "<div style='background-color: white;margin-bottom:5px;'>";
 				}
 				if (item.buyId == id) {
 					str += "<a href = 'sell/detail?sellNo=" +item.sellNo + "'>판매자 <b>" + item.sellId + "</b> 님이 ";
@@ -566,14 +570,6 @@ $(document).ready(function() {
 				var currentTime = hours + ":" + minutes;
 				var startTime = result.alarmStartTime;
 				var endTime = result.alarmEndTime;
-				
-				console.log(startTime);
-				console.log(endTime);
-				console.log(currentTime);
-				
-				console.log(result.isAlarm);
-				
-				console.log(currentTime >= startTime && currentTime < endTime);
 				
 				if (result.isAlarm == 'false') {
 					$('#alarmImg').attr("src","/resources/img/alarm_icon.png");

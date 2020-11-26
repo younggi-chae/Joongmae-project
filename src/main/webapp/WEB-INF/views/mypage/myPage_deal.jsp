@@ -3,6 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = auth.getPrincipal();
+ 
+    String id = "";
+    if(principal != null) {
+        id = auth.getName();
+    }
+%>
 <%@include file="../includes/header.jsp"%>
 
 	<section class="services spad">
@@ -61,6 +72,29 @@
 					
 					</div>
 					<div class="modal-footer">
+					<form action="/REST/insertReview" method="post" id="reviewBtn" style="border: 1;">
+						<span id="star1" onclick="star1Click()">★</span>
+						<span id="star2" onclick="star2Click()">★</span>
+						<span id="star3" onclick="star3Click()">★</span>
+						<span id="star4" onclick="star4Click()">★</span>
+						<span id="star5" onclick="star5Click()">★</span>
+						<input type="text" name="score" id="starScore" value="5" readonly="readonly" style="width: 10px;">점
+						<br>
+						<textarea name="contents" style="border: solid;border-width: thin;width: 250px;"></textarea>
+						<input type="hidden" name="id" id="reviewId" value="<%=id%>">
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<input type="submit" class="btn btn-primary" value="리뷰쓰기">
+					</form>
+					<form action="" id="deliveryBtn" style="border: 1;">
+						<input type="text" id="deliveryNo" style="border: solid;border-width: thin;width: 250px;">
+						<input type="submit" class="btn btn-primary" value="송장 번호 입력">
+					</form>
+					<form action="" id="deliveryModBtn" style="border: 1;">
+						<input type="text" id="deliveryModNo" style="border: solid;border-width: thin;width: 250px;">
+						<input type="submit" class="btn btn-primary" value="송장 번호 수정">
+					</form>
+					<button type="button" class="btn btn-primary" id="depositBtn" onclick="deposit()">입금 완료</button>
+					<button type="button" class="btn btn-primary" id="deliveryInfoBtn" onclick="deliveryInfo()">송장 번호 조회</button>
 						<button type="button" class="btn btn-default"
 							data-dismiss="modal">Close</button>							
 					</div>
@@ -134,8 +168,8 @@
 					} else {
 						str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
 					}													
-					str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';						
-				
+					str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';			
+
 					 	$('#dealList').append(str);	
 					 	showPage(dealCnt);
 					});
@@ -145,6 +179,70 @@
 	
 	    //진행중 & 거래완료 Ajax
 		function selectDealList(page, status){
+					 $('.modal-body').append(str);
+					 
+					 if (result.sellId == "<%=id%>") {
+						 if (result.status == '진행중') {
+							$('#reviewBtn').hide();
+							$('#depositBtn').hide();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').hide();
+							$('#deliveryModBtn').hide();
+						} else if (result.status == '입금완료') {
+							$('#reviewBtn').hide();
+							$('#depositBtn').hide();
+							$('#deliveryBtn').show();
+							$('#deliveryInfoBtn').hide();
+							$('#deliveryModBtn').hide();
+						} else if (result.status == '배송중') {
+							$('#reviewBtn').hide();
+							$('#depositBtn').hide();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').show();
+							$('#deliveryModBtn').show();
+						} else if (result.status == '완료') {
+							$('#reviewBtn').show();
+							$('#reviewId').val(result.buyId)
+							$('#depositBtn').hide();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').hide();
+							$('#deliveryModBtn').hide();
+						}
+					} else if (result.buyId == "<%=id%>") {
+						if (result.status == '진행중') {
+							$('#reviewBtn').hide();
+							$('#depositBtn').show();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').hide();
+							$('#deliveryModBtn').hide();
+						} else if (result.status == '입금완료') {
+							$('#reviewBtn').hide();
+							$('#depositBtn').hide();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').hide();
+							$('#deliveryModBtn').hide();
+						} else if (result.status == '배송중') {
+							$('#reviewBtn').hide();
+							$('#depositBtn').hide();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').show();
+							$('#deliveryModBtn').hide();
+						} else if (result.status == '완료') {
+							$('#reviewBtn').show();
+							$('#reviewId').val(result.sellId)
+							$('#depositBtn').hide();
+							$('#deliveryBtn').hide();
+							$('#deliveryInfoBtn').hide();
+							$('#deliveryModBtn').hide();
+						}
+							
+					}
+					 
+			   }
+			});
+		});
+		
+		function showList(){
 			var str = "";
 			var param = new Object();			
 			param.page = page || 1;		
@@ -314,7 +412,85 @@
 	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 		
+
+	var searchForm = $("#searchForm");
+	$("#searchForm button").on("click",	function(e) {
+		if (!searchForm.find("option:selected").val()) {
+				alert("검색종류를 선택하세요");
+				return false;
+		}
+			if (!searchForm.find("input[name='keyword']").val()) {
+					alert("키워드를 입력하세요");
+					return false;
+				}
+
+				searchForm.find("input[name='pageNum']").val("1");
+				e.preventDefault();
+				searchForm.submit();
+			});
+</script>
+
+<script type="text/javascript">
+function star1Click() {
+	$('#star1').html("★");
+	$('#star2').html("☆");
+	$('#star3').html("☆");
+	$('#star4').html("☆");
+	$('#star5').html("☆");
+	$('#starScore').val("1");
+}
+
+function star2Click() {
+	$('#star1').html("★");
+	$('#star2').html("★");
+	$('#star3').html("☆");
+	$('#star4').html("☆");
+	$('#star5').html("☆");
+	$('#starScore').val("2");
+}
+
+function star3Click() {
+	$('#star1').html("★");
+	$('#star2').html("★");
+	$('#star3').html("★");
+	$('#star4').html("☆");
+	$('#star5').html("☆");
+	$('#starScore').val("3");
+}
+
+function star4Click() {
+	$('#star1').html("★");
+	$('#star2').html("★");
+	$('#star3').html("★");
+	$('#star4').html("★");
+	$('#star5').html("☆");
+	$('#starScore').val("4");
+}
+
+function star5Click() {
+	$('#star1').html("★");
+	$('#star2').html("★");
+	$('#star3').html("★");
+	$('#star4').html("★");
+	$('#star5').html("★");
+	$('#starScore').val("5");
+}
+
+function deposit() {
+	$.ajax({
+		url : "/deal/pay",
+		dataType : "json",
+		data : selectDeal,
+		type : "POST",
+		success : function(result){
+			alert(result);
+		}
+	});
+}
+
+function deliveryInfo() {
 	
-		
+}
+
 </script>
 <%@include file="../includes/footer.jsp"%>
