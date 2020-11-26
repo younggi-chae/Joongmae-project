@@ -60,7 +60,7 @@ public class SellServiceImpl implements SellService {
 		 
 		ArrayList<List<Object>> result = new ArrayList<>();
 		
-		List<BuyVO> buyList = mapper.temp();
+		List<BuyVO> buyList = mapper.temp(sell.getId());
 		
 		String sellKeywords[] = new String[3];
 		sellKeywords[0] = sell.getKeyword1();

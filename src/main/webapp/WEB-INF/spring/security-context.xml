@@ -22,11 +22,11 @@
             <!-- <security:csrf disabled="true"/>    --> 
                       
          <!-- 최대 한 개의 세션만 생성되도록 -->
-<!--       <security:session-management invalid-session-url="/member/login">
+       <security:session-management invalid-session-url="/member/login">
             <security:concurrency-control max-sessions="1"
                                    expired-url="/member/login"
                                    error-if-maximum-exceeded="true" />
-        </security:session-management>    -->          
+        </security:session-management>           
                       
                       
                       

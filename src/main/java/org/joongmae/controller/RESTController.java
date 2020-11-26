@@ -30,8 +30,8 @@ public class RESTController {
 	@Setter(onMethod_ = @Autowired)
 	private RESTService service;
 
-	@PostMapping(value = "/insertReview", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String > create(@RequestBody ReviewVO review){
+	@PostMapping(value = "/insertReview", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String > create(ReviewVO review){
 		log.info("insertReview : " + review);
 		
 		int insertCount = service.registerReview(review);

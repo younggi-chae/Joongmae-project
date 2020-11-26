@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.joongmae.mapper.SellMapper">
 	
-	<select id="temp" resultType="org.joongmae.domain.BuyVO">
-		select * from buy order by buyNo desc
+	<select id="temp" parameterType="String" resultType="org.joongmae.domain.BuyVO">
+		select * from buy where id != #{id} and status = '등록' order by buyNo desc
 	</select>
 	
 	<select id="detail" resultType="org.joongmae.domain.SellVO">

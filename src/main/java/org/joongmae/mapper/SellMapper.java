@@ -8,7 +8,7 @@ import org.joongmae.domain.SellVO;
 
 public interface SellMapper {
 	
-	public List<BuyVO> temp();
+	public List<BuyVO> temp(String id);
 	
 	public SellVO detail(int sellNo);
 	
