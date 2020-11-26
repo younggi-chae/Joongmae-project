@@ -48,12 +48,6 @@ $(document).ready(function(){
 		
 	});//end 페이지 보기 컨트롤 코드
 	
-	/*$("#sortControl").on("change", function(){
-		
-		$("#sortControlForm").submit();
-		alert("aa");
-	});*/
-	
 	
 	//대분류 선택시 중분류 바뀌는 코드
 	$("#searchForm #bigSelectBox").on("change", function(){

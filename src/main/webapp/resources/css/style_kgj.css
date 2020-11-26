@@ -1628,6 +1628,12 @@ ol {
    margin-bottom: 6px;
 }
 
+.breadcrumb__text span {
+   font-size: 20px;
+   color: #ffffff;
+   display: inline-block;
+}
+
 .breadcrumb__text__kgj h2 {
 	color: black;
 	font-weight: 700;
@@ -1647,7 +1653,7 @@ ol {
    position: absolute;
    right: -15px;
    top: 0;
-   content: "占쎄섀";
+   content: "";
    font-family: "FontAwesome";
 }
 

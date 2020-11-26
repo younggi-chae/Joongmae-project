@@ -62,20 +62,21 @@
                                 		<li>직거래 지역 <span>${buy.region }</span></li>
                                 	</c:when>
                                 </c:choose>
+                                <li>대분류 <span>${buy.bigClassifier }</span></li>
+                                <li>중분류 <span>${buy.mediumClassifier }</span></li>
+                                <li>키워드 <span>${buy.keyword1 }/${buy.keyword2 }/${buy.keyword3 }</span></li>
                             </ul>
                             <sec:authorize access="isAnonymous()">
-                            <c:choose>
-                            	<c:when test="${pinfo.username ne null }">
-                            		<a href="#" class="primary-btn">견적서 보내기</a>
-                            	</c:when>
-                            	<c:when test="${pinfo.username eq null }">
-                            		<a href="/sell/registerForm" class="primary-btn">판매 등록</a>
-                            	</c:when>
-                            </c:choose>
+                            	<a href="/sell/registerForm" class="primary-btn">판매등록</a>
+                            </sec:authorize>
+                            <sec:authorize access="isAuthenticated()">
+                            <c:if test="${pinfo.username ne buy.id }">
+                            	<a href="#" class="primary-btn">견적서 보내기</a>
+                            </c:if>
                             </sec:authorize>
                         </div>
                     </div>
-                    <%-- <sec:authentication property="principal" var="pinfo"/> --%>
+                    <sec:authorize access="isAuthenticated()">
                     <c:choose>
                     	<c:when test="${pinfo.username eq buy.id }">
                     		<br>
@@ -91,6 +92,7 @@
 		                     </div>
 	                     </c:when>
                      </c:choose>
+                     </sec:authorize>
                      <div style="float: right; margin-right: 10px;">
                      <c:if test="${pageMaker.cri.bigClassifier ne null }">
                      	<form action="/buyBoard/list?pageNum=${pageMaker.cri.

@@ -13,19 +13,12 @@
 	
 	<context:annotation-config/>
 
-<!-- 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
       <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
       <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@kosta202.ch8knabo8o3a.ap-northeast-2.rds.amazonaws.com:1521:orcl"/>
       <property name="username" value="joongmae"/>
       <property name="password" value="joongmae123!"/>
-   </bean> -->
-   
-   	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-	  <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-	  <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"/>
-	  <property name="username" value="seung"/>
-	  <property name="password" value="1234"/>
-	</bean>
+    </bean>
 
 	<!-- HikariCP configuration -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"

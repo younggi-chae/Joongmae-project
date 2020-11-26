@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ include file="../includes/header.jsp" %>
 	
@@ -15,10 +16,15 @@
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
                         <h2>구매 게시판</h2>
-                        <div class="breadcrumb__links">
-<!--                             <a href="./index.html"><i class="fa fa-home"></i> Home</a> -->
-<!--                             <span>구매 게시판</span> -->
+                        <c:if test="${pageMaker.cri.bigClassifier != null }">
+                        <div class="breadcrumb__text">
+                        	<span>${pageMaker.cri.bigClassifier }</span>
+                        	<span> > ${pageMaker.cri.mediumClassifier }</span>
+                        	<span>&nbsp;&nbsp;&nbsp;${pageMaker.cri.keyword1 }</span>
+                        	<span>/${pageMaker.cri.keyword2 }</span>
+                        	<span>/${pageMaker.cri.keyword3 }</span>
                         </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -124,24 +130,11 @@
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="car__filter__option__item car__filter__option__item--right">
-                                <form id="sortControlForm" action="/buyBoard/list" method="get">
                                     <h6>정렬</h6>
-                                    <select id="sortControl" onchange="sortThis()">
-                                        <option value="highPrice">높은 가격순</option>
-                                        <option value="lowPrice">낮은 가격순</option>
+                                    <select id="sortControl">
+                                        <option value="">높은 가격순</option>
+                                        <option value="">낮은 가격순</option>
                                     </select>
-                                    <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
-                    				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
-                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    				<c:if test="${pageMaker.cri.bigClassifier != null }">
-			                    	<input type="hidden" name="bigClassifier" value='<c:out value="${ pageMaker.cri.bigClassifier }"/>'>
-			                    	<input type="hidden" name="mediumClassifier" value='<c:out value="${ pageMaker.cri.mediumClassifier }"/>'>
-			                    	<input type="hidden" name="keyword1" value='<c:out value="${ pageMaker.cri.keyword1 }"/>'>
-			                    	<input type="hidden" name="keyword2" value='<c:out value="${ pageMaker.cri.keyword2 }"/>'>
-			                    	<input type="hidden" name="keyword3" value='<c:out value="${ pageMaker.cri.keyword3 }"/>'>
-			                    	<input type="hidden" name="price" value='<c:out value="${ price }"/>'>
-			                    	</c:if>
-                                </form>
                                 </div>
                             </div>
                         </div>
@@ -150,24 +143,7 @@
                        <c:forEach var="listBuy" items="${list }">
                            <div class="col-lg-4 col-md-4">
                                <div class="car__item">
-                               <c:forEach var="member" items="${member }">
-										<c:if test="${listBuy.id eq member.id }">
-											<c:set var="head"
-												value="${fn:substring(member.picture, 0, fn:length(member.picture)-4) }"></c:set>
-											<c:set var="pattern"
-												value="${fn:substring(member.picture, fn:length(head) +1, fn:length(member.picture)) }"></c:set>
-											<c:choose>
-												<c:when
-													test="${pattern == 'jpg' || pattern == 'gif' || pattern == 'png' }">
-													<img
-														src="/resources/img/upload_cyg/${head }_small.${pattern}">
-												</c:when>
-												<c:otherwise>
-													<img src="/resources/img/cars/memberPicture-2_kgj.jpg">
-												</c:otherwise>
-											</c:choose>
-										</c:if>
-								</c:forEach>
+                               <img src="/resources/img/cars/memberPicture-2_kgj.jpg">
                                    <div class="car__item__text">
                                        <div class="car__item__text__inner">
                                            <div class="label-date">${listBuy.id }</div>
@@ -194,7 +170,26 @@
                                            </ul>
                                        </div>
                                        <div class="car__item__price">
+                                       <sec:authorize access="isAnonymous()">
                                            <span class="car-option">가격</span>
+                                       </sec:authorize>
+                                       <sec:authorize access="isAuthenticated()">
+                                       		<c:if test="${empty alarm }">
+                                                <span class="car-option">가격</span>
+                                             </c:if>
+                                             <c:if test="${!empty alarm }">
+                                                <c:forEach var="alarm" items="${alarm }">
+                                                   <c:choose>
+                                                      <c:when test="${listBuy.buyNo eq alarm.buyNo }">
+                                                         <span class="car-option">매칭</span>
+                                                      </c:when>
+                                                      <c:when test="${listBuy.buyNo ne alarm.buyNo }">
+                                                         <span class="car-option">가격</span>
+                                                      </c:when>
+                                                   </c:choose>
+                                                </c:forEach>
+                                             </c:if>
+                                       </sec:authorize>
                                            <h6><fmt:formatNumber value="${listBuy.minPrice }" pattern="##,###"/> ~ <fmt:formatNumber value="${listBuy.maxPrice }" pattern="##,###"/></h6>
                                        </div>
                                    </div>
@@ -247,16 +242,6 @@
     </section>
     <!-- Car Section End -->
     
-    <script type="text/javascript">
-    	
-    	function sortThis(){
-    
-    		alert($("#sortControl option:selected").val());
-    		$("#sortControlForm").submit();
-    			
-    	}
-    
-    </script>
 
 <%@ include file="../includes/footer.jsp" %>
    	
