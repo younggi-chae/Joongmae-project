@@ -1,9 +1,10 @@
 package org.joongmae.mapper;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.ibatis.annotations.Select;
 import org.joongmae.domain.MemberAccountVO;
 import org.joongmae.domain.MemberAuthDTO;
 import org.joongmae.domain.MemberVO;
@@ -22,4 +23,7 @@ public interface MemberMapper {
 	public MemberVO read(String userId);
 	public void addAuth(MemberAuthDTO userInfo);
 
+
+	public String findId(HashMap<String, String> map);
+	public String getPassword(Map<String, String> paramMap);
 }

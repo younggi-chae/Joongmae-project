@@ -17,11 +17,6 @@
 
 <!-- <!-- sweet Alert 플러그인 -->
 <script src="http://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" /> -->
-
 
 
 <script
@@ -130,7 +125,7 @@
 				<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55"
 					style="margin: auto; width: 700px">
 					<span class="login100-form-title p-b-32">
-						<h3>ㅇㅇ에 오신것을 환영합니다</h3>
+						<h3>중매에 오신것을 환영합니다</h3>
 						<br> <br> <br>
 					</span>
 

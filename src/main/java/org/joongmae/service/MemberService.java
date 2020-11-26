@@ -1,5 +1,8 @@
 package org.joongmae.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.joongmae.domain.MemberAccountVO;
 import org.joongmae.domain.MemberAuthDTO;
 import org.joongmae.domain.MemberVO;
@@ -16,5 +19,8 @@ public interface MemberService {
 	public String restore(MultipartFile file);
 	public String getAccessToken (String authorize_code);
 	public void registerAuth(MemberAuthDTO userInfo);
+	
+	public String findId(HashMap<String, String> map);
+	public HashMap<String, Object> getUserInfo(String access_Token);
 	
 }

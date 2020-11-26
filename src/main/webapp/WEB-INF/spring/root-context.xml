@@ -13,19 +13,19 @@
 	
 	<context:annotation-config/>
 
-<!-- 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+<!--   	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
       <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
       <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@kosta202.ch8knabo8o3a.ap-northeast-2.rds.amazonaws.com:1521:orcl"/>
       <property name="username" value="joongmae"/>
       <property name="password" value="joongmae123!"/>
-   </bean> -->
+   </bean>  -->
    
-   	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 	  <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
 	  <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"/>
 	  <property name="username" value="seung"/>
 	  <property name="password" value="1234"/>
-	</bean>
+	</bean> 
 
 	<!-- HikariCP configuration -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
@@ -48,5 +48,29 @@
 	
 	<context:annotation-config/>
 	<context:component-scan base-package="org.joongmae.service"/>	
+		
+		
+		
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="host" value="smtp.gmail.com" />
+	<property name="port" value="587" />
+	<property name="defaultEncoding" value="utf-8"/>
+	<property name="username" value="joongmae123@gmail.com" />
+	<property name="password" value="mplxzkcdewietlqh" />
+
+	<!-- email 요청시는 SMTP -->
+	<property name="javaMailProperties">
+		<props>
+			<prop key="mail.smtp.auth">true</prop>
+			<prop key="mail.smtp.starttls.enable">true</prop>
+		</props>
+    </property>
+</bean>
+
+<!-- Email, EmailSender Bean 등록 -->
+<bean id="email" class="org.joongmae.service.email.Email"></bean>
+<bean id="emailSender" class="org.joongmae.service.email.EmailSender"></bean>	
+		
+		
 		
 </beans>

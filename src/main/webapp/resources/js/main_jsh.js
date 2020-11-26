@@ -94,8 +94,7 @@ $('#sendPhoneNumber').on('click',function(){
 
 
     var phoneNumber = $('#phoneNo').val();
-    /*Swal.fire('인증번호 발송 완료!')*/
-
+  
 
     $.ajax({
         type: "GET",
@@ -103,38 +102,28 @@ $('#sendPhoneNumber').on('click',function(){
         data: {
             "phoneNumber" : phoneNumber
         },
-       /* beforeSend: function(xhr){
-            xhr.setRequestHeader(header, token);
-        },*/
+
         success: function(res){
            
            
        
             $('#checkBtn').click(function(){
                 if($.trim(res) ==$('#inputCertifiedNumber').val()){
-                    alert("인증성공");
-                   /*Swal.fire(
-                        '인증성공!',
-                        '휴대폰 인증이 정상적으로 완료되었습니다.',
-                        'success'
-                    )*/
+                   // alert("인증성공");
+                    swal(
+                        "인증성공!",
+                        "휴대폰 인증이 정상적으로 완료되었습니다.",
+                        "success"
+                    );
 
-    /*                 $.ajax({
-                        type: "GET",
-                        url: "/update/phone",
-                        data: {
-                            "phoneNumber" : $('#inputPhoneNumber').val()
-                        }
-                    })
-                    document.location.href="/home"; */
+ 
                 }else{
-                    /*Swal.fire({
-                        icon: 'error',
-                        title: '인증오류',
-                        text: '인증번호가 올바르지 않습니다!',
-                        footer: '<a href="#">다음에 인증하기</a>'
-                    })*/
-                   alert("인증실패");
+          
+                	swal(
+                            "인증실패!",
+                            "번호를 다시 확인해주세요.",
+                            "warning"
+                        );
                 }
             })
 
@@ -155,15 +144,13 @@ $('#temp').click(function () {
         data: {
             "id": $('#id').val()
         },
-      /*  beforeSend: function(xhr){
-            xhr.setRequestHeader(header, token);
-        },*/
+  
         success: function (data) {   
          
     
            if ($.trim(data) == "yes") {
                 if ($('#id').val() != '') {
-                   
+                  
                     $('#checkMsg').html('<p style="color:blue">사용가능한 ID 입니다!</p>');
                 }
             } else if(($.trim(data) == "no") ){
@@ -180,17 +167,73 @@ $('#temp').click(function () {
 
 var header = $("meta[name='_csrf_header']").attr('content');
 var token = $("meta[name='_csrf']").attr('content');
- 
 
-/*$.ajax({
-   type:"post",
-   url:"/member/auth/join",
-   data:JSON.stringify(data),
-   contentType:"application/json;charset=utf-8",
-   dataType:"json"
-   
-   
-}).done(function(resp){
-   alert("회원가입이 완료되었습니다.");
-   
-});*/
+
+var idV = "";
+// 아이디 값 받고 출력하는 ajax
+var idSearch_click = function(){
+
+
+	$.ajax({
+		type:"get",
+		url:"/member/findId",
+		data:{
+			"inputName":$('#inputName').val(),
+			"inputPhoneNo":$('#inputPhoneNo').val()
+		},		
+		success:function(data){
+			if(data == 0){
+
+				swal(
+                        "아이디찾기 실패",
+                        "입력한 정보를 다시 한번 확인하세요.",
+                        "warning"
+                    );
+			} else {
+				
+				
+				  swal(
+	                        "아이디찾기 성공",
+	                        "회원님의 ID는 "+data+"입니다.",
+	                        "success"
+	                    );
+				idV = data;
+			}
+		}
+	});
+}
+
+
+
+
+var passSearch_click = function(){
+
+	$.ajax({
+		type:"get",
+		url:"/sendPassword",
+		data:{
+			"id":$('#inputId').val(),
+			"emailId":$('#inputEmail_2').val()
+		},		
+		success:function(data){
+			if(data=="1"){
+				 swal(
+	                        "비밀번호 찾기 성공",
+	                        "이메일을 확인해주세요",
+	                        "success"
+	                    );
+				
+			}else{
+				swal(
+                        "비밀번호 찾기 실패",
+                        "입력한 정보를 다시 한번 확인하세요.",
+                        "warning"
+                    );
+				
+			}
+			
+			
+		}
+	});
+}
+
