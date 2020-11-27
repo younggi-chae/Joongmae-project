@@ -3,7 +3,7 @@ package org.joongmae.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
-
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +51,12 @@ public class MypageController {
 	private MypageService service;
 
 	@GetMapping("/main")
-	public String main(@RequestParam("id") String id, Model model) {
-		model.addAttribute("member", service.getMemberDetail(id));		
+	public String main(Principal id, Model model, Criteria cri) {
+		model.addAttribute("member", service.getMemberDetail(id.getName()));
+		model.addAttribute("sellCnt", service.countSell(cri));
+		model.addAttribute("buyCnt", service.buyCnt(id.getName()));
+		model.addAttribute("completeCnt", service.completeCnt());
+		model.addAttribute("progressCnt", service.progressCnt());
 		return "mypage/myPage_main";
 	}
 
@@ -84,17 +88,16 @@ public class MypageController {
 	}
 
 	@GetMapping({ "/detailMember", "/modifyMember" })
-	public String getMemberDetail(@RequestParam("id") String id, Model model) {
-		model.addAttribute("member", service.getMemberDetail(id));
+	public String getMemberDetail(Principal id, Model model) {
+		model.addAttribute("member", service.getMemberDetail(id.getName()));
 		return "mypage/myPage_member";
 	}
 
 	@PostMapping("/modifyMember")
-	public String modifyMember(@RequestParam(value="id", required=false) String id,
-			MemberVO member) {
+	public String modifyMember(MemberVO member) {
 		System.out.println(member);
 		service.modifyMember(member);
-		return "redirect:/myPage/main?id=" + id;
+		return "redirect:/myPage/main";
 	}
 	
 	@PostMapping("/deleteMember")
@@ -225,7 +228,7 @@ public class MypageController {
 	@ResponseBody
 	public ResponseEntity<DealListWithPaging> selectDeal(@PathVariable("page") int page,
 				Criteria cri, @PathVariable("status") String status) {			
-		cri = new Criteria(page, 10);
+		cri = new Criteria(page, 9);
 		cri.setStatus(status);		
 		return new ResponseEntity<>(service.selectDeal(cri), HttpStatus.OK);
 	}	

@@ -2,6 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = auth.getPrincipal();
+ 
+    String id = "";
+    if(principal != null) {
+        id = auth.getName();
+    }
+%>	
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -124,7 +136,7 @@
 					<p>한줄소개</p><div><input type="text" name="introduction" value="${member.introduction }" placeholder="한줄소개 변경.."></div><br>				
 					<input type="hidden" id="uploadResult" name="picture">
 					
-					<button type="submit" data-oper='main' class="btn btn-info">목록</button>&emsp;
+					<button type="submit" data-oper='main' class="btn btn-info">목록</button>
 					<button type="submit" data-oper='modify' class="btn btn-success">정보수정</button>&emsp;
 	  				<button type="submit" data-oper='delete' class="btn btn-danger">회원탈퇴</button>																
 				 </form>				 			 	 		 			 				

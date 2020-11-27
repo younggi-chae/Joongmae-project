@@ -159,7 +159,7 @@
 
 								<c:if test="${sessionScope.id !=null}">
 									<li><a
-										href="http://localhost:8080/Mypage/mypageMainAction.cyg">마이페이지</a></li>
+										href="#">마이페이지</a></li>
 								</c:if>
 
 								<c:if test="${sessionScope.id ==null}">

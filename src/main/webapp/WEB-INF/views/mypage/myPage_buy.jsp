@@ -3,8 +3,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = auth.getPrincipal();
+ 
+    String id = "";
+    if(principal != null) {
+        id = auth.getName();
+    }
+%>	
 <%@include file="../includes/header.jsp"%>
-	
+
 	<!-- Header Section End -->
 	<section class="services spad">
 		<div class="container">
@@ -27,7 +38,9 @@
 						<button class="btn btn-danger" id="search6month">최근 6개월</button>&emsp;&emsp;					
 						<span><b>조회기간</b> : <input type="text" name="startDate" id="startDate" /> - 
 						<input type="text" name="endDate" id="endDate" />
-						<button class="btn btn-success" id="searchRange">조회</button></span> 									
+						<button class="btn btn-success" id="searchRange">조회</button></span>
+						&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;   
+						<a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>									
 					</div>					
 				</div><br>
 		 
@@ -97,7 +110,7 @@
 	<script type="text/javascript">	
 	
 	var monthCheck = 0;
-	
+	var id = "<%=id%>";
 	//리스트 출력
 	$(document).ready(function(){
 		monthCheck = "all";
@@ -137,7 +150,7 @@
 	 //리스트 Ajax
 	 function buyList(page, month){
 		var str = "";		
-		var param = new Object();
+		var param = new Object();		
 		param.page = page || 1;
 		param.month = month;		
 		
@@ -145,37 +158,22 @@
 			url : "/myPage/buyListAjax/" + page + "/" + month,
 			dataType : "json",
 			data : param,
-			type : "GET",
-			success : function(result){				
+			type : "GET",			
+			success : function(result){	
+			 					
 				var buyCnt = result.buyCnt;				
 				$('#list').html("");
 				
 				result.list.forEach(function(element){					
-				if(element == null){
-					str = '<tr><td colspan="5" align="center">구매등록을 해주세요.</td></tr>';
-				} else {					  
-					str  = '<tr>';				
-					str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
-					str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
-					str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a></h5>';
-					str += '<td>'+element.type+'</td>';
-					str += '<td>'+element.keyword1+'</td>';
-					str += '<td>'+element.keyword2+'</td>';					
-					str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
-					str += '<td>'+formatDate(element.regDate)+'</td>';
-					str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
-					str += '</tr></tbody></table></div></div></div>';									  
-				    
-						$('#list').append(str);						
-						showPage(buyCnt);					
-				     }
-				});
+					   showList(element);
+					   showPage(buyCnt);				
+				   });	
 						$('#count').html("");
 						var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
 		        		$('#count').append(count);
-			}			
-		});			
-	}
+			    }			
+			});			
+		}
 	 
 	 //조회기간 Ajax	 
  	 function searchRangeList(page){
@@ -193,34 +191,40 @@
 				success : function(result){
 					$('#list').html("");
 					var buyCnt = result.buyCnt;
-					result.list.forEach(function(element){
-						
-						if(element == null){
-							str = '<tr><td colspan="5" align="center">데이터가 없습니다.</td></tr>';
-						} else {
-							str =  '<tr>';
-							str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
-							str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
-							str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a></h5>';
-							str += '<td>'+element.type+'</td>';
-							str += '<td>'+element.keyword1+'</td>';
-							str += '<td>'+element.keyword2+'</td>';							
-							str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
-							str += '<td>'+formatDate(element.regDate)+'</td>';
-							str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
-							str += '</tr></tbody></table></div></div></div>';							  
-							
-								$('#list').append(str);									
-								showPage(buyCnt);								
-							}
+					result.list.forEach(function(element){						
+							showList(element);
+							showPage(buyCnt);
 						});	
-								$('#count').html("");
-								var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
-				        		$('#count').append(count);
+							$('#count').html("");
+							var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
+			        		$('#count').append(count);
 						}
 					});
 			     }
 	 
+	 
+ 	var showList = function(element){
+ 		var str = "";
+ 		if(element == null){
+			str = '<tr><td colspan="5" align="center">구매등록을 해주세요.</td></tr>';
+		} else {					  
+			str  = '<tr>';				
+			str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
+			str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
+			str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a></h5>';
+			str += '<td>'+element.type+'</td>';
+			str += '<td>'+element.keyword1+'</td>';
+			str += '<td>'+element.keyword2+'</td>';					
+			str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
+			str += '<td>'+formatDate(element.regDate)+'</td>';
+			str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
+			str += '</tr></tbody></table></div></div></div>';									  
+		    
+				$('#list').append(str);						
+									
+		}		 		
+ 	}
+		
 	 
 		 
 	 //구매등록 삭제

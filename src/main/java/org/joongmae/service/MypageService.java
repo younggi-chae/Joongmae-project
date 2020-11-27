@@ -1,6 +1,7 @@
 package org.joongmae.service;
 
 
+import java.security.Principal;
 import java.util.List;
 
 import org.joongmae.domain.BuyListWithPaging;
@@ -24,6 +25,7 @@ public interface MypageService {
 	public int deleteBuy(int buyNo);
 	public BuyListWithPaging getBuyListWithPaging(Criteria cri);
 	public BuyListWithPaging dateSearchRange(Criteria cri);
+	public int buyCnt(String id);
 	
 	public List<SellVO> getSellList(Criteria cri);
 	public int countSell(Criteria cri);
@@ -36,6 +38,8 @@ public interface MypageService {
 	public DealAndSell getDealDetail(int dealNo);
 	public DealListWithPaging getDealListWithPaging(Criteria cri);
 	public DealListWithPaging selectDeal(Criteria cri);	
+	public int completeCnt();
+	public int progressCnt();
 	
 	public List<WishAndSell> getWishList(Criteria cri);
 	public int countWish(Criteria cri);

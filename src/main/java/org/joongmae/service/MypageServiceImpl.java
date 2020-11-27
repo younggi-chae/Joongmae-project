@@ -60,6 +60,11 @@ public class MypageServiceImpl implements MypageService {
 		log.info(cri);
 		return new BuyListWithPaging(mapper.dateCntRange(cri), mapper.dateSearchRange(cri));
 	}
+	
+	@Override
+	public int buyCnt(String id) {		
+		return mapper.buyCnt(id);
+	}
 
 	@Override
 	public List<SellVO> getSellList(Criteria cri) {		
@@ -113,6 +118,17 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public DealListWithPaging getDealListWithPaging(Criteria cri) {		
 		return new DealListWithPaging(mapper.countDeal(cri), mapper.getDealList(cri));
+	}
+	
+	@Override
+	public int completeCnt() {		
+		return mapper.completeCnt();
+	}
+
+	@Override
+	public int progressCnt() {
+		
+		return mapper.progressCnt();
 	}
 
 	@Override

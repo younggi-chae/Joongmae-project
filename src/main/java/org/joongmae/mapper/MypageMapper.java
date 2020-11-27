@@ -18,6 +18,7 @@ public interface MypageMapper {
 	List<BuyVO> dateSearchRange(Criteria cri);
 	int dateCntRange(Criteria cri);
 	int deleteBuy(int buyNo);
+	int buyCnt(String id);
 	
 	List<SellVO> getSellList(Criteria cri);	
 	int countSell(Criteria cri);
@@ -30,6 +31,8 @@ public interface MypageMapper {
 	DealAndSell getDealDetail(int dealNo);
 	List<DealAndSell> selectDeal(Criteria cri);
 	int countSelectDeal(Criteria cri);
+	int completeCnt();
+	int progressCnt();
 	
 	List<WishAndSell> getWishList(Criteria cri);
 	int countWish(Criteria cri);
