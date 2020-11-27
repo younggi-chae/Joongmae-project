@@ -79,8 +79,8 @@
 					</div>
 				  </div> 
 				</div>	
-				<div class='pagination__option' id="pagenation">
-					 
+				<div class='pagination__option' id="pagenation" align="center">
+					 <button class="login100-form-btn" id="readMore">더보기</button>
 				</div>				 
 			 </div>    	
 		</section>
@@ -111,33 +111,39 @@
 	
 	var monthCheck = 0;
 	var id = "<%=id%>";
+	var pageNum = 1;
+	
 	//리스트 출력
 	$(document).ready(function(){
-		monthCheck = "all";
+		monthCheck = "all";		
 		buyList(pageNum, 1000);		
 	});		
 	
 	//최근 3개월 검색
 	$('#search3month').on('click', function(){
 		monthCheck = "3";
+		showPage();
 		buyList(pageNum, 2);	
 	});
 	
 	//최근 6개월 검색
 	$('#search6month').on('click', function(){
 		monthCheck = "6";
-		buyList(pageNum, 5);		
+		showPage();
+		buyList(pageNum, 5);		 
 	});
 	
 	//전체기간 검색
 	$('#searchWhole').on('click', function(){
 		monthCheck = "all";
+		showPage();
 		buyList(pageNum, 1000);
 	});
 	
 	//범위 지정 검색
 	$('#searchRange').on('click', function(){		
 		monthCheck = "range"
+		showPage();
 		searchRangeList();		
 	});
 	
@@ -159,15 +165,15 @@
 			dataType : "json",
 			data : param,
 			type : "GET",			
-			success : function(result){	
-			 					
-				var buyCnt = result.buyCnt;				
-				$('#list').html("");
-				
+			success : function(result){				 					
+				var buyCnt = result.buyCnt;					
+				if(result.list.length < 5){
+		                $("#readMore").hide();
+		            } else {
 				result.list.forEach(function(element){					
-					   showList(element);
-					   showPage(buyCnt);				
-				   });	
+					   showList(element);					   			
+				   });
+		        }
 						$('#count').html("");
 						var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
 		        		$('#count').append(count);
@@ -179,8 +185,7 @@
  	 function searchRangeList(page){
 			var str = "";
 			var startDate = $('#startDate').val();
-			var endDate = $('#endDate').val();
-			
+			var endDate = $('#endDate').val();			
 			var page = page || 1 ;	
 		
 			$.ajax({
@@ -188,14 +193,17 @@
 				dataType : "json",
 				data : {startDate : startDate, endDate : endDate},
 				type : "GET",
-				success : function(result){
-					$('#list').html("");
+				success : function(result){					
 					var buyCnt = result.buyCnt;
-					result.list.forEach(function(element){						
-							showList(element);
-							showPage(buyCnt);
-						});	
-							$('#count').html("");
+					 if(result.list.length < 10){
+			                $("#readMore").hide();
+			            } else {
+					result.list.forEach(function(element){					
+						   showList(element);
+						   //showPage(buyCnt);				
+					   });
+			        }
+					 		$('#count').html("");
 							var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
 			        		$('#count').append(count);
 						}
@@ -220,13 +228,35 @@
 			str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
 			str += '</tr></tbody></table></div></div></div>';									  
 		    
-				$('#list').append(str);						
+				$('#list').append(str);
 									
 		}		 		
  	}
 		
 	 
-		 
+ 	//더보기 버튼
+	 $("#readMore").on("click", function(){	        	        
+	        ++pageNum;		        
+	        
+	        if(monthCheck == "3"){
+	        	buyList(pageNum, 2);
+	        }else if( monthCheck == "6"){
+	        	buyList(pageNum, 5);
+	        }else if( monthCheck == "all"){
+	        	buyList(pageNum, 1000);
+	        }else if(monthCheck == "range"){
+	        	searchRangeList(pageNum);
+	        }	       
+	   });
+ 	
+ 	
+ 	function showPage(){
+ 		$('#list').html("");
+		pageNum= 1;
+		$("#readMore").show();
+ 	}
+ 	
+ 	
 	 //구매등록 삭제
 	 function deleteBuy(buyNo){		 
 		 var buyNo = $('#list').find('#deleteBtn').val();
@@ -250,62 +280,8 @@
 	             }        	
 			 }
 		 });
-	 }
-		
-	 
- 	//페이징 이동
-	 $("#pagenation").on("click","li a", function(e){
-	        e.preventDefault();      
-	        
-	        var targetPageNum = $(this).attr("href");	        
-	        pageNum = targetPageNum;
-	        
-	        if(monthCheck == "3"){
-	        	buyList(pageNum, 2);
-	        }else if( monthCheck == "6"){
-	        	buyList(pageNum, 5);
-	        }else if( monthCheck == "all"){
-	        	buyList(pageNum, 1000);
-	        }else if(monthCheck == "range"){
-	        	searchRangeList(pageNum);
-	        }	       
-	   }); 
-
+	 } 	
  	
- 	//페이징 계산 및 출력 
-	 var pageNum = 1;
-	 
-	 function showPage(buyCnt){      
-	      var endNum = Math.ceil(pageNum / 10.0) * 10;  
-	      var startNum = endNum - 9;       
-	      var prev = startNum != 1;
-	      var next = false;
-	      
-	      if(endNum * 10 >= buyCnt){
-	        endNum = Math.ceil(buyCnt/10.0);
-	      }	      
-	      if(endNum * 10 < buyCnt){
-	        next = true;
-	      }	      
-	      var str = "<ul class='pagination pull-left'>";
-	      
-	      if(prev){
-	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
-	      }         
-	      
-	      for(var i = startNum ; i <= endNum; i++){ 	    	  
-	        var active = pageNum == i? "active":"";        
-	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
-	      }
-	      
-	      if(next){
-	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
-	      }
-	      
-	      str += "</ul>";
-	       
-	      $("#pagenation").html(str);
-	    }
 	   
 	    
     //datePicker 옵션 설정

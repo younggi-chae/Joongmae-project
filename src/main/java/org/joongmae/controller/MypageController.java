@@ -199,7 +199,7 @@ public class MypageController {
 	@ResponseBody
 	public ResponseEntity<BuyListWithPaging> buyList(@PathVariable("page") int page,
 				Criteria cri ,@PathVariable("month") int month) {		
-		cri = new Criteria(page, 10);			
+		cri = new Criteria(page, 5);			
 		cri.setMonth(month);
 		System.out.println(month);
 		return new ResponseEntity<>(service.getBuyListWithPaging(cri), HttpStatus.OK);
@@ -209,7 +209,7 @@ public class MypageController {
 	@ResponseBody
 	public ResponseEntity<BuyListWithPaging> dateSearchRange(@PathVariable("page") int page,
 			Criteria cri, @PathVariable String startDate, @PathVariable String endDate){			
-			cri = new Criteria(page, 10);	
+			cri = new Criteria(page, 5);	
 			cri.setStartDate(startDate);
 			cri.setEndDate(endDate);
 			return new ResponseEntity<>(service.dateSearchRange(cri), HttpStatus.OK);
@@ -219,7 +219,7 @@ public class MypageController {
 	@ResponseBody
 	public ResponseEntity<WishListWithPaging> wishList(@PathVariable("page") int page,
 			Criteria cri, Model model) {
-		cri = new Criteria(page, 10);
+		cri = new Criteria(page, 3);
 		model.addAttribute("count", service.countWish(cri));
 		return new ResponseEntity<>(service.getWishListWithPaging(cri), HttpStatus.OK);
 	}
