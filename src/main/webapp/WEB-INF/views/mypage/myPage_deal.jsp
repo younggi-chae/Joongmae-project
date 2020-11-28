@@ -63,9 +63,8 @@
 		</div>
 	</section>
 	<!-- Car Section End -->
-	
+
 	<!-- modal창 정보 -->	
-	<!--  큰창:<div class="modal-dialog"> 작은창 :<div class="modal-dialog modal-sm">  -->		
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -105,8 +104,42 @@
 					</div>
 				</div>					
 			</div>				
-		  </div>			
-	<!-- /.modal -->	
+		  </div>		  			
+	<!-- /.modal -->
+	
+	<!-- modal창 정보 -->
+		<div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">							
+						<h4 class="modal-title" id="myModalLabel"><i class="fa fa-comments fa-fw"></i> Comments</h4>
+					</div>
+					<div class="modal-body">
+					<div class='row'>
+					  <div class="col-lg-12">					    
+					    <div class="panel panel-default">
+					      <div class="panel-heading">
+					       					        
+					      </div>					      
+					      <div class="panel-body">      
+					        <ul class="reply">
+					        	
+					        </ul>					       
+					      </div>										
+						</div>
+					  </div>				 
+					</div>
+					</div>
+					<div class="modal-footer">                 		
+                		<input class="form-control" name='reply' placeholder="댓글을 입력하세요.">               		
+                		<button class="btn btn-danger content" id="insert">댓글남기기</button> 					
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>							
+					</div>
+				</div>					
+			</div>				
+		 </div>			
+	<!-- /.modal -->			
 
 
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
@@ -150,7 +183,7 @@
 				var windowHeight = $window.height();  // 화면 높이
 				var documentHeight = $(document).height();	//문서 전체 높이			
 				
-				if(scrollTop + windowHeight + 100 > documentHeight){									
+				if(scrollTop + windowHeight + 60 > documentHeight){									
 					if(statusCheck == "progress"){
 						statusList(page, "진행중");
 			        }else if(statusCheck == "complete"){
@@ -177,7 +210,7 @@
 				var length = result.list.length;
 				console.log("리스트 길이 : " + length);
 				
-				if(length < 5){
+				if(length < 9){
 					endCheck = true;
 				}				
 				$.each(result.list, function(index, element){
@@ -202,14 +235,13 @@
 				dataType : "json",				
 				type : "GET",	
 				data : param,
-				success : function(result){			
-				
+				success : function(result){					
 				var length = result.list.length;
-				console.log("리스트 길이 : " + length);
-				
+				console.log("리스트 길이 : " + length);				
 				if(length < 5){
 					endCheck = true;
-				}				
+				}
+				
 				$.each(result.list, function(index, element){
 					showList(false, element);
 				});
@@ -220,8 +252,7 @@
 		
 	//화면에 뿌려질 태그
 	var showList = function(mode, element){			
-		var str = "";
-		
+		var str = "";		
 		str =  '<div class="col-lg-4 col-md-4 target" data-dealNo="'+element.dealNo+'"><div class="car__item">';						
 		str += '<div class="car__item__pic__slider">';
 		if(element.picture != null){
@@ -232,9 +263,11 @@
 		str += '<div class="car__item__text"><div class="car__item__text__inner">';
 		str += '<div class="label-date">' + element.buyId +'</div>';
 		str += '<div class="label-date">' + element.sellId +'</div>';
-		str += '<h5><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
+		str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
 		str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal" style="font-size: 25px;">' + element.itemName +'</a>';
-		str += '&emsp;&emsp;&emsp;&emsp;<span>'+ formatDate(element.regDate) +'</span></h5>';
+		str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
+		str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" style="font-size:40px;">';
+		str += '<i class="fa fa-comments fa-fw" "></i></a></div>';
 		str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 		str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 		if(element.status === "진행중"){
@@ -250,9 +283,109 @@
 				$('#dealList').append(str);
 			}		
 		}
+	
+	
+	//댓글 insert & list
+	var dealNo = 0;
+	$('#dealList').on("click", '.commentModal', function(){
+		dealNo = $(this).prev().prev().val();		
+		replyList(dealNo);		
+	});	
+	
+	$('#insert').on('click', function(){
+		replyInsert(dealNo);				
+	});	
+	
+	$('.reply').on('click', '.replyDelete', function(){
+		var replyNo = $(this).prev().val();
+		replyDelete(replyNo);
+	});
+	
 		
-		
-		
+	function replyInsert(dealNo){		
+		var reply = $('.content').prev().val();		
+		var header = "${_csrf.headerName}";
+	    var token = "${_csrf.token}";
+		var param = new Object();			
+		param.dealNo = dealNo;
+		param.reply = reply;		
+		$.ajax({
+			url : "/myPage/replyInsert",			
+			data : JSON.stringify(param),
+			type : "POST",		
+			contentType : "application/json; charset=utf-8",
+			beforeSend : function(xhr)
+	        {  
+	        xhr.setRequestHeader(header, token);
+	        },
+			success : function(result){	
+				replyList(dealNo);
+				$('input[name="reply"]').val("");
+			}, error : function(err){
+				alert("실패");
+			}
+		});
+	}	
+	
+	
+	function replyList(dealNo){			
+		$.ajax({
+			url : "/myPage/replyList/" + dealNo,
+			dataType : "json",
+			data : dealNo,
+			type : "GET",
+			success : function(result){			 
+			  $('.reply').html("");
+			  console.log(result.length);
+			  if(result.length === 0){
+				  str = '<li><div align="center"><b>등록된 댓글이 없습니다.</b></div></li>';
+				  $('.reply').append(str);
+			  } else {
+			  result.forEach(function(element){			  
+				  var str = "";			  
+				  str  = '<li class="left clearfix">';
+				  str += 	'<div>';
+				  str += 		'<div class="header">';				 
+				  str += 			'<strong class="primary-font">'+element.replyer+'</strong>&emsp;';
+				  str +=            '<input type="hidden" value="'+element.replyNo+'">';
+				  str +=            '<a href="#" class="replyDelete"><i class="fa fa-close"></i></a>';
+				  str += 			'<small class="pull-right text-muted">'+element.replyDate+'</small>';
+				  str +=        '</div>';
+				  str +=            '<p>'+element.reply+'</p>';
+				  str +=    '</div>';
+				  str += '</li>';
+				  
+			  		$('.reply').append(str);	
+				  });
+			    }
+			 }
+		});	
+	}
+	
+	function replyDelete(replyNo){		
+		var header = "${_csrf.headerName}";
+	    var token = "${_csrf.token}";
+	    if(confirm("댓글을 삭제하시겠습니까?")) {			
+        
+		$.ajax({
+			url : "/myPage/replyDelete/" + replyNo,			
+			data : replyNo,
+			type : "POST",
+			beforeSend : function(xhr)
+	        {  
+	        xhr.setRequestHeader(header, token);
+	        },
+			success : function(result){	
+			   replyList(dealNo);				
+			}, error : function(err){
+				alert("실패");
+			}
+		});
+		    } else {
+	            return false;
+	        }
+      }
+	
 	    
     //Deal 상세보기 모달
 	$('#dealList').on("click", '.targetModal', function(){
@@ -309,7 +442,7 @@
 	 
 	 
 	//날짜 포맷팅
-	 function formatDate(dateVal){
+	function formatDate(dateVal){
    		var date = new Date(dateVal);
 		var year = date.getFullYear();              
    		 var month = (1 + date.getMonth());          
@@ -324,23 +457,6 @@
 	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 		
-
-	var searchForm = $("#searchForm");
-	$("#searchForm button").on("click",	function(e) {
-		if (!searchForm.find("option:selected").val()) {
-				alert("검색종류를 선택하세요");
-				return false;
-		}
-			if (!searchForm.find("input[name='keyword']").val()) {
-					alert("키워드를 입력하세요");
-					return false;
-				}
-
-				searchForm.find("input[name='pageNum']").val("1");
-				e.preventDefault();
-				searchForm.submit();
-			});
-	
 	
 	
 	<%-- 	 $('.modal-body').append(str);

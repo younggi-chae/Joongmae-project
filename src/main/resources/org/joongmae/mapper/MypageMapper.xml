@@ -175,6 +175,9 @@
 		update MEMBER set isMember = 'n' where id = #{id}
 	</update>		
 	
+	<delete id="deleteUser">
+		delete from member_auth where id = #{id}
+	</delete>
 	
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->
@@ -223,9 +226,25 @@
 	<delete id="deleteAllWish">
 		delete from wishlist
 	</delete>	
+	
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->
+	<!-- reply 댓글 -->
 		
+	<insert id="replyInsert">
+		insert into reply(replyno, dealno, reply, replyer) values(seq_replyno_reply.nextval, #{dealNo}, #{reply}, 'test')
+	</insert>
+	
+	<select id="replyList" resultType="org.joongmae.domain.ReplyVO">	  	
+		select * from reply where dealNo = #{dealNo}
+	</select>
+	
+	<delete id="replyDelete">
+		delete from reply where replyNo = #{replyNo}
+	</delete>
+	
+	<!--=====================================================================================================================-->
+	<!--=====================================================================================================================-->	
 	
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">

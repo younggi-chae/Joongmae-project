@@ -33,6 +33,7 @@
                   <div class="row">
                      <div class="col-lg-8 col-md-6">                        
                         <a href="#" class="btn btn-danger" id="deleteAll">전체삭제</a>
+                        <a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>	
                      </div>
                       <div class="col-lg-4 col-md-6">										
 							<div class="pull-right">
@@ -46,7 +47,7 @@
 									  <input type='text' name='keyword' placeholder="검색어를 입력해주세요." value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
 									  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
 									  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
-									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>
+									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>									 
 								</form>
 							</div>
 						</div>					
@@ -256,7 +257,8 @@ $(document).ready(function () {
 		 var sellNo = $(this).val();		 
 		 var header = "${_csrf.headerName}";
 		 var token = "${_csrf.token}";		 
-		 console.log(sellNo);
+		 if(confirm("해당 견적서를 삭제하시겠습니까?")) {     	 
+            	
 		 $.ajax({
 			 url : "/myPage/deleteSell/" + sellNo,			 
 			 data : sellNo,
@@ -267,16 +269,16 @@ $(document).ready(function () {
 	        xhr.setRequestHeader(header, token);
 	           },
 	        success : function(result){
-	       	 if(confirm("해당 견적서를 삭제하시겠습니까?")) {	        		 
-		     		location.reload();
-	            } else {
-	                return false;
-	            }        	
+	        	alert("삭제되었습니다.")
+	        	location.reload();
 			 }, error : function(err) {
 				 alert("실패");
 			 }
 		 });
-	});
+			 } else {
+	             return false;
+	         } 
+	 });
 	
 	 //견적서 전체삭제
 	 var count = $('#count').val();	 

@@ -2,6 +2,7 @@ package org.joongmae.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.annotation.Repeatable;
 import java.nio.file.Files;
 import java.security.Principal;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.domain.PageDTO;
+import org.joongmae.domain.ReplyVO;
 import org.joongmae.domain.SellVO;
 
 import org.joongmae.domain.WishListVO;
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +80,7 @@ public class MypageController {
 
 	@GetMapping("/dealList")
 	public String getDealList(Criteria cri ,Model model) {
+		model.addAttribute("list", service.getDealList(cri));
 		return "mypage/myPage_deal";
 	}
 	
@@ -103,7 +106,7 @@ public class MypageController {
 	@PostMapping("/deleteMember")
 	public String deleteMember(@RequestParam(value="id", required=false) String id){
 		service.deleteMember(id);
-		return "redirect:/main";
+		return "redirect:/member/login";
 	}
 	
 	@PostMapping("/deleteBuy/{buyNo}")
@@ -219,7 +222,7 @@ public class MypageController {
 	@ResponseBody
 	public ResponseEntity<WishListWithPaging> wishList(@PathVariable("page") int page,
 			Criteria cri, Model model) {
-		cri = new Criteria(page, 3);
+		cri = new Criteria(page, 5);
 		model.addAttribute("count", service.countWish(cri));
 		return new ResponseEntity<>(service.getWishListWithPaging(cri), HttpStatus.OK);
 	}
@@ -231,7 +234,30 @@ public class MypageController {
 		cri = new Criteria(page, 9);
 		cri.setStatus(status);		
 		return new ResponseEntity<>(service.selectDeal(cri), HttpStatus.OK);
-	}	
+	}
+	
+	@RequestMapping(value="/replyInsert", method={RequestMethod.GET, RequestMethod.POST})	
+	@ResponseBody
+	public ResponseEntity<String> replyInsert(@RequestBody ReplyVO reply){				
+		int insertCount = service.replyInsert(reply);			
+		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/replyList/{dealNo}")
+	@ResponseBody
+	public ResponseEntity<List<ReplyVO>> replyList(@PathVariable("dealNo") int dealNo){
+		System.out.println(dealNo);
+		return new ResponseEntity<>(service.replyList(dealNo), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/replyDelete/{replyNo}", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public ResponseEntity<String> replyDelete(@PathVariable("replyNo") int replyNo){
+		int insertCount = service.replyDelete(replyNo);		
+		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	@PostMapping("/uploadAjaxAction")
 	@ResponseBody

@@ -134,7 +134,7 @@
 					<p>주소</p><div><input type="text" name="address" id="sample4_jibunAddress"  value="${member.address }" placeholder="주소 변경..">
 							       <input type="button" onclick="sample4_execDaumPostcode()" value="지역 찾기"></div><br>				
 					<p>한줄소개</p><div><input type="text" name="introduction" value="${member.introduction }" placeholder="한줄소개 변경.."></div><br>				
-					<input type="hidden" id="uploadResult" name="picture">
+					<input type="hidden" id="uploadResult" name="picture" value="${member.picture }">
 					
 					<button type="submit" data-oper='main' class="btn btn-info">목록</button>
 					<button type="submit" data-oper='modify' class="btn btn-success">정보수정</button>&emsp;

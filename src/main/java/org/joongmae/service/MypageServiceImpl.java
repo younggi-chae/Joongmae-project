@@ -9,7 +9,7 @@ import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
-
+import org.joongmae.domain.ReplyVO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 import org.joongmae.domain.WishListVO;
@@ -28,7 +28,7 @@ import lombok.extern.log4j.Log4j;
 public class MypageServiceImpl implements MypageService {
 
 	@Setter(onMethod_ = @Autowired)
-	private MypageMapper mapper;
+	private MypageMapper mapper;	
 	
 	@Override
 	public List<BuyVO> getBuyList(Criteria cri) {		
@@ -142,8 +142,11 @@ public class MypageServiceImpl implements MypageService {
 		return mapper.modifyMember(member) == 1;
 	}
 	
+	@Transactional
 	@Override
-	public int deleteMember(String id) {		
+	public int deleteMember(String id) {
+		mapper.deleteUser(id);
+		
 		return mapper.deleteMember(id);
 	}	
 
@@ -181,6 +184,21 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public WishListWithPaging getWishListWithPaging(Criteria cri) {		
 		return new WishListWithPaging(mapper.countWish(cri), mapper.getWishList(cri));
+	}
+
+	@Override
+	public int replyInsert(ReplyVO reply) {		
+		return mapper.replyInsert(reply);
+	}
+
+	@Override
+	public List<ReplyVO> replyList(int dealNo) {		
+		return mapper.replyList(dealNo);
+	}
+
+	@Override
+	public int replyDelete(int replyNo) {		
+		return mapper.replyDelete(replyNo);
 	}
 	
 }

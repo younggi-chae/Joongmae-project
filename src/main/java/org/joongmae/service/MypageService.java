@@ -10,6 +10,7 @@ import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
+import org.joongmae.domain.ReplyVO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 
@@ -53,6 +54,8 @@ public interface MypageService {
 	public boolean modifyMember(MemberVO member);
 	public int deleteMember(String id);
 	
-	
+	public int replyInsert(ReplyVO reply);
+	public List<ReplyVO> replyList(int dealNo);
+	public int replyDelete(int replyNo);
 	
 }

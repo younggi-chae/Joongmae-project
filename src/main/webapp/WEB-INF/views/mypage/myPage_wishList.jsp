@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="car__filter__option__item car__filter__option__item--right">
-                                    <button class="btn btn-danger">판매자와 대화하기</button>
+                                    <a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>
                                 </div>
                             </div>                           
                         </div>
@@ -114,7 +114,6 @@
 	//위시리스트 Ajax
 	 function wishList(page){
 		var str = "";		
-		
 		var param = new Object();
 		param.page = page || 1;			
 		
@@ -124,24 +123,26 @@
 			data : param,
 			type : "GET",
 			success : function(result){				
-				var wishCnt = result.wishCnt;
-				var length = result.list.length;
+				var wishCnt = result.wishCnt;				
+				var length = result.list.length;				
 				$('#list').html("");
 				if(pageNum < 2){
 			    	 $("#prev").attr("disabled", true);
 			     } else {
 			    	 $("#prev").attr("disabled", false);
 			     }          
-				if(length < 3){
+				if(length < 5 || page*5 === wishCnt){
 					$("#next").attr("disabled", true);
 				} else {
 					$("#next").attr("disabled", false);
 				}
-				
+				 if(length === 0){
+					str = '<tr><td colspan="8" align="center"><b>위시리스트가 비어있습니다.<b></td></tr>';
+					$('#list').append(str);
+				} 			 	
 				result.list.forEach(function(element){					
 						showList(element);
-					});
-				
+					});				
 						$('#count').html("");
 						var count = '<b>'+wishCnt+'개의 상품이 담겨있어요!!</b>';
 		        		$('#count').append(count);
@@ -152,10 +153,7 @@
 	 
 	 //위시리스트 뷰
 	 var showList = function(element){
-		 var str = "";
-		 if(element == null){
-				str = '<tr><td colspan="5" align="center">위시리스트가 비어있습니다.</td></tr>';
-			} else {					  
+		 var str = "";		 				  
 				str  = '<tr style="vertical-align: middle;">';		
 				str += '<td><input type="checkbox" name="check" value="'+ element.wishNo +'" style="zoom:2.0;"></td>';
 				str += '<td><img src="/resources/img/upload_cyg/'+ element.picture +'" style="height: 80px; width: 80px;"></td>';
@@ -170,8 +168,8 @@
 				str += '</tr>';			
 			    
 					$('#list').append(str);						 				
-		  }		          
-	 }
+		  	          
+	   }
 	 
 	 
 	//이전,다음버튼  & 페이징 이동

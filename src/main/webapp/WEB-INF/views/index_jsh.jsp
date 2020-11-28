@@ -159,11 +159,11 @@
 
 								<c:if test="${sessionScope.id !=null}">
 									<li><a
-										href="#">마이페이지</a></li>
+										href="/myPage/main">마이페이지</a></li>
 								</c:if>
 
 								<c:if test="${sessionScope.id ==null}">
-									<li><a href="#">마이페이지</a></li>
+									<li><a href="/myPage/main">마이페이지</a></li>
 								</c:if>
 
 							</ul>
