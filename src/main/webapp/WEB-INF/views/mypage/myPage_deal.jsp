@@ -66,13 +66,13 @@
 
 	<!-- modal창 정보 -->	
 		<div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
+			aria-labelledby="detailModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">							
-						<h4 class="modal-title" id="myModalLabel">거래 상세보기</h4>
+						<h4 class="modal-title" id="detailModalLabel">거래 상세보기</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" id="detail">
 					
 					</div>
 					<div class="modal-footer">
@@ -107,33 +107,22 @@
 	<!-- /.modal -->
 	
 	<!-- modal창 정보 -->
-		<div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="commentModal" tabindex="-1" role="dialog2"
+			aria-labelledby="commentModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">							
-						<h4 class="modal-title" id="myModalLabel"><i class="fa fa-comments fa-fw"></i> Comments</h4>
+						<h4 class="modal-title" id="commentModalLabel"><i class="fa fa-comments fa-fw"></i> Comments</h4>
 					</div>
-					<div class="modal-body">
-					<div class='row'>
-					  <div class="col-lg-12">					    
-					    <div class="panel panel-default">
-					      <div class="panel-heading">
-					       					        
-					      </div>					      
-					      <div class="panel-body">      
-					        <ul class="reply">
-					        	
-					        </ul>					       
-					      </div>										
-						</div>
-					  </div>				 
-					</div>
+					<div class="modal-body">					      
+				        <ul class="reply">
+				        	
+				        </ul>					
 					</div>
 					<div class="modal-footer">                 		
                 		<input class="form-control" name='reply' placeholder="댓글을 입력하세요.">               		
                 		<button class="btn btn-danger content" id="insert">댓글남기기</button> 					
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>							
+						<button type="button" class="btn btn-secondary replyClose" data-dismiss="modal">Close</button>							
 					</div>
 				</div>					
 			</div>				
@@ -170,7 +159,7 @@
 				statusList(page, "진행중");	
 				infiniteScroll(page, "진행중");
 			}	
-		   }); 
+		   });			
 		}); 
 				
 		//무한 스크롤 페이징 셋팅
@@ -303,8 +292,7 @@
 	});		
 	
 	$('#insert').on('click', function(){
-		replyInsert(dealNo);
-		dealList();
+		replyInsert(dealNo);		
 	});		 
 	
 	$('.reply').on('click', '.replyDelete', function(){
@@ -317,6 +305,7 @@
 		var dealNo = $(this).prev().val();					
 		detailDeal(dealNo);
 	});	
+		
 	
 	
 	function replyInsert(dealNo){		
@@ -412,7 +401,7 @@
 		   data : dealNo,
 		   type : "GET",
 		   success : function(result){	
-			  $('.modal-body').html("");			 
+			  $('#detail').html("");			 
 			  str += '<div class="car__details__pic">';
 			  str += '	<img src="/resources/img/upload_cyg/'+result.picture+'">';
 			  str += '</div>';					 
@@ -449,7 +438,7 @@
 			  str += 	'</ul>';
 			  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';			  
 			
-				 $('.modal-body').append(str);
+				 $('#detail').append(str);
 		   }
 		});
 	}

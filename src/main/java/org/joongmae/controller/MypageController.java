@@ -24,6 +24,7 @@ import org.joongmae.domain.WishListWithPaging;
 import org.joongmae.service.MypageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -52,7 +53,7 @@ public class MypageController {
 
 	private MypageService service;
 
-	@GetMapping("/main")
+	@GetMapping("/main")	
 	public String main(Principal id, Model model, Criteria cri) {
 		model.addAttribute("member", service.getMemberDetail(id.getName()));
 		model.addAttribute("sellCnt", service.countSell(cri));
@@ -61,7 +62,7 @@ public class MypageController {
 		model.addAttribute("progressCnt", service.progressCnt());
 		return "mypage/myPage_main";
 	}
-
+	
 	@GetMapping("/buyList")
 	public String getBuyList(Criteria cri, Model model) {		
 		return "mypage/myPage_buy";

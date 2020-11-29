@@ -168,17 +168,17 @@
 			success : function(result){				 					
 				var buyCnt = result.buyCnt;
 				var length = result.list.length;
-				if(length === 0){
+				if(length < 0){
 					str = '<tr><td colspan="5" align="center">구매등록을 해주세요.</td></tr>';
 					$('#list').append(str);
 				}  		
-				if(length < 5){
+				if(length < 5 || page*5 === buyCnt){
 		                $("#readMore").hide();
-		            } else {
+		           } 
 				result.list.forEach(function(element){					
 					   showList(element);					   			
 				   });
-		        }
+		      
 					$('#count').html("");
 					var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
 	        		$('#count').append(count);
@@ -202,11 +202,11 @@
 					var length = result.list.length;					
 					 if(length < 5){
 			                $("#readMore").hide();
-			            } else {
+			            } 
 					result.list.forEach(function(element){					
 						   showList(element);						  				
 					   });
-			        }
+			       
 					 		$('#count').html("");
 							var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
 			        		$('#count').append(count);
