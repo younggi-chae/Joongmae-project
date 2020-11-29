@@ -27,14 +27,15 @@ public interface MypageMapper {
 	SellVO getSellDetail(int sellNo);
 	int deleteSell(int sellNo);
 	int deleteAllSell();
+	int sellCnt(String id);
 	
 	List<DealAndSell> getDealList(Criteria cri);
 	int countDeal(Criteria cri);
 	DealAndSell getDealDetail(int dealNo);
 	List<DealAndSell> selectDeal(Criteria cri);
 	int countSelectDeal(Criteria cri);
-	int completeCnt();
-	int progressCnt();
+	int completeCnt(Criteria cri);
+	int progressCnt(Criteria cri); 
 	
 	List<WishAndSell> getWishList(Criteria cri);
 	int countWish(Criteria cri);

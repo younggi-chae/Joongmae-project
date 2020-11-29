@@ -45,6 +45,7 @@
 									<col style="width: 10%;" />
 									<col style="width: auto;" />
 									<col style="width: 10%;" />
+									<col style="width: 10%;" />
 									<col style="width: 10%;" />									
 									<col style="width: 10%;" />
 									<col style="width: 10%;" />									
@@ -55,6 +56,7 @@
 										<th><input type="checkbox" id="checkAll" style="zoom:2.0;"></th>
 										<th></th>
 										<th>상품명</th>
+										<th>판매자</th>
 										<th>거래방식</th>
 										<th>키워드1</th>
 										<th>키워드2</th>
@@ -161,6 +163,7 @@
 				str += '<input id="modalNo" name="modalNo" type="hidden" value="'+ element.sellNo +'">';
 				str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+ element.itemName+'</a></h5>';
 				str += '<td>'+ element.sellId +'</td>';
+				str += '<td>'+ element.type +'</td>';
 				str += '<td>'+  element.keyword1 +'</td>';		
 				str += '<td>'+  element.keyword2 +'</td>';		
 				str += '<td>'+  element.keyword3 +'</td>';			

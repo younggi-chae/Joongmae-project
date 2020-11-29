@@ -20,6 +20,9 @@ public class Criteria {
 	private String endDate;
 	private int month;
 	private String status;
+	private String id;
+	private String buyId;
+	private String sellId;
 	
 	public Criteria(){
 		this(1, 9);

@@ -13,7 +13,7 @@ public class ReplyVO implements Serializable {
 	private int replyNo;
 	private int dealNo;
 	private String reply;
-	private String replyer;
+	private String id;
 	private String replyDate;
 	private String updateDate;
 	

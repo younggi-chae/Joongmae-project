@@ -158,8 +158,7 @@
     	var buyCnt = $('#buyCnt').val(); 
     	var sellCnt = $('#sellCnt').val(); 
     	var completeCnt = $('#completeCnt').val(); 
-    	var progressCnt = $('#progressCnt').val(); 
-    	  console.log(sellCnt);
+    	var progressCnt = $('#progressCnt').val();     	 
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Topping');
         data.addColumn('number', '건수');

@@ -136,34 +136,34 @@
 	
 		var statusCheck = "";
 		var page = 1;
+		var endCheck = false;
 		$(document).ready(function(){		
 			//리스트 출력
 			statusCheck = "whole";
 			dealList();	
 			infiniteScroll();
-		//진행중, 거래완료 검색
+		 //진행중, 거래완료 검색
 		 $(".selectDeal").on("change", function(){
 			if($(".selectDeal option:selected").val() == 'whole'){
 				statusCheck = "whole";
-				$('#dealList').html("");
+				init();
 				dealList();	
 				infiniteScroll();
 			} else if($(".selectDeal option:selected").val() == 'complete'){
 				statusCheck = "complete";
-				$('#dealList').html("");
+				init();
 				statusList(page, "완료");	
 				infiniteScroll(page, "완료");
 			} else if($(".selectDeal option:selected").val() == 'progress'){
 				statusCheck = "progress";
-				$('#dealList').html("");
+				init();
 				statusList(page, "진행중");	
 				infiniteScroll(page, "진행중");
 			}	
-		   });			
-		}); 
+	    });			
+	 }); 
 				
-		//무한 스크롤 페이징 셋팅
-		var endCheck = false;		
+		//무한 스크롤 페이징 셋팅				
 		function infiniteScroll(){			
 			$(window).scroll(function(){
 				var $window = $(this);
@@ -182,7 +182,13 @@
 					++page;					
 				}
 			});			
-		}	
+		}
+		
+		//초기화
+		function init(){
+			endCheck = false;
+			$('#dealList').html("");
+		}
 		
 		//전체 리스트 가져오기
 		var dealList = function(){
@@ -309,12 +315,15 @@
 	
 	
 	function replyInsert(dealNo){		
-		var reply = $('.content').prev().val();		
+		var reply = $('.content').prev().val();
+		var id = "<%=id%>";
 		var header = "${_csrf.headerName}";
 	    var token = "${_csrf.token}";
 		var param = new Object();			
 		param.dealNo = dealNo;
-		param.reply = reply;		
+		param.reply = reply;
+		param.id = id;
+		
 		$.ajax({
 			url : "/myPage/replyInsert",			
 			data : JSON.stringify(param),
@@ -353,7 +362,7 @@
 				  str  = '<li class="left clearfix">';
 				  str += 	'<div>';
 				  str += 		'<div class="header">';				 
-				  str += 			'<strong class="primary-font">'+element.replyer+'</strong>&emsp;';
+				  str += 			'<strong class="primary-font">'+element.id+'</strong>&emsp;';
 				  str +=            '<input type="hidden" value="'+element.replyNo+'">';
 				  str +=            '<a href="#" class="replyDelete"><i class="fa fa-close"></i></a>';
 				  str += 			'<small class="pull-right text-muted">'+element.replyDate+'</small>';

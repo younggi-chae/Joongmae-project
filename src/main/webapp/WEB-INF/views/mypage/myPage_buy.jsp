@@ -3,17 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
-<%
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Object principal = auth.getPrincipal();
- 
-    String id = "";
-    if(principal != null) {
-        id = auth.getName();
-    }
-%>	
+
 <%@include file="../includes/header.jsp"%>
 
 	<!-- Header Section End -->
@@ -109,8 +102,7 @@
 	<script src="/resources/js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">	
 	
-	var monthCheck = 0;
-	var id = "<%=id%>";
+	var monthCheck = 0;	
 	var pageNum = 1;
 	
 	//리스트 출력

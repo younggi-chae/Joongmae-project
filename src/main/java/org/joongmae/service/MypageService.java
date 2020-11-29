@@ -32,14 +32,15 @@ public interface MypageService {
 	public SellVO getSellDetail(int sellNo);
 	public int deleteSell(int sellNo);
 	public int deleteAllSell();
+	public int sellCnt(String id);
 	
 	public List<DealAndSell> getDealList(Criteria cri);
 	public int countDeal(Criteria cri);
 	public DealAndSell getDealDetail(int dealNo);
 	public DealListWithPaging getDealListWithPaging(Criteria cri);
 	public DealListWithPaging selectDeal(Criteria cri);	
-	public int completeCnt();
-	public int progressCnt();
+	public int completeCnt(Criteria cri);
+	public int progressCnt(Criteria cri);
 	
 	public List<WishAndSell> getWishList(Criteria cri);
 	public int countWish(Criteria cri);

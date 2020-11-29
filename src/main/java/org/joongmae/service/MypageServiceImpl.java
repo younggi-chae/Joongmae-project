@@ -93,7 +93,12 @@ public class MypageServiceImpl implements MypageService {
 	public int deleteAllSell() {
 		mapper.deleteAllWish();
 		return mapper.deleteAllSell();
-	}	
+	}
+	
+	@Override
+	public int sellCnt(String id) {		
+		return mapper.sellCnt(id);
+	}
 
 	@Override
 	public List<DealAndSell> getDealList(Criteria cri) {				
@@ -121,14 +126,13 @@ public class MypageServiceImpl implements MypageService {
 	}
 	
 	@Override
-	public int completeCnt() {		
-		return mapper.completeCnt();
+	public int completeCnt(Criteria cri) {		
+		return mapper.completeCnt(cri);
 	}
 
 	@Override
-	public int progressCnt() {
-		
-		return mapper.progressCnt();
+	public int progressCnt(Criteria cri) {		
+		return mapper.progressCnt(cri);
 	}
 
 	@Override
@@ -204,6 +208,6 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int replyCnt(int dealNo) {	
 		return mapper.replyCnt(dealNo);
-	}
+	}	
 	
 }
