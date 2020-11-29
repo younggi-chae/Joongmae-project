@@ -142,9 +142,9 @@
 	
 	//범위 지정 검색
 	$('#searchRange').on('click', function(){		
-		monthCheck = "range"
+		monthCheck = "range";
 		showPage();
-		searchRangeList();		
+		searchRangeList(pageNum);	
 	});
 	
 	//구매등록 삭제
@@ -166,17 +166,22 @@
 			data : param,
 			type : "GET",			
 			success : function(result){				 					
-				var buyCnt = result.buyCnt;					
-				if(result.list.length < 5){
+				var buyCnt = result.buyCnt;
+				var length = result.list.length;
+				if(length === 0){
+					str = '<tr><td colspan="5" align="center">구매등록을 해주세요.</td></tr>';
+					$('#list').append(str);
+				}  		
+				if(length < 5){
 		                $("#readMore").hide();
 		            } else {
 				result.list.forEach(function(element){					
 					   showList(element);					   			
 				   });
 		        }
-						$('#count').html("");
-						var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
-		        		$('#count').append(count);
+					$('#count').html("");
+					var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
+	        		$('#count').append(count);
 			    }			
 			});			
 		}
@@ -186,21 +191,20 @@
 			var str = "";
 			var startDate = $('#startDate').val();
 			var endDate = $('#endDate').val();			
-			var page = page || 1 ;	
 		
 			$.ajax({
 				url : "/myPage/dateSearchRange/" + page + "/" + startDate + "/" + endDate,
 				dataType : "json",
-				data : {startDate : startDate, endDate : endDate},
+				data : {page : page, startDate : startDate, endDate : endDate},
 				type : "GET",
 				success : function(result){					
 					var buyCnt = result.buyCnt;
-					 if(result.list.length < 10){
+					var length = result.list.length;					
+					 if(length < 5){
 			                $("#readMore").hide();
 			            } else {
 					result.list.forEach(function(element){					
-						   showList(element);
-						   //showPage(buyCnt);				
+						   showList(element);						  				
 					   });
 			        }
 					 		$('#count').html("");
@@ -212,10 +216,7 @@
 	 
 	 
  	var showList = function(element){
- 		var str = "";
- 		if(element == null){
-			str = '<tr><td colspan="5" align="center">구매등록을 해주세요.</td></tr>';
-		} else {					  
+ 		var str = ""; 					  
 			str  = '<tr>';				
 			str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
 			str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
@@ -228,10 +229,8 @@
 			str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
 			str += '</tr></tbody></table></div></div></div>';									  
 		    
-				$('#list').append(str);
-									
-		}		 		
- 	}
+				$('#list').append(str);				 		
+ 		}
 		
 	 
  	//더보기 버튼
@@ -240,16 +239,17 @@
 	        
 	        if(monthCheck == "3"){
 	        	buyList(pageNum, 2);
-	        }else if( monthCheck == "6"){
+	        }else if(monthCheck == "6"){
 	        	buyList(pageNum, 5);
-	        }else if( monthCheck == "all"){
+	        }else if(monthCheck == "all"){
 	        	buyList(pageNum, 1000);
 	        }else if(monthCheck == "range"){
+	        	console.log(pageNum);
 	        	searchRangeList(pageNum);
 	        }	       
 	   });
  	
- 	
+ 	//초기화
  	function showPage(){
  		$('#list').html("");
 		pageNum= 1;

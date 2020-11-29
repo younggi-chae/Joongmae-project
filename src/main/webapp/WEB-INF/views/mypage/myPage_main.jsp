@@ -147,13 +147,7 @@
 <%@include file="../includes/footer.jsp"%>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-
-     /* var id = $('#checkId').val();
-     console.log(id);
-     $('#modifyMember').on("click", function(){
-    	 location.href = "detailMember?id=" + id;
-     }); */
+    <script type="text/javascript">    
     
     
       google.charts.load('current', {'packages':['corechart']});
@@ -185,7 +179,7 @@
                 tooltip:{textStyle : {fontSize:12}, showColorCode : true},
                 animation: { //차트가 뿌려질때 실행될 애니메이션 효과
                   startup: true,
-                  duration: 1000,
+                  duration: 2000,
                   easing: 'linear' }               
              };
 

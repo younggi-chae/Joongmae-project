@@ -79,8 +79,7 @@ public class MypageController {
 	}	
 
 	@GetMapping("/dealList")
-	public String getDealList(Criteria cri ,Model model) {
-		model.addAttribute("list", service.getDealList(cri));
+	public String getDealList(Criteria cri ,Model model) {		
 		return "mypage/myPage_deal";
 	}
 	
@@ -257,6 +256,12 @@ public class MypageController {
 		int insertCount = service.replyDelete(replyNo);		
 		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/replyCnt/{dealNo}")
+	@ResponseBody
+	public int replyCnt(@PathVariable("dealNo") int dealNo){		
+		return service.replyCnt(dealNo);
 	}
 	
 	@PostMapping("/uploadAjaxAction")

@@ -22,7 +22,7 @@
 				<div class="col-lg-12">
 					<div class="section-title">
 						<h2>거래내역 확인</h2>
-						<span>Transactional Information</span>
+						<span>Deal Information</span>
 					</div>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 	<!-- Car Section End -->
 
 	<!-- modal창 정보 -->	
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		<div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -99,8 +99,7 @@
 					</form>
 					<button type="button" class="btn btn-primary" id="depositBtn" onclick="deposit()">입금 완료</button>
 					<button type="button" class="btn btn-primary" id="deliveryInfoBtn" onclick="deliveryInfo()">송장 번호 조회</button>
-						<button type="button" class="btn btn-default"
-							data-dismiss="modal">Close</button>							
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>						
 					</div>
 				</div>					
 			</div>				
@@ -213,8 +212,8 @@
 				if(length < 9){
 					endCheck = true;
 				}				
-				$.each(result.list, function(index, element){
-					showList(false, element);
+				$.each(result.list, function(index, element){									
+					showList(false, element);					
 				});
 			}			
 		});			
@@ -237,13 +236,13 @@
 				data : param,
 				success : function(result){					
 				var length = result.list.length;
-				console.log("리스트 길이 : " + length);				
-				if(length < 5){
-					endCheck = true;
-				}
+				console.log("리스트 길이 : " + length);			
 				
+				if(length < 9){
+					endCheck = true;
+				}				
 				$.each(result.list, function(index, element){
-					showList(false, element);
+					showList(false, element);					
 				});
 			}			
 		});			
@@ -252,56 +251,74 @@
 		
 	//화면에 뿌려질 태그
 	var showList = function(mode, element){			
-		var str = "";		
-		str =  '<div class="col-lg-4 col-md-4 target" data-dealNo="'+element.dealNo+'"><div class="car__item">';						
-		str += '<div class="car__item__pic__slider">';
-		if(element.picture != null){
-		  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
-		  } else {
-			str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
-		  }
-		str += '<div class="car__item__text"><div class="car__item__text__inner">';
-		str += '<div class="label-date">' + element.buyId +'</div>';
-		str += '<div class="label-date">' + element.sellId +'</div>';
-		str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
-		str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal" style="font-size: 25px;">' + element.itemName +'</a>';
-		str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
-		str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" style="font-size:40px;">';
-		str += '<i class="fa fa-comments fa-fw" "></i></a></div>';
-		str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
-		str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
-		if(element.status === "진행중"){
-			str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
-		} else {
-			str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
-		}													
-		str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';			
-
-			if(mode){
-				$('#dealList').prepend(str);		
+		var str = "";
+		//댓글 숫자 표시 ajax
+		var dealNo = element.dealNo;
+			$.ajax({
+				url : "/myPage/replyCnt/"+ dealNo,			
+				data : dealNo,
+				dataType : 'json',
+				type : "GET",
+				success : function(result){						
+			
+			str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';						
+			str += '<div class="car__item__pic__slider">';
+			if(element.picture != null){
+			  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+			  } else {
+				str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
+			  }
+			str += '<div class="car__item__text"><div class="car__item__text__inner">';
+			str += '<div class="label-date">' + element.buyId +'</div>';
+			str += '<div class="label-date">' + element.sellId +'</div>';
+			str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + dealNo +'">';
+			str += '<a class="detailModal" href="#" data-toggle="modal" data-target="#detailModal" data-backdrop="static" style="font-size: 25px;">' + element.itemName +'</a>';
+			str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
+			str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" data-backdrop="static" style="font-size:40px;">';			
+			str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt">'+ result +'</span></div>';
+			str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
+			str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
+			if(element.status === "진행중"){
+				str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
 			} else {
-				$('#dealList').append(str);
-			}		
-		}
+				str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
+			}													
+			str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';			
+	
+				if(mode){
+					$('#dealList').prepend(str);		
+				} else {
+					$('#dealList').append(str);
+				}
+			 }
+		});
+	}
 	
 	
-	//댓글 insert & list
+	//댓글 insert & list & delete
 	var dealNo = 0;
 	$('#dealList').on("click", '.commentModal', function(){
 		dealNo = $(this).prev().prev().val();		
 		replyList(dealNo);		
-	});	
+	});		
 	
 	$('#insert').on('click', function(){
-		replyInsert(dealNo);				
-	});	
+		replyInsert(dealNo);
+		dealList();
+	});		 
 	
 	$('.reply').on('click', '.replyDelete', function(){
 		var replyNo = $(this).prev().val();
 		replyDelete(replyNo);
 	});
 	
-		
+	 //Deal 상세보기 모달
+	$('#dealList').on("click", '.detailModal', function(){
+		var dealNo = $(this).prev().val();					
+		detailDeal(dealNo);
+	});	
+	
+	
 	function replyInsert(dealNo){		
 		var reply = $('.content').prev().val();		
 		var header = "${_csrf.headerName}";
@@ -334,10 +351,11 @@
 			dataType : "json",
 			data : dealNo,
 			type : "GET",
-			success : function(result){			 
-			  $('.reply').html("");
-			  console.log(result.length);
-			  if(result.length === 0){
+			success : function(result){				
+			  $('.reply').html("");	
+			  var length = result.length;			  
+			  
+			  if(length === 0){
 				  str = '<li><div align="center"><b>등록된 댓글이 없습니다.</b></div></li>';
 				  $('.reply').append(str);
 			  } else {
@@ -359,8 +377,8 @@
 				  });
 			    }
 			 }
-		});	
-	}
+			});	
+		}
 	
 	function replyDelete(replyNo){		
 		var header = "${_csrf.headerName}";
@@ -384,21 +402,17 @@
 		    } else {
 	            return false;
 	        }
-      }
-	
-	    
-    //Deal 상세보기 모달
-	$('#dealList').on("click", '.targetModal', function(){
-		var modalNo = $(this).prev().val();					
+      }		    
+   
+	function detailDeal(dealNo)	{
 		var str = "";
 		$.ajax({
-		   url : "/myPage/dealDetail/" + modalNo,
+		   url : "/myPage/dealDetail/" + dealNo,
 		   dataType : "json",
-		   data : modalNo,
+		   data : dealNo,
 		   type : "GET",
 		   success : function(result){	
-			  $('.modal-body').html("");	
-			  
+			  $('.modal-body').html("");			 
 			  str += '<div class="car__details__pic">';
 			  str += '	<img src="/resources/img/upload_cyg/'+result.picture+'">';
 			  str += '</div>';					 
@@ -438,8 +452,8 @@
 				 $('.modal-body').append(str);
 		   }
 		});
-	});
-	 
+	}
+		 
 	 
 	//날짜 포맷팅
 	function formatDate(dateVal){

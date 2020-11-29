@@ -1,7 +1,6 @@
 package org.joongmae.service;
 
 
-import java.security.Principal;
 import java.util.List;
 
 import org.joongmae.domain.BuyListWithPaging;
@@ -57,5 +56,6 @@ public interface MypageService {
 	public int replyInsert(ReplyVO reply);
 	public List<ReplyVO> replyList(int dealNo);
 	public int replyDelete(int replyNo);
+	public int replyCnt(int dealNo);
 	
 }
