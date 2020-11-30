@@ -26,10 +26,17 @@ public interface BuyBoardMapper {
 	
 	public List<AlarmVO> alarmList(String id);
 	
+
 	public List<SellVO> sellList(String id);
 	
 	public SellVO sellDetail(int sellNo);
 	
-	public int registerAlarm(AlarmVO vo);
+	public int registerAlarm(AlarmVO vo);	
+
+	public int registerAlarmAuto(AlarmVO alarm);
 	
+	public List<SellVO> temp(String id);
+	
+	public int count();
+
 }

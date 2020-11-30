@@ -34,4 +34,5 @@ public interface BuyBoardService {
 	
 	public boolean registerAlarm(AlarmVO vo);
 	
+	public int registerAlarm(BuyVO buy);
 }
