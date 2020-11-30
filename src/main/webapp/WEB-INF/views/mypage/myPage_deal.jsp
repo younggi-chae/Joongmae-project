@@ -26,24 +26,32 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div><br><br><br>
 
 		<!-- Car Section Begin -->
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12"></div>
+				<div class="col-lg-12" style="margin: 0 auto;" >
+						
+				</div>
 				<div class="col-lg-12">
 					<div class="car__filter__option"
 						style="height: 74px; background-color: white;">
 						<div class="row">
-							<div class="col-lg-8 col-md-6">
+							<div class="col-lg-4 col-md-6">
 								<div class="car__filter__option__item car__filter__option__item--left">
 									<select class="selectDeal">
 										<option id="whole" value="whole">전체</option>
 										<option id="progress" value="progress">진행중</option>
 										<option id="complete" value="complete">거래완료</option>
-									</select>
-								</div>								
+									</select>								
+								</div>													
+							</div>
+							<div class="col-lg-4 col-md-6" style="top:-120px;">  <!--  left: 50px;" -->
+								<div id="myChart" >
+									<input type="hidden" id="completeCnt" value="${completeCnt }">
+									<input type="hidden" id="progressCnt" value="${progressCnt }">
+								</div>
 							</div>
 							<div class="col-lg-4 col-md-6">
 								<div class="car__filter__option__item car__filter__option__item--right">
@@ -130,9 +138,9 @@
 	<!-- /.modal -->			
 
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">		
-	
+<script type="text/javascript">			
 	
 		var statusCheck = "";
 		var page = 1;
@@ -313,7 +321,7 @@
 	});	
 		
 	
-	
+	//댓글 insert Ajax
 	function replyInsert(dealNo){		
 		var reply = $('.content').prev().val();
 		var id = "<%=id%>";
@@ -343,6 +351,7 @@
 	}	
 	
 	
+	//댓글 List Ajax
 	function replyList(dealNo){			
 		$.ajax({
 			url : "/myPage/replyList/" + dealNo,
@@ -378,6 +387,7 @@
 			});	
 		}
 	
+	//댓글 삭제 Ajax
 	function replyDelete(replyNo){		
 		var header = "${_csrf.headerName}";
 	    var token = "${_csrf.token}";
@@ -402,6 +412,8 @@
 	        }
       }		    
    
+	
+	//Deal 상세보기
 	function detailDeal(dealNo)	{
 		var str = "";
 		$.ajax({
@@ -451,6 +463,34 @@
 		   }
 		});
 	}
+	
+	
+	//차트생성
+	google.charts.load('current', {'packages':['corechart']}); 
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+        	var completeCnt = $('#completeCnt').val(); 
+        	var progressCnt = $('#progressCnt').val();
+        	var data = new google.visualization.DataTable();
+            data.addColumn('string','status');
+            data.addColumn('number','건수');
+ 
+            data.addRows([ 
+                ['진행중',parseInt(progressCnt)],
+                ['거래완료',parseInt(completeCnt)]               
+            ]);
+            var options = {                    
+            		chartArea:{width:'170', height:'170'},
+            		tooltip:{textStyle : {fontSize:15}, showColorCode : true},
+            		"fontSize" : 12,
+            		'pieSliceText':'label',
+            		'pieHole' : 0.35,
+                    legend:'none'                    
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('myChart'));
+            chart.draw(data,options);
+        }
+	
 		 
 	 
 	//날짜 포맷팅
@@ -471,64 +511,67 @@
 		
 	
 	
-	<%-- 	 $('.modal-body').append(str);
-				 
-				 if (result.sellId == "<%=id%>") {
-					 if (result.status == '진행중') {
-						$('#reviewBtn').hide();
-						$('#depositBtn').hide();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').hide();
-						$('#deliveryModBtn').hide();
-					} else if (result.status == '입금완료') {
-						$('#reviewBtn').hide();
-						$('#depositBtn').hide();
-						$('#deliveryBtn').show();
-						$('#deliveryInfoBtn').hide();
-						$('#deliveryModBtn').hide();
-					} else if (result.status == '배송중') {
-						$('#reviewBtn').hide();
-						$('#depositBtn').hide();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').show();
-						$('#deliveryModBtn').show();
-					} else if (result.status == '완료') {
-						$('#reviewBtn').show();
-						$('#reviewId').val(result.buyId)
-						$('#depositBtn').hide();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').hide();
-						$('#deliveryModBtn').hide();
-					}
-				} else if (result.buyId == "<%=id%>") {
-					if (result.status == '진행중') {
-						$('#reviewBtn').hide();
-						$('#depositBtn').show();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').hide();
-						$('#deliveryModBtn').hide();
-					} else if (result.status == '입금완료') {
-						$('#reviewBtn').hide();
-						$('#depositBtn').hide();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').hide();
-						$('#deliveryModBtn').hide();
-					} else if (result.status == '배송중') {
-						$('#reviewBtn').hide();
-						$('#depositBtn').hide();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').show();
-						$('#deliveryModBtn').hide();
-					} else if (result.status == '완료') {
-						$('#reviewBtn').show();
-						$('#reviewId').val(result.sellId)
-						$('#depositBtn').hide();
-						$('#deliveryBtn').hide();
-						$('#deliveryInfoBtn').hide();
-						$('#deliveryModBtn').hide();						
-					}
-					 
-			   } --%>
+	function selectDealList(page, status){
+                $('.modal-body').append(str);
+                
+                if (result.sellId == "<%=id%>") {
+                   if (result.status == '진행중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '입금완료') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').show();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '배송중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').show();
+                     $('#deliveryModBtn').show();
+                  } else if (result.status == '완료') {
+                     $('#reviewBtn').show();
+                     $('#reviewId').val(result.buyId)
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  }
+               } else if (result.buyId == "<%=id%>") {
+                  if (result.status == '진행중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').show();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '입금완료') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '배송중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').show();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '완료') {
+                     $('#reviewBtn').show();
+                     $('#reviewId').val(result.sellId)
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  }
+                     
+               }
+                
+            } 
 
 </script>
 

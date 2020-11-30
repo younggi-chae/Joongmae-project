@@ -127,27 +127,11 @@
 			success : function(result){				
 				var wishCnt = result.wishCnt;				
 				var length = result.list.length;				
-				$('#list').html("");
-				if(pageNum < 2){
-			    	 $("#prev").attr("disabled", true);
-			     } else {
-			    	 $("#prev").attr("disabled", false);
-			     }          
-				if(length < 5 || page*5 === wishCnt){
-					$("#next").attr("disabled", true);
-				} else {
-					$("#next").attr("disabled", false);
-				}
-				 if(length === 0){
-					str = '<tr><td colspan="8" align="center"><b>위시리스트가 비어있습니다.<b></td></tr>';
-					$('#list').append(str);
-				} 			 	
+						buttonControll(page, length, wishCnt)
 				result.list.forEach(function(element){					
 						showList(element);
-					});				
-						$('#count').html("");
-						var count = '<b>'+wishCnt+'개의 상품이 담겨있어요!!</b>';
-		        		$('#count').append(count);
+					});
+						showInfo(length, wishCnt)	
 					}					
 				});			
 			}
@@ -184,6 +168,39 @@
 			 ++pageNum;				 
 		     wishList(pageNum);
 	   });	
+	 
+	 
+	 //버튼 활성화 & 비활성화
+	 function buttonControll(page, length, wishCnt){
+		 $('#list').html("");
+			if(pageNum < 2){
+		    	 $("#prev").attr("disabled", true);
+		     } else {
+		    	 $("#prev").attr("disabled", false);
+		     }          
+			if(length < 5 || page*5 === wishCnt){
+				$("#next").attr("disabled", true);
+			} else {
+				$("#next").attr("disabled", false);
+			}
+			 if(length < 1){
+				 str =  '<tr><td colspan="9" align="center">';
+				 str += '<a type="button" href="/myPage/sellList" class="btn btn-secondary">찜하러 가기</a></td></tr>';
+				$('#list').append(str);
+			} 			 	
+	   }
+	 
+	 //정보관련 function
+	 function showInfo(length, wishCnt){
+		 $('#count').html("");
+	  		if(length < 1){
+	  		   str = '<b>위시리스트가 비어있습니다.</b>';
+	  		   $('#count').append(str);
+	  		} else {					
+			   str = '<b>'+wishCnt+'개의 상품이 담겨있어요!!</b>';
+			   $('#count').append(str);
+		    }					
+	  }
 	 
 	
 	//위시리스트 선택삭제, 전체선택 삭제	
@@ -234,7 +251,7 @@
 	 });
 	 
 	 
-	 //체크박스 전체선택 , 전체삭제
+	 //체크박스 전체선택 , 전체해제
 	 $('#checkAll').on('click', function(){
 		  checkAll();
 	 });

@@ -150,41 +150,38 @@
     <script type="text/javascript">    
     
     
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-    	var buyCnt = $('#buyCnt').val(); 
-    	var sellCnt = $('#sellCnt').val(); 
-    	var completeCnt = $('#completeCnt').val(); 
-    	var progressCnt = $('#progressCnt').val();     	 
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', '건수');
-        data.addRows([
-          ['구매등록', parseInt(buyCnt)],
-          ['받은 견적서', parseInt(sellCnt)],
-          ['거래중', parseInt(progressCnt)],
-          ['거래완료', parseInt(completeCnt)]          
-        ]);       
-        
-        var bar_options = {        			   
-        		'title':'나의 진행 상황',  
-        		'width':500,
-                'height':266,                
-                legend: { position: "top" },
-                isStacked: false,
-                tooltip:{textStyle : {fontSize:12}, showColorCode : true},
-                animation: { //차트가 뿌려질때 실행될 애니메이션 효과
-                  startup: true,
-                  duration: 2000,
-                  easing: 'linear' }               
-             };
-
-        var bar_chart = new google.visualization.BarChart(document.getElementById('barchart_div'));
-        bar_chart.draw(data, bar_options);
-      }
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+  	var buyCnt = $('#buyCnt').val(); 
+  	var sellCnt = $('#sellCnt').val(); 
+  	var completeCnt = $('#completeCnt').val(); 
+  	var progressCnt = $('#progressCnt').val();     	 
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Topping');
+      data.addColumn('number', '건수');
+      data.addRows([
+        ['구매등록', parseInt(buyCnt)],
+        ['받은 견적서', parseInt(sellCnt)],
+        ['거래중', parseInt(progressCnt)],
+        ['거래완료', parseInt(completeCnt)]          
+      ]);       
+      
+      var bar_options = {        			   
+      		'title':'나의 진행 상황',  
+      		'width':500,
+            'height':266,                        
+            legend: { position: "top" },
+            isStacked: false,
+            tooltip:{textStyle : {fontSize:12}, showColorCode : true},
+            animation: { //차트가 뿌려질때 실행될 애니메이션 효과
+            	startup: true,
+                duration: 2000,
+                easing: 'linear' }               
+           };
+      var bar_chart = new google.visualization.BarChart(document.getElementById('barchart_div'));
+      bar_chart.draw(data, bar_options);
+    }
 </script>
 
 

@@ -87,6 +87,8 @@ public class MypageController {
 	public String getDealList(Criteria cri ,Model model, Principal id) {		
 		cri.setBuyId(id.getName());
 		cri.setSellId(id.getName());
+		model.addAttribute("completeCnt", service.completeCnt(cri));
+		model.addAttribute("progressCnt", service.progressCnt(cri));
 		return "mypage/myPage_deal";
 	}
 	

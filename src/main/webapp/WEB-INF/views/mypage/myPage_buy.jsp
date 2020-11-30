@@ -160,20 +160,11 @@
 			success : function(result){				 					
 				var buyCnt = result.buyCnt;
 				var length = result.list.length;
-				if(length < 0){
-					str = '<tr><td colspan="5" align="center">구매등록을 해주세요.</td></tr>';
-					$('#list').append(str);
-				}  		
-				if(length < 5 || page*5 === buyCnt){
-		                $("#readMore").hide();
-		           } 
+					   showButton(length, page, buyCnt);
 				result.list.forEach(function(element){					
 					   showList(element);					   			
 				   });
-		      
-					$('#count').html("");
-					var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
-	        		$('#count').append(count);
+					   showInfo(length, buyCnt);
 			    }			
 			});			
 		}
@@ -192,19 +183,14 @@
 				success : function(result){					
 					var buyCnt = result.buyCnt;
 					var length = result.list.length;					
-					 if(length < 5){
-			                $("#readMore").hide();
-			            } 
+						   showButton(length, page, buyCnt);
 					result.list.forEach(function(element){					
 						   showList(element);						  				
-					   });
-			       
-					 		$('#count').html("");
-							var count = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
-			        		$('#count').append(count);
+					   });			       
+						   showInfo(length, buyCnt)
 						}
-					});
-			     }
+				   });
+			   }
 	 
 	 
  	var showList = function(element){
@@ -246,6 +232,30 @@
  		$('#list').html("");
 		pageNum= 1;
 		$("#readMore").show();
+ 	}
+ 	
+ 	//정보관련 function
+ 	function showInfo(length, buyCnt){
+ 		$('#count').html("");
+  		if(length < 1){
+  		   str = '<b>등록된 구매등록이 없습니다.</b>';
+  		   $('#count').append(str);
+  		} else {					
+		   str = '<b>'+buyCnt+'건의 구매등록이 있어요!!</b>';
+		$('#count').append(str);
+  		}
+ 	}
+ 	
+ 	//버튼관련 function
+ 	function showButton(length, page, buyCnt){
+ 		if(length < 1){
+			str =  '<tr><td colspan="9" align="center">';
+			str += '<a type="button" href="/buyBoard/registerForm" class="btn btn-secondary">구매등록 하기</a></td></tr>';
+			$('#list').append(str);
+		}  		
+		if(length < 5 || page*5 === buyCnt){
+                $("#readMore").hide();
+           } 
  	}
  	
  	

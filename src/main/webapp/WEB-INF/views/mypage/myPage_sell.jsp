@@ -22,7 +22,12 @@
          <div class="row">
             <div class="col-lg-12">
             	<div style="text-align: center; font-size: 20px;">
-                    <b>${count }건의 견적서를 확인해보세요!!</b>
+                    <c:choose>
+	                     <c:when test="${count == 0}">
+	                    	<b>받은 견적서가 없습니다.</b>
+	                    </c:when>
+                    	<c:otherwise><b>${count }건의 견적서를 확인해보세요!!</b></c:otherwise>
+                    </c:choose>
                     <input type="hidden" id="count" value="${count }">                    	
                 </div><br>                 
            </div>
@@ -57,7 +62,7 @@
                   <c:choose>
                      <c:when test="${empty list }">
                         <div class="col-lg-12 col-md-4" align="center">
-                           <h4>데이터가 없습니다.</h4>
+                           <h4><a type="button" href="/buyBoard/registerForm" class="btn btn-secondary">구매등록 하기</a></h4>
                         </div>
                      </c:when>
 
