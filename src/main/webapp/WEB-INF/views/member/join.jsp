@@ -189,11 +189,9 @@
 						<div style="height: 50px"
 							class="wrap-input100 validate-input m-b-12"
 							data-validate="성별을 체크하세요">
-							<label style="font-size: 20px"><input type="radio"
-								name="sex" value="m">남자</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label style="font-size: 20px"><input
-								type="radio" name="sex" value="w">여자</label> <span
-								class="focus-input100"></span>
+							<input type="radio"name="sex" value="m">남자
+							<input type="radio" name="sex" value="w">여자
+						 <span class="focus-input100"></span>
 						</div>
 
 

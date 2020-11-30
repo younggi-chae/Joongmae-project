@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.joongmae.domain.MemberAccountVO;
 import org.joongmae.domain.MemberAuthDTO;
@@ -179,7 +178,7 @@ public class MemberServiceImpl implements MemberService {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
-			sb.append("&client_id=a714095760769a00001b4e03b10b2c3e");
+			sb.append("&client_id=a38a9db2ca25c9b8affcea3c3f017c31");
 			sb.append("&redirect_uri=http://localhost:8081/member/kakao_login");
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
@@ -222,7 +221,6 @@ public class MemberServiceImpl implements MemberService {
 	 @Override
 	 public HashMap<String, Object> getUserInfo(String access_Token) {
 
-         //    �슂泥��븯�뒗 �겢�씪�씠�뼵�듃留덈떎 媛�吏� �젙蹂닿� �떎瑜� �닔 �엳湲곗뿉 HashMap���엯�쑝濡� �꽑�뼵
          HashMap<String, Object> userInfo = new HashMap<>();
          String reqURL = "https://kapi.kakao.com/v2/user/me";
          try {
@@ -230,7 +228,6 @@ public class MemberServiceImpl implements MemberService {
              HttpURLConnection conn = (HttpURLConnection) url.openConnection();
              conn.setRequestMethod("GET");
 
-             //    �슂泥��뿉 �븘�슂�븳 Header�뿉 �룷�븿�맆 �궡�슜
              conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
              int responseCode = conn.getResponseCode();
@@ -253,16 +250,16 @@ public class MemberServiceImpl implements MemberService {
              JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
              String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-             //String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
-             //String email = kakao_account.getAsJsonObject().get("email").getAsString();
+             String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
+             String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
             String id =element.getAsJsonObject().get("id").toString();
              
              userInfo.put("id", id);
              userInfo.put("nickname", nickname);
-             //userInfo.put("email", email);
-            // userInfo.put("profile_image", profile_image);
-
+             userInfo.put("email", email);
+             userInfo.put("profile_image", profile_image);
+      
          } catch (IOException e) {
              // TODO Auto-generated catch block
              e.printStackTrace();
@@ -270,6 +267,33 @@ public class MemberServiceImpl implements MemberService {
 
          return userInfo;
      }
+	 
+	 @Override
+	 public void kakaoLogout(String access_Token) {
+		    String reqURL = "https://kapi.kakao.com/v1/user/logout";
+		    try {
+		        URL url = new URL(reqURL);
+		        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		        conn.setRequestMethod("POST");
+		        conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+		        
+		        int responseCode = conn.getResponseCode();
+		        System.out.println("responseCode : " + responseCode);
+		        
+		        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		        
+		        String result = "";
+		        String line = "";
+		        
+		        while ((line = br.readLine()) != null) {
+		            result += line;
+		        }
+		        System.out.println(result);
+		    } catch (IOException e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		    }
+		}
 
 	
 	  @Override

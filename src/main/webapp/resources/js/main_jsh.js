@@ -91,11 +91,8 @@
 
 
 $('#sendPhoneNumber').on('click',function(){
-
-
+	
     var phoneNumber = $('#phoneNo').val();
-  
-
     $.ajax({
         type: "GET",
         url: "/member/check/sendSMS",
@@ -104,12 +101,10 @@ $('#sendPhoneNumber').on('click',function(){
         },
 
         success: function(res){
-           
-           
-       
-            $('#checkBtn').click(function(){
+        	
+           $('#checkBtn').click(function(){
                 if($.trim(res) ==$('#inputCertifiedNumber').val()){
-                   // alert("인증성공");
+                 
                     swal(
                         "인증성공!",
                         "휴대폰 인증이 정상적으로 완료되었습니다.",
@@ -118,7 +113,7 @@ $('#sendPhoneNumber').on('click',function(){
 
  
                 }else{
-          
+
                 	swal(
                             "인증실패!",
                             "번호를 다시 확인해주세요.",
@@ -135,8 +130,6 @@ $('#sendPhoneNumber').on('click',function(){
 
 
 $('#temp').click(function () {
-
-
 
     $.ajax({
         type: "GET",
@@ -169,11 +162,9 @@ var header = $("meta[name='_csrf_header']").attr('content');
 var token = $("meta[name='_csrf']").attr('content');
 
 
-var idV = "";
-// 아이디 값 받고 출력하는 ajax
+
+// 아이디 찾기
 var idSearch_click = function(){
-
-
 	$.ajax({
 		type:"get",
 		url:"/member/findId",
@@ -183,21 +174,18 @@ var idSearch_click = function(){
 		},		
 		success:function(data){
 			if(data == 0){
-
 				swal(
                         "아이디찾기 실패",
                         "입력한 정보를 다시 한번 확인하세요.",
                         "warning"
                     );
 			} else {
-				
-				
 				  swal(
 	                        "아이디찾기 성공",
 	                        "회원님의 ID는 "+data+"입니다.",
 	                        "success"
 	                    );
-				idV = data;
+			
 			}
 		}
 	});
@@ -205,9 +193,8 @@ var idSearch_click = function(){
 
 
 
-
+//비밀번호 찾기
 var passSearch_click = function(){
-
 	$.ajax({
 		type:"get",
 		url:"/sendPassword",

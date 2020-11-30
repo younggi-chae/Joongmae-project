@@ -18,8 +18,58 @@
 <link rel="stylesheet" href="/resources/css/style_jsh.css"
 	type="text/css">
 
+<c:if test="${userId ne null}">
 
 
+
+<section class="services spad">
+	
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="section-title">
+					<h2>로그인</h2>
+					<span>Sign in</span>
+				</div>
+			</div>
+
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55"
+				style="float: left; clear: both">
+				<span class="login100-form-title p-b-32" style="">
+					<h3>중매에 오신것을 환영합니다</h3> <br> <br> <br>
+				</span>
+
+<form class="login100-form validate-form flex-sb flex-w" action="/member/login" method="post">
+
+
+	${nickname}님 반갑습니다!<br/>
+	<br/>
+	
+	<input type="hidden" name="username" value="${userId }">
+	<input type="hidden" name="password" value="0000">
+	
+	<img alt="" src="${pic}" style="width: 350px;  border-radius: 10%; overflow: hidden">
+					
+<div class="container-login100-form-btn"><br><br><br>
+						<input type="submit" class="login100-form-btn"
+							style="margin: auto; width: 250px" value="서비스 이용하기">
+
+					</div>
+
+
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+</form>
+
+
+
+
+			</div>
+	
+		</div>
+</section>
+
+</c:if>
+<c:if test="${userId eq null}">
 
 
 <section class="services spad">
@@ -41,14 +91,6 @@
 					<h3>중매에 오신것을 환영합니다</h3> <br> <br> <br>
 				</span>
 
-
-
-				<h2>
-					<c:out value="${error}" />
-				</h2>
-				<h2>
-					<c:out value="${logout}" />
-				</h2>
 
 
 
@@ -96,10 +138,12 @@
 <!-- #######소셜로그인 버튼 들어갈 자리 -->
 				<div class="container-login100-form-btn" style="text-align: center;">
 					
-						<a href="https://kauth.kakao.com/oauth/authorize?client_id=a714095760769a00001b4e03b10b2c3e&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code"_blank">
+						<a href="https://kauth.kakao.com/oauth/authorize?client_id=a38a9db2ca25c9b8affcea3c3f017c31&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code"_blank">
 							
 							<img  width="250px" src="/resources/img_jsh/kakao_login.png" style="margin-left: 70px"/>
 						</a>
+						
+						<a href="/member/googleLogin">구글로그인</a>
 					</div>	
 					
 				</form>
@@ -133,15 +177,15 @@
 
 			</div>
 
-
+</div>
 
 
 		</div>
 </section>
-
-
 <section class="services spad"
 	style="padding =top: 300px; padding-bottom: 500px"></section>
+</c:if>
+
 
 <div id="dropDownSelect1"></div>
 

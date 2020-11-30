@@ -7,10 +7,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="/member/logout" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<button>로그아웃</button>
+<div
+		style="background-color: #15a181; width: 100%; height: 50px; text-align: center; color: white;">
+		<h3>SIST Google_Login Success</h3>
+	</div>
+	<br>
+	<h2 style="text-align: center" id="name"></h2>
+	<h4 style="text-align: center" id="email"></h4>
 
-</form>
+
+
 </body>
 </html>
