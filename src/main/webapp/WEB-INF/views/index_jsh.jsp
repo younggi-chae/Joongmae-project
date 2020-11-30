@@ -16,7 +16,8 @@
     if(principal != null) {
         id = auth.getName();
     }
-%>
+%> 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,180 +31,12 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>PROJECT</title>
 
-<!-- Google Font -->
-<link
-	href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
-	rel="stylesheet">
+<%@include file="includes/header.jsp"%>
 
-<!-- css Styles -->
-<link rel="stylesheet" href="/resources/css/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/font-awesome.min.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/elegant-icons.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/nice-select.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/magnific-popup.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/jquery-ui.min.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/owl.carousel.min.css"
-	type="text/css">
-<link rel="stylesheet" href="/resources/css/slicknav.min.css"
-	type="text/css">
 <link rel="stylesheet" href="/resources/css/style_jsh.css"
 	type="text/css">
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/animate/animate.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/animsition/css/animsition.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/select2/select2.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/daterangepicker/daterangepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/css/util_jsh.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/css/main_jsh.css">
-
-</head>
-<body>
-
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
-
-	<!-- Offcanvas Menu Begin -->
-	<div class="offcanvas-menu-overlay"></div>
-	<div class="offcanvas-menu-wrapper">
-		<div class="offcanvas__widget">
-
-
- 			<sec:authorize access="isAnonymous()">
-				 			 <c:if test="${userId eq null}">
-				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
-				</c:if>
-					 <c:if test="${userId ne null}">
-				<a href="/member/logout" class="primary-btn">로그아웃</a>
-				</c:if>
-			</sec:authorize>
-			<sec:authorize access="isAuthenticated()">
-				
-				<form action="/member/logout" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<button class="primary-btn">로그아웃</button>
-
-</form>
-
-			</sec:authorize>
-
-
-
-		</div>
-		<div class="offcanvas__logo">
-
-
-			<a href="/main"><img src="/resources/img/logo.png" alt=""></a>
-		</div>
-		<div id="mobile-menu-wrap"></div>
-	</div>
-	<!-- Offcanvas Menu End -->
-
-	<!-- Header Section Begin -->
-	<header class="header">
-
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-2">
-					<div class="header__logo">
-						<a href="controller_jsh/mainAction.sh"><img
-							src="/resources/img/logo.png" alt=""></a>
-					</div>
-				</div>
-				<div class="col-lg-10">
-					<div class="header__nav">
-						<nav class="header__menu">
-							<ul>
-								<li class="active"><a
-									href="http://localhost:8080/controller_jsh/mainAction.sh">Home</a></li>
-								<li><a
-									href="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">구매
-										게시판</a></li>
-								<li><a
-									href="http://localhost:8080/Controller_kgj/insertBuyRegistrationForm.kgj">구매
-										등록</a></li>
-
-
-								<li><a
-									href=<c:if test="${sessionScope.id !=null}">
-                                "http://localhost:8080/kjj/registerFormAction.kjj"
-                                </c:if>
-									<c:if test="${sessionScope.id ==null}">
-                                "#"
-                                 </c:if>>판매
-										등록</a></li>
-
-								<c:if test="${sessionScope.id !=null}">
-									<li><a
-										href="http://localhost:8080/Mypage/mypageMainAction.cyg">마이페이지</a></li>
-								</c:if>
-
-								<c:if test="${sessionScope.id ==null}">
-									<li><a href="#">마이페이지</a></li>
-								</c:if>
-
-							</ul>
-
-
-						</nav>
-						<div class="header__nav__widget">
-							<img id="alarmImg" src="" onclick="alarmClick()">
-
-
- 			<sec:authorize access="isAnonymous()">
-				 			 <c:if test="${userId eq null}">
-				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
-				</c:if>
-					 <c:if test="${userId ne null}">
-				<a href="/member/logout" class="primary-btn">로그아웃</a>
-				</c:if>
-			</sec:authorize>
-			<sec:authorize access="isAuthenticated()">
-				
-				<form action="/member/logout" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<button class="primary-btn">로그아웃</button>
-
-</form>
-
-			</sec:authorize>
-
-						</div>
-					</div>
-
-				</div>
-
-			</div>
-			<div class="canvas__open">
-				<span class="fa fa-bars"></span>
-			</div>
-		</div>
-	</header>
-	<!-- Header Section End -->
 
 	<!-- Hero Section Begin -->
 	<section class="hero spad set-bg"
@@ -390,107 +223,7 @@
 	</section>
 
 
-	<!-- Footer Section Begin -->
-	<footer class="footer set-bg"
-		data-setbg="/resources/img_jsh/footer.png">
-		<div class="container">
-			<div>
-				<div class="row">
-					<div class="col-lg-6 col-md-6">
-						<div class="footer__contact__title">
-							<h2 style="color: black">고객 센터</h2>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6">
-						<div class="footer__contact__option">
-							<div class="option__item">
-								<i class="fa fa-phone"></i> (+12) 345 678 910
-							</div>
-							<div class="option__item email">
-								<i class="fa fa-envelope-o"></i> Colorlib@gmail.com
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-4 col-md-4">
-					<div class="footer__about">
-						<div class="footer__logo">
-							<a href="#"><img src="/resources/img/footer-logo.png" alt=""></a>
-						</div>
-						<p>Any questions? Let us know in store at 625 Gloria Union,
-							California, United Stated or call us on (+1) 96 123 8888</p>
-						<div class="footer__social">
-							<a href="#" class="facebook"><i class="fa fa-facebook"></i></a> <a
-								href="#" class="twitter"><i class="fa fa-twitter"></i></a> <a
-								href="#" class="google"><i class="fa fa-google"></i></a> <a
-								href="#" class="skype"><i class="fa fa-skype"></i></a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-2 offset-lg-1 col-md-3">
-					<div class="footer__widget">
-						<h5>Infomation</h5>
-						<ul>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Purchase</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Payemnt</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Shipping</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Return</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-2 col-md-3">
-					<div class="footer__widget">
-						<h5>Infomation</h5>
-						<ul>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Hatchback</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Sedan</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> SUV</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Crossover</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer__brand">
-						<h5>Top Brand</h5>
-						<ul>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Abarth</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Acura</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Alfa
-									Romeo</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Audi</a></li>
-						</ul>
-						<ul>
-							<li><a href="#"><i class="fa fa-angle-right"></i> BMW</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Chevrolet</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i>
-									Ferrari</a></li>
-							<li><a href="#"><i class="fa fa-angle-right"></i> Honda</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-
-			<div class="footer__copyright__text">
-				<p>
-					Copyright &copy;
-					<script>document.write(new Date().getFullYear());</script>
-					All rights reserved | This template is made with <i
-						class="fa fa-heart" aria-hidden="true"></i> by <a
-						href="https://colorlib.com" target="_blank">Colorlib</a>
-				</p>
-			</div>
-			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-		</div>
-	</footer>
-	<!-- Footer Section End -->
+	<%@include file="includes/footer.jsp"%>
 
 	<!-- Search Begin -->
 	<div class="search-model">
@@ -538,6 +271,17 @@
 	<script src="/resources/js/main.js"></script>
 	<script src="/resources/js/main_kgj.js"></script>
 
+<!--  <div id="frogue-container" class="position-right-bottom" data-chatbot="b99e517a-b869-414a-aa15-4b0f2cedbc88" data-user="sk03058@nate.com" data-init-key="value"></div>
+
+<script>
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https:\/\/danbee.ai/js/plugins/frogue-embed/frogue-embed.min.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'frogue-embed'));
+</script> -->
 
 
 </body>
@@ -557,7 +301,7 @@ function readAlarm(alarmNo) {
 }
 
 function alarmClick() {
-	var id = "<%=id%>";
+	var id = "<%=id%>"; 
 	var header = "${_csrf.headerName}";
 	var token = "${_csrf.token}";
 	var count;
