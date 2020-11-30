@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="car__filter__option__item car__filter__option__item--right">
-                                    <button class="btn btn-danger">판매자와 대화하기</button>
+                                    <a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>
                                 </div>
                             </div>                           
                         </div>
@@ -45,6 +45,7 @@
 									<col style="width: 10%;" />
 									<col style="width: auto;" />
 									<col style="width: 10%;" />
+									<col style="width: 10%;" />
 									<col style="width: 10%;" />									
 									<col style="width: 10%;" />
 									<col style="width: 10%;" />									
@@ -55,6 +56,7 @@
 										<th><input type="checkbox" id="checkAll" style="zoom:2.0;"></th>
 										<th></th>
 										<th>상품명</th>
+										<th>판매자</th>
 										<th>거래방식</th>
 										<th>키워드1</th>
 										<th>키워드2</th>
@@ -68,8 +70,10 @@
 							</table>
 						</div>
 					</div>	
-                    <div class='pagination__option' id="pagenation">
-					
+                    <div class='pagination__option' id="pagenation" align="center">
+					<button class="btn btn-secondary" id="prev">이전</button>
+					<button class="btn btn-secondary" id="next">다음</button>
+					<input type="hidden" value="${count }">
 				</div>
 			<!--  end Pagination -->  
                 </div>
@@ -101,14 +105,105 @@
 	
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-
+	
+	var pageNum = 1;
+	
 	$(document).ready(function(){
 		wishList(pageNum);
 	});
-
-
-	//위시리스트 선택삭제, 전체선택 삭제 
 	
+	 
+	//위시리스트 Ajax
+	 function wishList(page){
+		var str = "";		
+		var param = new Object();
+		param.page = page || 1;			
+		
+		$.ajax({
+			url : "/myPage/wishListAjax/" + page,
+			dataType : "json",
+			data : param,
+			type : "GET",
+			success : function(result){				
+				var wishCnt = result.wishCnt;				
+				var length = result.list.length;				
+						buttonControll(page, length, wishCnt)
+				result.list.forEach(function(element){					
+						showList(element);
+					});
+						showInfo(length, wishCnt)	
+					}					
+				});			
+			}
+	 
+	 
+	 //위시리스트 뷰
+	 var showList = function(element){
+		 var str = "";		 				  
+				str  = '<tr style="vertical-align: middle;">';		
+				str += '<td><input type="checkbox" name="check" value="'+ element.wishNo +'" style="zoom:2.0;"></td>';
+				str += '<td><img src="/resources/img/upload_cyg/'+ element.picture +'" style="height: 80px; width: 80px;"></td>';
+				str += '<td><h5 style="font-weight: bold;">';
+				str += '<input id="modalNo" name="modalNo" type="hidden" value="'+ element.sellNo +'">';
+				str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+ element.itemName+'</a></h5>';
+				str += '<td>'+ element.sellId +'</td>';
+				str += '<td>'+ element.type +'</td>';
+				str += '<td>'+  element.keyword1 +'</td>';		
+				str += '<td>'+  element.keyword2 +'</td>';		
+				str += '<td>'+  element.keyword3 +'</td>';			
+				str += '<td>'+  commas(element.price) +'</td>';		                                  
+				str += '</tr>';			
+			    
+					$('#list').append(str);						 				
+		  	          
+	   }
+	 
+	 
+	//이전,다음버튼  & 페이징 이동
+	 $("#prev").on("click", function(){
+			--pageNum; 		          
+	        wishList(pageNum);
+	   }); 
+	 $("#next").on("click", function(){		 
+			 ++pageNum;				 
+		     wishList(pageNum);
+	   });	
+	 
+	 
+	 //버튼 활성화 & 비활성화
+	 function buttonControll(page, length, wishCnt){
+		 $('#list').html("");
+			if(pageNum < 2){
+		    	 $("#prev").attr("disabled", true);
+		     } else {
+		    	 $("#prev").attr("disabled", false);
+		     }          
+			if(length < 5 || page*5 === wishCnt){
+				$("#next").attr("disabled", true);
+			} else {
+				$("#next").attr("disabled", false);
+			}
+			 if(length < 1){
+				 str =  '<tr><td colspan="9" align="center">';
+				 str += '<a type="button" href="/myPage/sellList" class="btn btn-secondary">찜하러 가기</a></td></tr>';
+				$('#list').append(str);
+			} 			 	
+	   }
+	 
+	 //정보관련 function
+	 function showInfo(length, wishCnt){
+		 $('#count').html("");
+	  		if(length < 1){
+	  		   str = '<b>위시리스트가 비어있습니다.</b>';
+	  		   $('#count').append(str);
+	  		} else {					
+			   str = '<b>'+wishCnt+'개의 상품이 담겨있어요!!</b>';
+			   $('#count').append(str);
+		    }					
+	  }
+	 
+	
+	//위시리스트 선택삭제, 전체선택 삭제	
 	$('#deleteSelect').on('click', function(){		
 			checkArr();				
 	});
@@ -140,8 +235,8 @@
 			}
 		});
 	}	
-	
-	
+		
+		
 	 //위시리스트 전체삭제
 	 var count = $('#countVal').val();	 
 	 $('#deleteAll').on('click', function(){
@@ -156,7 +251,7 @@
 	 });
 	 
 	 
-	 //체크박스 전체선택 , 전체삭제
+	 //체크박스 전체선택 , 전체해제
 	 $('#checkAll').on('click', function(){
 		  checkAll();
 	 });
@@ -168,95 +263,6 @@
 	         $("input[type=checkbox]").prop("checked", false);
 	     }
 	 }	
-	 
-	 
-	 function wishList(page){
-		var str = "";		
-		var param = new Object();
-		param.page = page || 1;			
-		
-		$.ajax({
-			url : "/myPage/wishListAjax/" + page,
-			dataType : "json",
-			data : param,
-			type : "GET",
-			success : function(result){				
-				var wishCnt = result.wishCnt;				
-				$('#list').html("");
-				
-				result.list.forEach(function(element){					
-				if(element == null){
-					str = '<tr><td colspan="5" align="center">위시리스트가 비어있습니다.</td></tr>';
-				} else {					  
-					str  = '<tr style="vertical-align: middle;">';		
-					str += '<td><input type="checkbox" name="check" value="'+ element.wishNo +'" style="zoom:2.0;"></td>';
-					str += '<td><img src="/resources/img/upload_cyg/'+ element.picture +'" style="height: 80px; width: 80px;"></td>';
-					str += '<td><h5 style="font-weight: bold;">';
-					str += '<input id="modalNo" name="modalNo" type="hidden" value="'+ element.sellNo +'">';
-					str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+ element.itemName+'</a></h5>';
-					str += '<td>'+ element.sellId +'</td>';
-					str += '<td>'+  element.keyword1 +'</td>';		
-					str += '<td>'+  element.keyword2 +'</td>';		
-					str += '<td>'+  element.keyword3 +'</td>';			
-					str += '<td>'+  commas(element.price) +'</td>';				                                  
-					str += '</tr>';			
-				    
-						$('#list').append(str);						
-						showPage(wishCnt);					
-				     	}
-					});
-						$('#count').html("");
-						var count = '<b>'+wishCnt+'개의 상품이 담겨있어요!!</b>';
-		        		$('#count').append(count);
-					}					
-				});			
-			} 
-	 
-	//페이징 이동
-	 $("#pagenation").on("click","li a", function(e){
-	        e.preventDefault();      
-	        
-	        var targetPageNum = $(this).attr("href");	        
-	        pageNum = targetPageNum;
-	        
-	        wishList(pageNum);
-	   }); 
-
- 	
- 	//페이징 계산 및 출력 
-	 var pageNum = 1;
-	 
-	 function showPage(wishCnt){      
-	      var endNum = Math.ceil(pageNum / 10.0) * 10;  
-	      var startNum = endNum - 9;       
-	      var prev = startNum != 1;
-	      var next = false;
-	      
-	      if(endNum * 10 >= wishCnt){
-	        endNum = Math.ceil(wishCnt/10.0);
-	      }	      
-	      if(endNum * 10 < wishCnt){
-	        next = true;
-	      }		  
-	      var str = "<ul class='pagination pull-left'>";	      
-	      
-	      if(prev){
-	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
-	      }         
-	      
-	      for(var i = startNum ; i <= endNum; i++){ 	    	  
-	        var active = pageNum == i? "active":"";        
-	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
-	      }
-	      
-	      if(next){
-	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
-	      }
-	      
-	      str += "</ul>";
-	       
-	      $("#pagenation").html(str);
-	    }
 	
 
 	//위시리스트 상세보기
@@ -305,6 +311,43 @@
 	 function commas(num) {
 		    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+	 
+	 
+	 
+	//페이징 계산 및 출력 
+	 /* var pageNum = 1;
+	 
+	 function showPage(wishCnt){      
+	      var endNum = Math.ceil(pageNum / 10.0) * 10;  
+	      var startNum = endNum - 9;       
+	      var prev = startNum != 1;
+	      var next = false;
+	      
+	      if(endNum * 10 >= wishCnt){
+	        endNum = Math.ceil(wishCnt/10.0);
+	      }	      
+	      if(endNum * 10 < wishCnt){
+	        next = true;
+	      }		  
+	      var str = "<ul class='pagination pull-left'>";	      
+	      
+	      if(prev){
+	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
+	      }         
+	      
+	      for(var i = startNum ; i <= endNum; i++){ 	    	  
+	        var active = pageNum == i? "active":"";        
+	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
+	      }
+	      
+	      if(next){
+	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
+	      }
+	      
+	      str += "</ul>";
+	       
+	      $("#pagenation").html(str);
+	    } */
 	 
 </script>
 

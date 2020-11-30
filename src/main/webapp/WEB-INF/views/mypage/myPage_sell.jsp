@@ -22,7 +22,12 @@
          <div class="row">
             <div class="col-lg-12">
             	<div style="text-align: center; font-size: 20px;">
-                    <b>${count }건의 견적서를 확인해보세요!!</b>
+                    <c:choose>
+	                     <c:when test="${count == 0}">
+	                    	<b>받은 견적서가 없습니다.</b>
+	                    </c:when>
+                    	<c:otherwise><b>${count }건의 견적서를 확인해보세요!!</b></c:otherwise>
+                    </c:choose>
                     <input type="hidden" id="count" value="${count }">                    	
                 </div><br>                 
            </div>
@@ -33,6 +38,7 @@
                   <div class="row">
                      <div class="col-lg-8 col-md-6">                        
                         <a href="#" class="btn btn-danger" id="deleteAll">전체삭제</a>
+                        <a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>	
                      </div>
                       <div class="col-lg-4 col-md-6">										
 							<div class="pull-right">
@@ -46,7 +52,7 @@
 									  <input type='text' name='keyword' placeholder="검색어를 입력해주세요." value='<c:out value="${pageMaker.cri.keyword}"/>'/> 
 									  <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
 									  <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>'/>
-									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>
+									 <button class="btn btn btn-secondary" name="btnSearch" id="btnSearch"><i class="fa fa-search"></i></button>									 
 								</form>
 							</div>
 						</div>					
@@ -56,7 +62,7 @@
                   <c:choose>
                      <c:when test="${empty list }">
                         <div class="col-lg-12 col-md-4" align="center">
-                           <h4>데이터가 없습니다.</h4>
+                           <h4><a type="button" href="/buyBoard/registerForm" class="btn btn-secondary">구매등록 하기</a></h4>
                         </div>
                      </c:when>
 
@@ -256,7 +262,8 @@ $(document).ready(function () {
 		 var sellNo = $(this).val();		 
 		 var header = "${_csrf.headerName}";
 		 var token = "${_csrf.token}";		 
-		 console.log(sellNo);
+		 if(confirm("해당 견적서를 삭제하시겠습니까?")) {     	 
+            	
 		 $.ajax({
 			 url : "/myPage/deleteSell/" + sellNo,			 
 			 data : sellNo,
@@ -267,16 +274,16 @@ $(document).ready(function () {
 	        xhr.setRequestHeader(header, token);
 	           },
 	        success : function(result){
-	       	 if(confirm("해당 견적서를 삭제하시겠습니까?")) {	        		 
-		     		location.reload();
-	            } else {
-	                return false;
-	            }        	
+	        	alert("삭제되었습니다.")
+	        	location.reload();
 			 }, error : function(err) {
 				 alert("실패");
 			 }
 		 });
-	});
+			 } else {
+	             return false;
+	         } 
+	 });
 	
 	 //견적서 전체삭제
 	 var count = $('#count').val();	 

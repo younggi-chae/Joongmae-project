@@ -9,6 +9,7 @@ import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
+import org.joongmae.domain.ReplyVO;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 
@@ -24,18 +25,22 @@ public interface MypageService {
 	public int deleteBuy(int buyNo);
 	public BuyListWithPaging getBuyListWithPaging(Criteria cri);
 	public BuyListWithPaging dateSearchRange(Criteria cri);
+	public int buyCnt(String id);
 	
 	public List<SellVO> getSellList(Criteria cri);
 	public int countSell(Criteria cri);
 	public SellVO getSellDetail(int sellNo);
 	public int deleteSell(int sellNo);
 	public int deleteAllSell();
+	public int sellCnt(String id);
 	
 	public List<DealAndSell> getDealList(Criteria cri);
 	public int countDeal(Criteria cri);
 	public DealAndSell getDealDetail(int dealNo);
 	public DealListWithPaging getDealListWithPaging(Criteria cri);
 	public DealListWithPaging selectDeal(Criteria cri);	
+	public int completeCnt(Criteria cri);
+	public int progressCnt(Criteria cri);
 	
 	public List<WishAndSell> getWishList(Criteria cri);
 	public int countWish(Criteria cri);
@@ -49,6 +54,9 @@ public interface MypageService {
 	public boolean modifyMember(MemberVO member);
 	public int deleteMember(String id);
 	
-	
+	public int replyInsert(ReplyVO reply);
+	public List<ReplyVO> replyList(int dealNo);
+	public int replyDelete(int replyNo);
+	public int replyCnt(int dealNo);
 	
 }

@@ -22,27 +22,40 @@
 				<div class="col-lg-12">
 					<div class="section-title">
 						<h2>거래내역 확인</h2>
-						<span>Transactional Information</span>
+						<span>Deal Information</span>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div><br><br><br>
 
 		<!-- Car Section Begin -->
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12"></div>
+				<div class="col-lg-12" style="margin: 0 auto;" >
+						
+				</div>
 				<div class="col-lg-12">
 					<div class="car__filter__option"
 						style="height: 74px; background-color: white;">
 						<div class="row">
-							<div class="col-lg-8 col-md-6">
+							<div class="col-lg-4 col-md-6">
 								<div class="car__filter__option__item car__filter__option__item--left">
 									<select class="selectDeal">
 										<option id="whole" value="whole">전체</option>
 										<option id="progress" value="progress">진행중</option>
 										<option id="complete" value="complete">거래완료</option>
-									</select>
+									</select>								
+								</div>													
+							</div>
+							<div class="col-lg-4 col-md-6" style="top:-120px;">  <!--  left: 50px;" -->
+								<div id="myChart" >
+									<input type="hidden" id="completeCnt" value="${completeCnt }">
+									<input type="hidden" id="progressCnt" value="${progressCnt }">
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-6">
+								<div class="car__filter__option__item car__filter__option__item--right">
+										<a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>
 								</div>
 							</div>							 
 						</div>
@@ -58,17 +71,16 @@
 		</div>
 	</section>
 	<!-- Car Section End -->
-	
+
 	<!-- modal창 정보 -->	
-	<!--  큰창:<div class="modal-dialog"> 작은창 :<div class="modal-dialog modal-sm">  -->		
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
+			aria-labelledby="detailModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">							
-						<h4 class="modal-title" id="myModalLabel">거래 상세보기</h4>
+						<h4 class="modal-title" id="detailModalLabel">거래 상세보기</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" id="detail">
 					
 					</div>
 					<div class="modal-footer">
@@ -95,309 +107,394 @@
 					</form>
 					<button type="button" class="btn btn-primary" id="depositBtn" onclick="deposit()">입금 완료</button>
 					<button type="button" class="btn btn-primary" id="deliveryInfoBtn" onclick="deliveryInfo()">송장 번호 조회</button>
-						<button type="button" class="btn btn-default"
-							data-dismiss="modal">Close</button>							
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>						
 					</div>
 				</div>					
 			</div>				
-		  </div>			
-	<!-- /.modal -->	
+		  </div>		  			
+	<!-- /.modal -->
+	
+	<!-- modal창 정보 -->
+		<div class="modal fade" id="commentModal" tabindex="-1" role="dialog2"
+			aria-labelledby="commentModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">							
+						<h4 class="modal-title" id="commentModalLabel"><i class="fa fa-comments fa-fw"></i> Comments</h4>
+					</div>
+					<div class="modal-body">					      
+				        <ul class="reply">
+				        	
+				        </ul>					
+					</div>
+					<div class="modal-footer">                 		
+                		<input class="form-control" name='reply' placeholder="댓글을 입력하세요.">               		
+                		<button class="btn btn-danger content" id="insert">댓글남기기</button> 					
+						<button type="button" class="btn btn-secondary replyClose" data-dismiss="modal">Close</button>							
+					</div>
+				</div>					
+			</div>				
+		 </div>			
+	<!-- /.modal -->			
 
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">		
+<script type="text/javascript">			
 	
-	
-	var statusCheck = "";
-
-	$(document).ready(function(){		
-		//리스트 출력
-		statusCheck = "whole";
-		dealList(pageNum);	
-	
-	//진행중, 거래완료 검색
-	 $(".selectDeal").on("change", function(){
-		if($(".selectDeal option:selected").val() == 'whole'){
+		var statusCheck = "";
+		var page = 1;
+		var endCheck = false;
+		$(document).ready(function(){		
+			//리스트 출력
 			statusCheck = "whole";
-			dealList(pageNum);	
-		} else if($(".selectDeal option:selected").val() == 'complete'){
-			statusCheck = "complete";
-			selectDealList(pageNum, "완료");	
-		} else if($(".selectDeal option:selected").val() == 'progress'){
-			statusCheck = "progress";
-			selectDealList(pageNum, "진행중");	
-		}	
-	   }); 
-	}); 
-	
-	
-	//리스트 Ajax
-	function dealList(page){
-		var str = "";
-		var param = new Object();
-		param.page = page || 1;		
+			dealList();	
+			infiniteScroll();
+		 //진행중, 거래완료 검색
+		 $(".selectDeal").on("change", function(){
+			if($(".selectDeal option:selected").val() == 'whole'){
+				statusCheck = "whole";
+				init();
+				dealList();	
+				infiniteScroll();
+			} else if($(".selectDeal option:selected").val() == 'complete'){
+				statusCheck = "complete";
+				init();
+				statusList(page, "완료");	
+				infiniteScroll(page, "완료");
+			} else if($(".selectDeal option:selected").val() == 'progress'){
+				statusCheck = "progress";
+				init();
+				statusList(page, "진행중");	
+				infiniteScroll(page, "진행중");
+			}	
+	    });			
+	 }); 
 				
-		$.ajax({
-			url : "/myPage/dealListAjax/" + page,
-			dataType : "json",
-			data : param,
-			type : "GET",
-			success : function(result){						
-				var dealCnt = result.dealCnt;
-				 $('#dealList').html("");		
-				//Initialize  owl-carousel Plugin			
-				 result.list.forEach(function(element){		
-					
-					str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';						
-					str += '<div class="car__item__pic__slider">';
-					if(element.picture != null){
-					  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
-					  } else {
-						str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
-					  }
-					str += '<div class="car__item__text"><div class="car__item__text__inner">';
-					str += '<div class="label-date">' + element.buyId +'</div>';
-					str += '<div class="label-date">' + element.sellId +'</div>';
-					str += '<h5><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
-					str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal" style="font-size: 25px;">' + element.itemName +'</a>';
-					str += '&emsp;&emsp;&emsp;&emsp;<span>'+ formatDate(element.regDate) +'</span></h5>';
-					str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
-					str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
-					if(element.status === "진행중"){
-						str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
-					} else {
-						str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
-					}													
-					str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';			
-
-					 	$('#dealList').append(str);	
-					 	showPage(dealCnt);
-					});
-				}			
+		//무한 스크롤 페이징 셋팅				
+		function infiniteScroll(){			
+			$(window).scroll(function(){
+				var $window = $(this);
+				var scrollTop = $window.scrollTop(); //스크롤 top이 위치하는 높이
+				var windowHeight = $window.height();  // 화면 높이
+				var documentHeight = $(document).height();	//문서 전체 높이			
+				
+				if(scrollTop + windowHeight + 60 > documentHeight){									
+					if(statusCheck == "progress"){
+						statusList(page, "진행중");
+			        }else if(statusCheck == "complete"){
+			        	statusList(page, "완료");
+			        }else if(statusCheck == "whole"){
+			        	dealList();
+			        }	       
+					++page;					
+				}
 			});			
-	    }
-	
-	    //진행중 & 거래완료 Ajax
-		function selectDealList(page, status){
-					 $('.modal-body').append(str);
-					 
-					 if (result.sellId == "<%=id%>") {
-						 if (result.status == '진행중') {
-							$('#reviewBtn').hide();
-							$('#depositBtn').hide();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').hide();
-							$('#deliveryModBtn').hide();
-						} else if (result.status == '입금완료') {
-							$('#reviewBtn').hide();
-							$('#depositBtn').hide();
-							$('#deliveryBtn').show();
-							$('#deliveryInfoBtn').hide();
-							$('#deliveryModBtn').hide();
-						} else if (result.status == '배송중') {
-							$('#reviewBtn').hide();
-							$('#depositBtn').hide();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').show();
-							$('#deliveryModBtn').show();
-						} else if (result.status == '완료') {
-							$('#reviewBtn').show();
-							$('#reviewId').val(result.buyId)
-							$('#depositBtn').hide();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').hide();
-							$('#deliveryModBtn').hide();
-						}
-					} else if (result.buyId == "<%=id%>") {
-						if (result.status == '진행중') {
-							$('#reviewBtn').hide();
-							$('#depositBtn').show();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').hide();
-							$('#deliveryModBtn').hide();
-						} else if (result.status == '입금완료') {
-							$('#reviewBtn').hide();
-							$('#depositBtn').hide();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').hide();
-							$('#deliveryModBtn').hide();
-						} else if (result.status == '배송중') {
-							$('#reviewBtn').hide();
-							$('#depositBtn').hide();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').show();
-							$('#deliveryModBtn').hide();
-						} else if (result.status == '완료') {
-							$('#reviewBtn').show();
-							$('#reviewId').val(result.sellId)
-							$('#depositBtn').hide();
-							$('#deliveryBtn').hide();
-							$('#deliveryInfoBtn').hide();
-							$('#deliveryModBtn').hide();
-						}
-							
-					}
-					 
-			   }
-			});
-		});
+		}
 		
-		function showList(){
-			var str = "";
-			var param = new Object();			
+		//초기화
+		function init(){
+			endCheck = false;
+			$('#dealList').html("");
+		}
+		
+		//전체 리스트 가져오기
+		var dealList = function(){
+			if(endCheck == true){
+				return
+			}		   
+		 	console.log("페이지번호 : " + page);
+			$.ajax({
+				url : "/myPage/dealListAjax/" + page,
+				dataType : "json",				
+				type : "GET",
+				success : function(result){				
+				var length = result.list.length;
+				console.log("리스트 길이 : " + length);
+				
+				if(length < 9){
+					endCheck = true;
+				}				
+				$.each(result.list, function(index, element){									
+					showList(false, element);					
+				});
+			}			
+		});			
+      }
+		
+	  //진행중 & 거래완료 리스트 가져오기
+	  var statusList = function(page, status){		  
+		  if(endCheck == true){
+			  return
+		  }
+		  var param = new Object();			
 			param.page = page || 1;		
 			param.status = status;
 			console.log(status);
+		    console.log("페이지번호 : " + page);
 			$.ajax({
 				url : "/myPage/selectDeal/" + page + "/" + status,
-				dataType : "json",
+				dataType : "json",				
+				type : "GET",	
 				data : param,
-				type : "GET",				
 				success : function(result){					
-					 var dealCnt = result.dealCnt;
-					 $('#dealList').html("");
-					result.list.forEach(function(element){
-						
-						str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';
-						str += '<div class="car__item__pic__slider">';
-						if(element.picture != null){
-						  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
-						  } else {
-							str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
-						  }
-						str += '<div class="car__item__text"><div class="car__item__text__inner">';
-						str += '<div class="label-date">' + element.buyId +'</div>';
-						str += '<div class="label-date">' + element.sellId +'</div>';
-						str += '<h5><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
-						str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal" style="font-size: 25px;">' + element.itemName +'</a>';
-						str += '&emsp;&emsp;&emsp;&emsp;<span>'+ formatDate(element.regDate) +'</span></h5>';
-						str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
-						str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
-						if(element.status === "진행중"){
-							str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
-						} else {
-							str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
-						}													
-						str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';	
-						
-						 $('#dealList').append(str);
-						 showPage(dealCnt);
-					});
-				 }
-			});
-		}		
-		
-	    
-	    //Deal 상세보기 모달
-		$('#dealList').on("click", '.targetModal', function(){
-			var modalNo = $(this).prev().val();					
-			var str = "";
-			$.ajax({
-			   url : "/myPage/dealDetail/" + modalNo,
-			   dataType : "json",
-			   data : modalNo,
-			   type : "GET",
-			   success : function(result){	
-				  $('.modal-body').html("");	
-				  
-				  str += '<div class="car__details__pic">';
-				  str += '	<img src="/resources/img/upload_cyg/'+result.picture+'">';
-				  str += '</div>';					 
-				  str += '<div class="car__details__sidebar__model">';
-				  str += 	'<ul>';
-				  str += 		'<li>상품명 :<span>' + result.itemName + '</span></li>';
-				  str += 		'<li>판매자 :<span>' + result.sellId + '</span></li>';
-				  str += 		'<li>구매자 :<span>' + result.buyId + '</span></li>';
-				  str += 	'</ul>';
-				  str += '</div>';
-				  str += '<div class="car__details__sidebar__model">';
-				  str += 	'<ul>';
-				  str += 		'<li>거래방식 :<span>' + result.type + '</span></li>';
-				  str += 		'<li>거래지역 :<span>' + result.region + '</span></li>';
-				  str += 		'<li>상품상태 :<span>' + result.itemCondition + '</span></li>';
-				  str += 	'</ul>';
-				  str += '</div>';
-				  str += '<div class="car__details__sidebar__model">';
-				  str += 	'<ul>';
-				  str += 		'<li>키워드 :<span>' + result.keyword1 +'</span></li>';
-				  str += 		'<li><span>' + result.keyword2 + '</span></li>';
-				  str += 		'<li><span>' + result.keyword3 +'</span></li>';
-				  str += 	'</ul>';
-				  str += '</div>';
-				  str += '<div class="car__details__sidebar__model">';
-				  str += 	'<ul>';
-				  str += 		'<li>대분류 :<span>' + result.bigClassifier + '</span></li>';
-				  str += 		'<li>중분류 :<span>' + result.mediumClassifier + '</span></li>';
-				  str += 	'</ul>';
-				  str += '</div>';
-				  str += '<div class="car__details__sidebar__payment">';
-				  str += 	'<ul>';
-				  str += 		'<li>가격 :<span><fmt:formatNumber type="number" maxFractionDigits="3" value=""/>'+ commas(result.price) +'원</span></li>';
-				  str += 	'</ul>';
-				  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';			  
+				var length = result.list.length;
+				console.log("리스트 길이 : " + length);			
 				
-					 $('.modal-body').append(str);
-			   }
-			});
+				if(length < 9){
+					endCheck = true;
+				}				
+				$.each(result.list, function(index, element){
+					showList(false, element);					
+				});
+			}			
+		});			
+	  }
+		
+		
+	//화면에 뿌려질 태그
+	var showList = function(mode, element){			
+		var str = "";
+		//댓글 숫자 표시 ajax
+		var dealNo = element.dealNo;
+			$.ajax({
+				url : "/myPage/replyCnt/"+ dealNo,			
+				data : dealNo,
+				dataType : 'json',
+				type : "GET",
+				success : function(result){						
+			
+			str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';						
+			str += '<div class="car__item__pic__slider">';
+			if(element.picture != null){
+			  	str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
+			  } else {
+				str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';	  
+			  }
+			str += '<div class="car__item__text"><div class="car__item__text__inner">';
+			str += '<div class="label-date">' + element.buyId +'</div>';
+			str += '<div class="label-date">' + element.sellId +'</div>';
+			str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + dealNo +'">';
+			str += '<a class="detailModal" href="#" data-toggle="modal" data-target="#detailModal" data-backdrop="static" style="font-size: 25px;">' + element.itemName +'</a>';
+			str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
+			str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" data-backdrop="static" style="font-size:40px;">';			
+			str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt">'+ result +'</span></div>';
+			str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
+			str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
+			if(element.status === "진행중"){
+				str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
+			} else {
+				str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
+			}													
+			str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';			
+	
+				if(mode){
+					$('#dealList').prepend(str);		
+				} else {
+					$('#dealList').append(str);
+				}
+			 }
 		});
+	}
 	
-			
-	//페이지 이동
-	$("#pagenation").on("click","li a", function(e){
-        e.preventDefault();      
-        
-        var targetPageNum = $(this).attr("href");       
-        
-        pageNum = targetPageNum;
-        
-        if(statusCheck == "progress"){
-        	selectDealList(pageNum, "진행중");
-        }else if(statusCheck == "complete"){
-        	selectDealList(pageNum, "완료");
-        }else if(statusCheck == "whole"){
-        	dealList(pageNum);
-        }	       
-      }); 		
-			
-	//페이징 계산 및 출력
-	 var pageNum = 1;
-	 
-	 function showPage(dealCnt){      
-	      var endNum = Math.ceil(pageNum / 10.0) * 10;  
-	      var startNum = endNum - 9;       
-	      var prev = startNum != 1;
-	      var next = false;
-	      
-	      if(endNum * 10 >= dealCnt){
-	        endNum = Math.ceil(dealCnt/10.0);
-	      }
-	      
-	      if(endNum * 10 < dealCnt){
-	        next = true;
-	      }
-	      
-		  var str = "<ul class='pagination pull-left'>";
-	      
-	      if(prev){
-	        str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
-	      }         
-	      
-	      for(var i = startNum ; i <= endNum; i++){ 	    	  
-	        var active = pageNum == i? "active":"";        
-	        str+= "<li class='paginate_button'><a class='"+active+"' href='"+i+"'>"+i+"</a></li>";
-	      }
-	      
-	      if(next){
-	        str+= "<li class='paginate_button next'><a href='"+(endNum + 1)+"'>Next</a></li>";
-	      }
-	      str += "</ul>";
-	         
-	      $("#pagenation").html(str);
-	    }
 	
+	//댓글 insert & list & delete
+	var dealNo = 0;
+	$('#dealList').on("click", '.commentModal', function(){
+		dealNo = $(this).prev().prev().val();		
+		replyList(dealNo);		
+	});		
+	
+	$('#insert').on('click', function(){
+		replyInsert(dealNo);		
+	});		 
+	
+	$('.reply').on('click', '.replyDelete', function(){
+		var replyNo = $(this).prev().val();
+		replyDelete(replyNo);
+	});
+	
+	 //Deal 상세보기 모달
+	$('#dealList').on("click", '.detailModal', function(){
+		var dealNo = $(this).prev().val();					
+		detailDeal(dealNo);
+	});	
+		
+	
+	//댓글 insert Ajax
+	function replyInsert(dealNo){		
+		var reply = $('.content').prev().val();
+		var id = "<%=id%>";
+		var header = "${_csrf.headerName}";
+	    var token = "${_csrf.token}";
+		var param = new Object();			
+		param.dealNo = dealNo;
+		param.reply = reply;
+		param.id = id;
+		
+		$.ajax({
+			url : "/myPage/replyInsert",			
+			data : JSON.stringify(param),
+			type : "POST",		
+			contentType : "application/json; charset=utf-8",
+			beforeSend : function(xhr)
+	        {  
+	        xhr.setRequestHeader(header, token);
+	        },
+			success : function(result){	
+				replyList(dealNo);
+				$('input[name="reply"]').val("");
+			}, error : function(err){
+				alert("실패");
+			}
+		});
+	}	
+	
+	
+	//댓글 List Ajax
+	function replyList(dealNo){			
+		$.ajax({
+			url : "/myPage/replyList/" + dealNo,
+			dataType : "json",
+			data : dealNo,
+			type : "GET",
+			success : function(result){				
+			  $('.reply').html("");	
+			  var length = result.length;			  
+			  
+			  if(length === 0){
+				  str = '<li><div align="center"><b>등록된 댓글이 없습니다.</b></div></li>';
+				  $('.reply').append(str);
+			  } else {
+			  result.forEach(function(element){			  
+				  var str = "";			  
+				  str  = '<li class="left clearfix">';
+				  str += 	'<div>';
+				  str += 		'<div class="header">';				 
+				  str += 			'<strong class="primary-font">'+element.id+'</strong>&emsp;';
+				  str +=            '<input type="hidden" value="'+element.replyNo+'">';
+				  str +=            '<a href="#" class="replyDelete"><i class="fa fa-close"></i></a>';
+				  str += 			'<small class="pull-right text-muted">'+element.replyDate+'</small>';
+				  str +=        '</div>';
+				  str +=            '<p>'+element.reply+'</p>';
+				  str +=    '</div>';
+				  str += '</li>';
+				  
+			  		$('.reply').append(str);	
+				  });
+			    }
+			 }
+			});	
+		}
+	
+	//댓글 삭제 Ajax
+	function replyDelete(replyNo){		
+		var header = "${_csrf.headerName}";
+	    var token = "${_csrf.token}";
+	    if(confirm("댓글을 삭제하시겠습니까?")) {			
+        
+		$.ajax({
+			url : "/myPage/replyDelete/" + replyNo,			
+			data : replyNo,
+			type : "POST",
+			beforeSend : function(xhr)
+	        {  
+	        xhr.setRequestHeader(header, token);
+	        },
+			success : function(result){	
+			   replyList(dealNo);				
+			}, error : function(err){
+				alert("실패");
+			}
+		});
+		    } else {
+	            return false;
+	        }
+      }		    
+   
+	
+	//Deal 상세보기
+	function detailDeal(dealNo)	{
+		var str = "";
+		$.ajax({
+		   url : "/myPage/dealDetail/" + dealNo,
+		   dataType : "json",
+		   data : dealNo,
+		   type : "GET",
+		   success : function(result){	
+			  $('#detail').html("");			 
+			  str += '<div class="car__details__pic">';
+			  str += '	<img src="/resources/img/upload_cyg/'+result.picture+'">';
+			  str += '</div>';					 
+			  str += '<div class="car__details__sidebar__model">';
+			  str += 	'<ul>';
+			  str += 		'<li>상품명 :<span>' + result.itemName + '</span></li>';
+			  str += 		'<li>판매자 :<span>' + result.sellId + '</span></li>';
+			  str += 		'<li>구매자 :<span>' + result.buyId + '</span></li>';
+			  str += 	'</ul>';
+			  str += '</div>';
+			  str += '<div class="car__details__sidebar__model">';
+			  str += 	'<ul>';
+			  str += 		'<li>거래방식 :<span>' + result.type + '</span></li>';
+			  str += 		'<li>거래지역 :<span>' + result.region + '</span></li>';
+			  str += 		'<li>상품상태 :<span>' + result.itemCondition + '</span></li>';
+			  str += 	'</ul>';
+			  str += '</div>';
+			  str += '<div class="car__details__sidebar__model">';
+			  str += 	'<ul>';
+			  str += 		'<li>키워드 :<span>' + result.keyword1 +'</span></li>';
+			  str += 		'<li><span>' + result.keyword2 + '</span></li>';
+			  str += 		'<li><span>' + result.keyword3 +'</span></li>';
+			  str += 	'</ul>';
+			  str += '</div>';
+			  str += '<div class="car__details__sidebar__model">';
+			  str += 	'<ul>';
+			  str += 		'<li>대분류 :<span>' + result.bigClassifier + '</span></li>';
+			  str += 		'<li>중분류 :<span>' + result.mediumClassifier + '</span></li>';
+			  str += 	'</ul>';
+			  str += '</div>';
+			  str += '<div class="car__details__sidebar__payment">';
+			  str += 	'<ul>';
+			  str += 		'<li>가격 :<span><fmt:formatNumber type="number" maxFractionDigits="3" value=""/>'+ commas(result.price) +'원</span></li>';
+			  str += 	'</ul>';
+			  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';			  
+			
+				 $('#detail').append(str);
+		   }
+		});
+	}
+	
+	
+	//차트생성
+	google.charts.load('current', {'packages':['corechart']}); 
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+        	var completeCnt = $('#completeCnt').val(); 
+        	var progressCnt = $('#progressCnt').val();
+        	var data = new google.visualization.DataTable();
+            data.addColumn('string','status');
+            data.addColumn('number','건수');
+ 
+            data.addRows([ 
+                ['진행중',parseInt(progressCnt)],
+                ['거래완료',parseInt(completeCnt)]               
+            ]);
+            var options = {                    
+            		chartArea:{width:'170', height:'170'},
+            		tooltip:{textStyle : {fontSize:15}, showColorCode : true},
+            		"fontSize" : 12,
+            		'pieSliceText':'label',
+            		'pieHole' : 0.35,
+                    legend:'none'                    
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('myChart'));
+            chart.draw(data,options);
+        }
+	
+		 
 	 
 	//날짜 포맷팅
-	 function formatDate(dateVal){
+	function formatDate(dateVal){
    		var date = new Date(dateVal);
 		var year = date.getFullYear();              
    		 var month = (1 + date.getMonth());          
@@ -412,22 +509,70 @@
 	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 		
+	
+	
+	function selectDealList(page, status){
+                $('.modal-body').append(str);
+                
+                if (result.sellId == "<%=id%>") {
+                   if (result.status == '진행중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '입금완료') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').show();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '배송중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').show();
+                     $('#deliveryModBtn').show();
+                  } else if (result.status == '완료') {
+                     $('#reviewBtn').show();
+                     $('#reviewId').val(result.buyId)
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  }
+               } else if (result.buyId == "<%=id%>") {
+                  if (result.status == '진행중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').show();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '입금완료') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '배송중') {
+                     $('#reviewBtn').hide();
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').show();
+                     $('#deliveryModBtn').hide();
+                  } else if (result.status == '완료') {
+                     $('#reviewBtn').show();
+                     $('#reviewId').val(result.sellId)
+                     $('#depositBtn').hide();
+                     $('#deliveryBtn').hide();
+                     $('#deliveryInfoBtn').hide();
+                     $('#deliveryModBtn').hide();
+                  }
+                     
+               }
+                
+            } 
 
-	var searchForm = $("#searchForm");
-	$("#searchForm button").on("click",	function(e) {
-		if (!searchForm.find("option:selected").val()) {
-				alert("검색종류를 선택하세요");
-				return false;
-		}
-			if (!searchForm.find("input[name='keyword']").val()) {
-					alert("키워드를 입력하세요");
-					return false;
-				}
-
-				searchForm.find("input[name='pageNum']").val("1");
-				e.preventDefault();
-				searchForm.submit();
-			});
 </script>
 
 <script type="text/javascript">

@@ -3,9 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Object principal = auth.getPrincipal();
+ 
+    String id = "";
+    if(principal != null) {
+        id = auth.getName();
+    }
+%>	
 <%@include file="../includes/header.jsp"%>
-
-
 
 
 	<!-- Services Section Begin -->
@@ -20,12 +29,12 @@
 				</div>
 			</div>		
 			<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12">
-		<div class="testimonial__item">
+			<div class="col-lg-6 col-md-12 col-sm-12">
+		<div class="testimonial__item" style="height: 400px">
 			<div class="testimonial__item__author">
 				<div class="testimonial__item__author__pic">
 					<div class="imgPreview">	
-					  <img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/s_${member.picture }" style="width: 140px; height: 140px;">								
+					  <img id="regImg" class="rounded-circle" src="/resources/img/upload_cyg/s_${member.picture }" style="width: 200px; height: 200px;">								
 				 	</div>
 				</div>
 				<div class="testimonial__item__author__text">
@@ -33,65 +42,78 @@
 						<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 							class="fa fa-star"></i> <i class="fa fa-star"></i> <i
 							class="fa fa-star"></i>
-					</div>
-				
-					<h5>						
-						${member.id } 고객님&emsp; <span class=".detail">	                       								
-						<a href="detailMember?id=${member.id }">정보 수정</a></span>							
-					</h5>															
-					<span>${member.email }</span>					
+					</div><br>					
+					<h5 id="checkId"><%=id%> 고객님</h5>															
+					<span>${member.email }</span>										
+				</div>				
+			</div><br><br>					                       								
+			   <a class="login100-form-btn" href="/myPage/detailMember">정보 수정</a>
+			   							
+		</div>
+		
+	</div>
+	<div class="col-lg-6 col-md-12 col-sm-12">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="testimonial__item">
+				<div class="testimonial__item__author" id="barchart_div">
+				<input type="hidden" id="buyCnt" value="${buyCnt }">
+				<input type="hidden" id="sellCnt" value="${sellCnt }">
+				<input type="hidden" id="completeCnt" value="${completeCnt }">
+				<input type="hidden" id="progressCnt" value="${progressCnt }">
 				</div>
-			</div>			
+			</div>
 		</div>
 	</div>
-	</div>
-	<br><br><br>		
+	</div><br><br>	
+		<div class="row">
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-1.png" alt="">
+					<h5>거래내역 확인</h5>
+					<a href="/myPage/dealList"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-2.png" alt="">
+					<h5>구매등록 확인</h5>
+					<a href="/myPage/buyList"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-3.png" alt="">
+					<h5>견적서 확인</h5>
+					<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>				
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-4.png" alt="">
+					<h5>견적서 관심리스트</h5>
+					<a href="/myPage/wishList"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>
+				
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-1.png" alt="">
+					<h5>나의 평점 및 리뷰</h5>
+					<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-2.png" alt="">
+					<h5>알림 설정</h5>
+					<a href="" onclick="setAlarm()"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+				</div>
+			</div>
 			<div class="row">
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="services__item">
-						<img src="/resources/img/services/services-1.png" alt="">
-						<h5>거래내역 확인</h5>
-						<a href="/myPage/dealList"><i class="fa fa-long-arrow-right"></i></a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="services__item">
-						<img src="/resources/img/services/services-2.png" alt="">
-						<h5>구매등록 확인</h5>
-						<a href="/myPage/buyList"><i class="fa fa-long-arrow-right"></i></a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="services__item">
-						<img src="/resources/img/services/services-3.png" alt="">
-						<h5>견적서 확인</h5>
-						<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>
-					</div>
-				</div>				
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="services__item">
-						<img src="/resources/img/services/services-4.png" alt="">
-						<h5>견적서 관심리스트</h5>
-						<a href="/myPage/wishList"><i class="fa fa-long-arrow-right"></i></a>
-					</div>
-				</div>
-					
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="services__item">
-						<img src="/resources/img/services/services-1.png" alt="">
-						<h5>나의 평점 및 리뷰</h5>
-						<a href="#"><i class="fa fa-long-arrow-right"></i></a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 col-sm-6">
-					<div class="services__item">
-						<img src="/resources/img/services/services-2.png" alt="">
-						<h5>알림 설정</h5>
-						<a href="" onclick="setAlarm()"><i class="fa fa-long-arrow-right"></i></a>
-					</div>
-					</div>
-				</div>
-			</div>	
+		
+	</div>
+		</div>	
 	</section>
 	
 	<div id="alarmModal" class="modal" tabindex="-1" role="dialog">
@@ -123,6 +145,46 @@
 	<!-- Services Section End -->
 
 <%@include file="../includes/footer.jsp"%>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">    
+    
+    
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+  	var buyCnt = $('#buyCnt').val(); 
+  	var sellCnt = $('#sellCnt').val(); 
+  	var completeCnt = $('#completeCnt').val(); 
+  	var progressCnt = $('#progressCnt').val();     	 
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Topping');
+      data.addColumn('number', '건수');
+      data.addRows([
+        ['구매등록', parseInt(buyCnt)],
+        ['받은 견적서', parseInt(sellCnt)],
+        ['거래중', parseInt(progressCnt)],
+        ['거래완료', parseInt(completeCnt)]          
+      ]);       
+      
+      var bar_options = {        			   
+      		'title':'나의 진행 상황',  
+      		'width':500,
+            'height':266,                        
+            legend: { position: "top" },
+            isStacked: false,
+            tooltip:{textStyle : {fontSize:12}, showColorCode : true},
+            animation: { //차트가 뿌려질때 실행될 애니메이션 효과
+            	startup: true,
+                duration: 2000,
+                easing: 'linear' }               
+           };
+      var bar_chart = new google.visualization.BarChart(document.getElementById('barchart_div'));
+      bar_chart.draw(data, bar_options);
+    }
+</script>
+
+
 <script type="text/javascript">
 
 

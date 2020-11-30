@@ -16,7 +16,7 @@
 		 	  from buy
 		 	  where		
 		 	rownum <= #{pageNum} * #{amount} and regdate BETWEEN TRUNC(ADD_MONTHS(sysdate,-#{month})+1) - TO_CHAR(sysdate,'DD')
-			and TRUNC(LAST_DAY(sysdate)) +0.99999421 and status = '등록'
+			and TRUNC(LAST_DAY(sysdate)) +0.99999421 and status = '등록' and id = #{id}
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>      
@@ -24,7 +24,11 @@
 	
 	<select id="countBuy" resultType="int">
 		select count(*) from buy where buyno > 0 and regdate BETWEEN TRUNC(ADD_MONTHS(sysdate,-#{month})+1) - TO_CHAR(sysdate,'DD')
-			and TRUNC(LAST_DAY(sysdate)) +0.99999421 and status = '등록'		
+			and TRUNC(LAST_DAY(sysdate)) +0.99999421 and status = '등록' and id = #{id}
+	</select>
+	
+	<select id="buyCnt" resultType="int">
+		select count(*) from buy where status = '등록' and id = #{id}
 	</select>
 	
 	<select id="getBuyDetail" parameterType="int" resultType="org.joongmae.domain.BuyVO">
@@ -32,7 +36,7 @@
 	</select>
 	
 	<update id="deleteBuy" parameterType="int">
-		update buy set status = '삭제' where buyno = #{buyNo}
+		update buy set status = '삭제' where buyno = #{buyNo} 
 	</update>
 	
 	<select id="dateSearchRange" resultType="org.joongmae.domain.BuyVO">
@@ -45,7 +49,7 @@
 		 	  from buy
 		 	  where		
 		 	rownum <= #{pageNum} * #{amount} and regdate BETWEEN TO_DATE( #{startDate} , 'YYMMDD') 
-                   AND TO_DATE( #{endDate}, 'YYMMDD') 
+                   AND TO_DATE( #{endDate}, 'YYMMDD') and status = '등록' and id = #{id}
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>  		 
@@ -53,7 +57,7 @@
 	
 	<select id="dateCntRange" resultType="int">
 		select count(*) from buy where regdate BETWEEN TO_DATE( #{startDate} , 'YYMMDD') 
-                   AND TO_DATE( #{endDate}, 'YYMMDD') 
+                   AND TO_DATE( #{endDate}, 'YYMMDD') and status = '등록' and id = #{id}
 	</select>
 	
 	
@@ -73,7 +77,7 @@
 		 
 		 <include refid="criteria"></include>	
 		 <![CDATA[	
-		 	rownum <= #{pageNum} * #{amount} and status = '등록'
+		 	rownum <= #{pageNum} * #{amount} and status = '등록' and id = #{id}
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>      
@@ -82,7 +86,11 @@
 	<select id="countSell" resultType="int">
 		select count(*) from sell where
 		<include refid="criteria"></include>
-		sellno > 0 and status = '등록'		
+		sellno > 0 and status = '등록' and id = #{id}		
+	</select>
+	
+	<select id="sellCnt" resultType="int">
+		select count(*) from sell where status = '등록' and id = #{id}
 	</select>
 	
 	<select id="getSellDetail" parameterType="int" resultType="org.joongmae.domain.SellVO">
@@ -110,14 +118,14 @@
 		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3
 		 	  from deal d, sell s
 		 	  where		 
-		 	rownum <= #{pageNum} * #{amount} and d.sellno = s.sellno
+		 	rownum <= #{pageNum} * #{amount} and d.sellno = s.sellno and (buyid = #{buyId} or sellid = #{sellId})
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>      
 	</select>
 	
 	<select id="countDeal" resultType="int">
-		select count(*) from deal d, sell s where d.sellno = s.sellno		
+		select count(*) from deal d, sell s where d.sellno = s.sellno and (buyid = #{buyId} or sellid = #{sellId})		
 	</select>
 	
 	<select id="getDealDetail" parameterType="int" resultType="org.joongmae.domain.DealAndSell">
@@ -125,13 +133,32 @@
 	</select>
 	
 	<select id="selectDeal" resultType="org.joongmae.domain.DealAndSell">
-		select d.*, s.* from deal d , sell s where d.sellno = s.sellno and d.status = #{status}
+		<![CDATA[
+		select
+		 	dealno, buyid, sellid, itemname, picture, keyword1, keyword2, keyword3, price, regdate, status
+		 from 
+		 	( select /*+ INDEX_DESC(deal pk_deal) */
+		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3
+		 	  from deal d, sell s
+		 	  where		 
+		 	rownum <= #{pageNum} * #{amount} and d.sellno = s.sellno and d.status = #{status} and (buyid = #{buyId} or sellid = #{sellId})
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>      
 	</select>
 	
 	<select id="countSelectDeal" resultType="int">
-		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status = #{status}
+		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status = #{status} and (buyid = #{buyId} or sellid = #{sellId})
+	</select>
+	
+	<select id="completeCnt" parameterType="org.joongmae.domain.Criteria" resultType="int">
+		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status = '완료' and (buyid = #{buyId} or sellid = #{sellId})
 	</select>		
-		
+	
+	<select id="progressCnt" parameterType="org.joongmae.domain.Criteria" resultType="int">
+		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status = '진행중' and (buyid = #{buyId} or sellid = #{sellId})
+	</select>
+	
 		
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->
@@ -153,6 +180,10 @@
 		update MEMBER set isMember = 'n' where id = #{id}
 	</update>		
 	
+	<delete id="deleteUser">
+		delete from member_auth where id = #{id}
+	</delete>
+	
 	
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->
@@ -166,14 +197,14 @@
 		 		rownum rn, w.wishno, w.id, w.sellno, w.sellid, s.id, s.itemname, s.keyword1, s.keyword2, s.keyword3, s.type, s.region, s.itemcondition, s.price, s.picture, s.status
 		 	  from wishlist w, sell s
 		 	  where		 
-		 	rownum <= #{pageNum} * #{amount} and w.sellno = s.sellno and w.sellid = s.id
+		 	rownum <= #{pageNum} * #{amount} and w.sellno = s.sellno and w.sellid = s.id and w.id = #{id}
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>      
 	</select>
 	
    <select id="countWish" resultType="int">
-		select count(*) from wishlist where	wishno > 0		
+		select count(*) from wishlist where	wishno > 0 and id = #{id}
    </select>
 	
 	<insert id="addWishList" parameterType="org.joongmae.domain.WishListVO">
@@ -201,9 +232,29 @@
 	<delete id="deleteAllWish">
 		delete from wishlist
 	</delete>	
+	
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->
+	<!-- reply 댓글 -->
 		
+	<insert id="replyInsert">
+		insert into reply(replyno, dealno, reply, id) values(seq_replyno_reply.nextval, #{dealNo}, #{reply}, #{id})
+	</insert>
+	
+	<select id="replyList" resultType="org.joongmae.domain.ReplyVO">	  	
+		select * from reply where dealNo = #{dealNo}
+	</select>
+	
+	<delete id="replyDelete">
+		delete from reply where replyNo = #{replyNo}
+	</delete>
+	
+	<select id="replyCnt" resultType="int">
+		select count(*) from reply where dealNo = #{dealNo}	
+	</select>
+	
+	<!--=====================================================================================================================-->
+	<!--=====================================================================================================================-->	
 	
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">

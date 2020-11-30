@@ -37,6 +37,154 @@
 	type="text/css">
 
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<link rel="stylesheet" type="text/css"
+	href="/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/vendor_jsh/animate/animate.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/vendor_jsh/animsition/css/animsition.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/vendor_jsh/select2/select2.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/vendor_jsh/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/css/util_jsh.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/css/main_jsh.css">
+
+</head>
+<body>
+
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Offcanvas Menu Begin -->
+	<div class="offcanvas-menu-overlay"></div>
+	<div class="offcanvas-menu-wrapper">
+		<div class="offcanvas__widget">
+
+
+ 			<sec:authorize access="isAnonymous()">
+				 			 <c:if test="${userId eq null}">
+				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
+				</c:if>
+					 <c:if test="${userId ne null}">
+				<a href="/member/logout" class="primary-btn">로그아웃</a>
+				</c:if>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+				
+				<form action="/member/logout" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<button class="primary-btn">로그아웃</button>
+
+</form>
+
+			</sec:authorize>
+
+
+
+		</div>
+		<div class="offcanvas__logo">
+
+
+			<a href="/main"><img src="/resources/img/logo.png" alt=""></a>
+		</div>
+		<div id="mobile-menu-wrap"></div>
+	</div>
+	<!-- Offcanvas Menu End -->
+
+	<!-- Header Section Begin -->
+	<header class="header">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="header__logo">
+						<a href="controller_jsh/mainAction.sh"><img
+							src="/resources/img/logo.png" alt=""></a>
+					</div>
+				</div>
+				<div class="col-lg-10">
+					<div class="header__nav">
+						<nav class="header__menu">
+							<ul>
+								<li class="active"><a
+									href="http://localhost:8080/controller_jsh/mainAction.sh">Home</a></li>
+								<li><a
+									href="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">구매
+										게시판</a></li>
+								<li><a
+									href="http://localhost:8080/Controller_kgj/insertBuyRegistrationForm.kgj">구매
+										등록</a></li>
+
+
+								<li><a
+									href=<c:if test="${sessionScope.id !=null}">
+                                "http://localhost:8080/kjj/registerFormAction.kjj"
+                                </c:if>
+									<c:if test="${sessionScope.id ==null}">
+                                "#"
+                                 </c:if>>판매
+										등록</a></li>
+
+								<c:if test="${sessionScope.id !=null}">
+									<li><a
+										href="/myPage/main">마이페이지</a></li>
+								</c:if>
+
+								<c:if test="${sessionScope.id ==null}">
+									<li><a href="/myPage/main">마이페이지</a></li>
+								</c:if>
+
+							</ul>
+
+
+						</nav>
+						<div class="header__nav__widget">
+							<img id="alarmImg" src="" onclick="alarmClick()">
+
+
+ 			<sec:authorize access="isAnonymous()">
+				 			 <c:if test="${userId eq null}">
+				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
+				</c:if>
+					 <c:if test="${userId ne null}">
+				<a href="/member/logout" class="primary-btn">로그아웃</a>
+				</c:if>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+				
+				<form action="/member/logout" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<button class="primary-btn">로그아웃</button>
+
+</form>
+
+			</sec:authorize>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="canvas__open">
+				<span class="fa fa-bars"></span>
+			</div>
+		</div>
+	</header>
+	<!-- Header Section End -->
 
 	<!-- Hero Section Begin -->
 	<section class="hero spad set-bg"
