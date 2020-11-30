@@ -75,4 +75,15 @@
 		select distinct buyno from alarm where sellid = #{id}
 	</select>
 
+	<insert id="registerAlarm" parameterType="org.joongmae.domain.AlarmVO">
+		insert into alarm values (SEQ_ALARMNO_ALARM.nextval, #{buyId}, #{buyNo}, #{sellId}, #{sellNo}, #{status})
+	</insert>
+
+	<select id="temp" parameterType="String" resultType="org.joongmae.domain.SellVO">
+		select * from sell where id != #{id} and status = '등록' order by sellNo desc
+	</select>
+	
+	<select id="count" resultType="int">
+		select max(buyno) from buy
+	</select>
 </mapper>

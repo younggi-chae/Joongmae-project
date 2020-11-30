@@ -6,6 +6,7 @@ import org.joongmae.domain.AlarmVO;
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
+import org.joongmae.domain.SellVO;
 
 public interface BuyBoardMapper {
 	
@@ -25,4 +26,9 @@ public interface BuyBoardMapper {
 	
 	public List<AlarmVO> alarmList(String id);
 	
+	public int registerAlarm(AlarmVO alarm);
+	
+	public List<SellVO> temp(String id);
+	
+	public int count();
 }
