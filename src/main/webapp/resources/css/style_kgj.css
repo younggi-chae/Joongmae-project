@@ -26,6 +26,55 @@
 10.  Footer Style
 -------------------------------------------------------------------*/
 
+/*---------------------
+  detail modal CSS_kgj
+-----------------------*/
+
+#modalTable {
+	width: 100%;
+	margin: auto;
+}
+
+#modalTable thead tr {
+	background-color: #8FBC8F;
+}
+
+#modalTable th {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+
+#modalTable td {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+#modalTable input {
+	width: 100%;
+	text-align: center;
+}
+
+#sendSellForm a:hover,a:focus {
+   text-decoration: none;
+   outline: none;
+   color: #1e90ff;
+}
+
+#detailForm {
+	float: left;
+	width: 600px;
+}
+
+#detailForm .form-group {
+	float: left;
+	margin: 10px;
+}
+
+#detailForm .form-group input {
+	width: 250px;
+}
+
 /*----------------------------------------*/
 
 /* Template default CSS
@@ -1202,6 +1251,19 @@ ol {
    color: #ffffff;
    font-weight: 700;
    background: #4971FF;
+   display: inline-block;
+   padding: 12px 22px 10px;
+   border-radius: 2px 0 0 2px;
+   position: absolute;
+   left: 0;
+   top: 0;
+}
+
+.car__item__price .car-option-matching {
+   font-size: 15px;
+   color: #ffffff;
+   font-weight: 700;
+   background: red;
    display: inline-block;
    padding: 12px 22px 10px;
    border-radius: 2px 0 0 2px;

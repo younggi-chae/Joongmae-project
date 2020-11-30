@@ -6,6 +6,7 @@ import org.joongmae.domain.AlarmVO;
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
+import org.joongmae.domain.SellVO;
 import org.joongmae.mapper.BuyBoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,24 @@ public class BuyBoardServiceImpl implements BuyBoardService {
 	public List<AlarmVO> alarmList(String id) {
 		
 		return mapper.alarmList(id);
+	}
+
+	@Override
+	public List<SellVO> sellList(String id) {
+		
+		return mapper.sellList(id);
+	}
+
+	@Override
+	public boolean registerAlarm(AlarmVO vo) {
+		
+		return mapper.registerAlarm(vo) == 1;
+	}
+
+	@Override
+	public SellVO sellDetail(int sellNo) {
+		
+		return mapper.sellDetail(sellNo);
 	}
 
 }

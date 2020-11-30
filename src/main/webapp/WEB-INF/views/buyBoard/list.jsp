@@ -174,21 +174,19 @@
                                            <span class="car-option">가격</span>
                                        </sec:authorize>
                                        <sec:authorize access="isAuthenticated()">
-                                       		<c:if test="${empty alarm }">
-                                                <span class="car-option">가격</span>
-                                             </c:if>
-                                             <c:if test="${!empty alarm }">
-                                                <c:forEach var="alarm" items="${alarm }">
-                                                   <c:choose>
-                                                      <c:when test="${listBuy.buyNo eq alarm.buyNo }">
-                                                         <span class="car-option">매칭</span>
-                                                      </c:when>
-                                                      <c:when test="${listBuy.buyNo ne alarm.buyNo }">
-                                                         <span class="car-option">가격</span>
-                                                      </c:when>
-                                                   </c:choose>
-                                                </c:forEach>
-                                             </c:if>
+	                                       	<c:forEach var="alarm" items="${alarm }">
+	                                        	<c:if test="${listBuy.buyNo eq alarm.buyNo }">
+	                                        		<c:set var="matching" value="true"></c:set>
+	                                        	</c:if>
+	                                        </c:forEach>
+	                                        <c:choose>
+	                                        	<c:when test="${matching }">
+	                                        		<span class="car-option-matching">매칭</span>
+	                                        	</c:when>
+	                                        	<c:otherwise>
+	                                        		<span class="car-option">가격</span>
+	                                        	</c:otherwise>
+	                                        </c:choose>
                                        </sec:authorize>
                                            <h6><fmt:formatNumber value="${listBuy.minPrice }" pattern="##,###"/> ~ <fmt:formatNumber value="${listBuy.maxPrice }" pattern="##,###"/></h6>
                                        </div>

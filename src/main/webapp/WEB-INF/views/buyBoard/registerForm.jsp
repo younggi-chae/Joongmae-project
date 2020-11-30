@@ -58,6 +58,35 @@
 	}
 </script>
 <script type="text/javascript">
+	function setCategory(){
+		
+		$('#mediumSelectBox').empty();
+	    
+		if($("#bigSelectBox option:selected").val() == "의류"){
+			
+			var str = "<option value='상의'>상의</option>" +
+					"<option value='하의'>하의</option>" +
+					"<option value='악세사리'>악세사리</option>";
+      
+			$('#mediumSelectBox').append(str);
+			
+			$('select').niceSelect('update');
+			
+		}else if($("#bigSelectBox option:selected").val() == "가전"){
+			
+			var str = "<option value='냉장고'>냉장고</option>" +
+			"<option value='에어컨'>에어컨</option>" +
+			"<option value='악세사리'>악세사리</option>";
+			
+			$('#mediumSelectBox').append(str);
+			
+			$('select').niceSelect('update');
+		}
+		
+	}
+</script>
+
+<script type="text/javascript">
 
 	function inputComma(obj) {
 		var number = obj.value;
@@ -172,22 +201,20 @@
                         </div>
                         <div class="select-list-item">
                            <p>대분류</p>
-                           <select name="bigClassifier">
-                           	  <option data-display="대분류">대분류</option>
-                              <option value="의류">의류</option>
-                              <option value="가전">가전</option>
+                           <select id="bigSelectBox" name="bigClassifier" onchange="setCategory()">
+                                    <option value="의류" selected="selected">의류</option>
+                                    <option value="가전">가전</option>
                            </select>
                         </div>
                         <div class="select-list-item">
                            <p>중분류</p>
-                           <select name="mediumClassifier">
-                              <option data-display="중분류">중분류</option>
-                              <option value="상의">상의</option>
-                              <option value="하의">하의</option>
-                              <option value="악세서리">악세서리</option>
-                              <option value="냉장고">냉장고</option>
-                              <option value="에어컨">에어컨</option>
-                              <option value="세탁기">세탁기</option>
+                           <select id="mediumSelectBox" name="mediumClassifier">
+                                    <option value="상의">상의</option>
+                                    <option value="하의">하의</option>
+                                    <option value="악세사리">악세사리</option>
+                                    <option value="냉장고">냉장고</option>
+                                    <option value="에어컨">에어컨</option>
+                                    <option value="세탁기">세탁기</option>
                            </select>
                         </div>
                         <div class="register-row">
@@ -207,7 +234,7 @@
                      	<button type="submit" class="site-btn">구매 등록</button>
                      </div>
                      <div class="col-lg-5" style="float: left;">
-                     	<button type="button" class="site-btn" onclick="location.href='index_kgj.kgj'">등록 취소</button>
+                     	<button type="button" class="site-btn" onclick="location.href='/main'">등록 취소</button>
                      </div>
                   </form>
                </div>

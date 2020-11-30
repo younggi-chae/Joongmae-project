@@ -220,25 +220,24 @@
 							<div class="tab-pane active" id="tabs-1" role="tabpanel">
 								<div class="hero__tab__form">
 									<h2>팔고싶은 물건 검색</h2>
-									<form
-										action="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">
+									<form action="/buyBoard/list" method="post">
 										<div class="select-list">
 											<div class="select-list-item">
 												<p>대분류</p>
-												<select name="bigClassifier">
-													<option value="의류">의류</option>
+												<select id="bigSelectBox" name="bigClassifier" onchange="setCategory()">
+													<option value="의류" selected="selected">의류</option>
 													<option value="가전">가전</option>
 												</select>
 											</div>
 											<div class="select-list-item">
 												<p>중분류</p>
-												<select name="mediumClassifier">
+												<select id="mediumSelectBox" name="mediumClassifier">
 													<option value="상의">상의</option>
 													<option value="하의">하의</option>
-													<option value="악세서리">악세서리</option>
+													<option value="악세사리">악세사리</option>
 													<option value="냉장고">냉장고</option>
 													<option value="에어컨">에어컨</option>
-													<option value="악세서리">세탁기</option>
+													<option value="세탁기">세탁기</option>
 												</select>
 											</div>
 											<div class="select-list-item">
@@ -265,6 +264,7 @@
 												</div>
 											</div>
 										</div>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										<button type="submit" class="site-btn">Searching</button>
 									</form>
 								</div>
@@ -543,6 +543,35 @@
 </body>
 
 </html>
+
+<script type="text/javascript">
+	function setCategory(){
+		
+		$('#mediumSelectBox').empty();
+	    
+		if($("#bigSelectBox option:selected").val() == "의류"){
+			
+			var str = "<option value='상의'>상의</option>" +
+					"<option value='하의'>하의</option>" +
+					"<option value='악세사리'>악세사리</option>";
+      
+			$('#mediumSelectBox').append(str);
+			
+			$('select').niceSelect('update');
+			
+		}else if($("#bigSelectBox option:selected").val() == "가전"){
+			
+			var str = "<option value='냉장고'>냉장고</option>" +
+			"<option value='에어컨'>에어컨</option>" +
+			"<option value='악세사리'>악세사리</option>";
+			
+			$('#mediumSelectBox').append(str);
+			
+			$('select').niceSelect('update');
+		}
+		
+	}
+</script>
 
 <script type="text/javascript">
 function readAlarm(alarmNo) {

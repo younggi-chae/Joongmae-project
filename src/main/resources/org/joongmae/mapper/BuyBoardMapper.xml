@@ -74,5 +74,17 @@
 	<select id="alarmList" parameterType="String" resultType="org.joongmae.domain.AlarmVO">
 		select distinct buyno from alarm where sellid = #{id}
 	</select>
+	
+	<select id="sellList" parameterType="String" resultType="org.joongmae.domain.SellVO">
+		select * from sell where id = #{id} and status = '등록' order by sellno desc
+	</select>
+	
+	<select id="sellDetail" parameterType="int" resultType="org.joongmae.domain.SellVO">
+		select * from sell where sellno = #{sellNo}
+	</select>
+	
+	<insert id="registerAlarm" parameterType="org.joongmae.domain.AlarmVO">
+		insert into alarm values (SEQ_ALARMNO_ALARM.nextval, #{buyId}, #{buyNo}, #{sellId}, #{sellNo}, '등록')
+	</insert>
 
 </mapper>

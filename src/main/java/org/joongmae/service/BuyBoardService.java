@@ -6,6 +6,7 @@ import org.joongmae.domain.AlarmVO;
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
+import org.joongmae.domain.SellVO;
 
 public interface BuyBoardService {
 	
@@ -26,5 +27,11 @@ public interface BuyBoardService {
 	public void reRegister(BuyVO buy, int buyNo);
 	
 	public List<AlarmVO> alarmList(String id);
+	
+	public List<SellVO> sellList(String id);
+	
+	public SellVO sellDetail(int sellNo);
+	
+	public boolean registerAlarm(AlarmVO vo);
 	
 }

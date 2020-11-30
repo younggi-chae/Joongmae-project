@@ -5,19 +5,24 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.joongmae.domain.AlarmVO;
 import org.joongmae.domain.BuyCriteria;
 import org.joongmae.domain.BuyDTO;
 import org.joongmae.domain.BuyPageDTO;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.MemberVO;
+import org.joongmae.domain.SellVO;
 import org.joongmae.service.BuyBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.log4j.Log4j;
 
@@ -29,11 +34,15 @@ public class BuyBoardController {
    @Autowired
    private BuyBoardService service;
    
+   
+   //구매등록 폼 이동
    @GetMapping("/registerForm")
    public String registerForm(){
       return "buyBoard/registerForm";
    }
    
+   
+   //구매등록
    @PostMapping("/register")
    public String register(BuyDTO dto, Principal principal){
       System.out.println(dto);
@@ -59,6 +68,7 @@ public class BuyBoardController {
    }
    
    
+   //구매게시판
    @RequestMapping("/list")
    public String list(BuyCriteria cri, Model model, HttpServletRequest request, Principal principal){
       
@@ -96,13 +106,18 @@ public class BuyBoardController {
       
    }
    
+   //상세보기
    @GetMapping("/detail")
    public String detail(BuyCriteria cri ,@RequestParam("buyNo") int buyNo, 
-         @RequestParam("id") String id, Model model, HttpServletRequest request){
+         @RequestParam("id") String id, Model model, HttpServletRequest request, Principal principal){
       
       if(cri.getBigClassifier() != null){
          String price =request.getParameter("price");
          model.addAttribute("price", price);
+      }
+      
+      if(principal != null){
+    	  model.addAttribute("sell", service.sellList(principal.getName()));
       }
       
       int total = service.buyTotalCount(cri);
@@ -116,6 +131,7 @@ public class BuyBoardController {
       return "buyBoard/detail";
    }
    
+   //구매등록 삭제
    @GetMapping("/delete")
    public String delete(@RequestParam("buyNo") int buyNo){
       
@@ -124,6 +140,7 @@ public class BuyBoardController {
       return "redirect:/buyBoard/list";
    }
    
+   //재등록 폼 이동
    @GetMapping("/reRegisterForm")
    public String reRegisterForm(@RequestParam("buyNo") int buyNo, Model model){
       
@@ -132,6 +149,8 @@ public class BuyBoardController {
       return "/buyBoard/reRegisterForm";
    }
    
+   
+   //재등록
    @PostMapping("/reRegister")
    public String reRegister(@RequestParam("buyNo") int buyNo, BuyDTO dto){
       
@@ -155,4 +174,50 @@ public class BuyBoardController {
       return "redirect:/buyBoard/list";
    }
    
+   
+   //견적서 상세 보기
+   @GetMapping(value = "/sellDetail/{sellNo}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+   @ResponseBody
+   public SellVO sellDetail(@PathVariable("sellNo") int sellNo){
+	   
+	   SellVO sellDetail = service.sellDetail(sellNo);
+	   
+	   return sellDetail;
+	   
+   }
+   
+   
+   //알람 등록
+   @GetMapping(value = "/registerAlarm/{buyNo}/{buyId}/{sellId}/{list}")
+   @ResponseBody
+   public void registerAlarm(@PathVariable("buyNo") int buyNo, @PathVariable("buyId") String buyId, 
+		   @PathVariable("sellId") String sellId, @PathVariable("list") String[] list){
+	   
+	   AlarmVO alarm = new AlarmVO();
+	   alarm.setBuyNo(buyNo);
+	   alarm.setBuyId(buyId);
+	   alarm.setSellId(sellId);
+	   
+	   for (int i = 0; i < list.length; i++) {
+		alarm.setSellNo(Integer.parseInt(list[i]));
+		service.registerAlarm(alarm);
+	}
+	  
+   }
+   
+   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
