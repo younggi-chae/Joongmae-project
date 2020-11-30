@@ -63,7 +63,7 @@ public class BuyBoardController {
       vo.setMediumClassifier(dto.getMediumClassifier());
       
       service.register(vo);
-      service.registerAlarm(vo);
+      service.registerAlarmAuto(vo);
       
       return "redirect:/buyBoard/list";
    }

@@ -101,7 +101,7 @@ public class BuyBoardServiceImpl implements BuyBoardService {
 		return mapper.sellDetail(sellNo);
 	}
 
-	public int registerAlarm(BuyVO buy) {
+	public int registerAlarmAuto(BuyVO buy) {
 		 
 		ArrayList<List<Object>> result = new ArrayList<>();
 		
