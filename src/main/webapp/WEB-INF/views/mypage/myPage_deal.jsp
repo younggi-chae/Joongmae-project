@@ -26,14 +26,11 @@
 					</div>
 				</div>
 			</div>
-		</div><br><br><br>
+		</div>
 
 		<!-- Car Section Begin -->
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-12" style="margin: 0 auto;" >
-						
-				</div>
+			<div class="row">				
 				<div class="col-lg-12">
 					<div class="car__filter__option"
 						style="height: 74px; background-color: white;">
@@ -44,28 +41,26 @@
 										<option id="whole" value="whole">전체</option>
 										<option id="progress" value="progress">진행중</option>
 										<option id="complete" value="complete">거래완료</option>
-									</select>								
+										<option id="deposit" value="deposit">입금완료</option>
+										<option id="shipping" value="shipping">배송중</option>
+										<option id="cancel" value="cancel">거래취소</option>
+									</select>&emsp;
+									<a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>								
 								</div>													
-							</div>
-							<div class="col-lg-4 col-md-6" style="top:-120px;">  <!--  left: 50px;" -->
-								<div id="myChart" >
-									<input type="hidden" id="completeCnt" value="${completeCnt }">
-									<input type="hidden" id="progressCnt" value="${progressCnt }">
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-6">
-								<div class="car__filter__option__item car__filter__option__item--right">
-										<a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>
-								</div>
+							</div>							
+							<div class="col-lg-8 col-md-6" style="top:-150px; left:500px;">
+								
+									<div id="myChart" >
+										<input type="hidden" id="completeCnt" value="${completeCnt }">
+										<input type="hidden" id="progressCnt" value="${progressCnt }">
+									</div>
+								
 							</div>							 
 						</div>
 					</div>
 					<div class="row" id="dealList">
 						
-					</div>					
-					<div class='pagination__option' id="pagenation">
-					
-					</div>
+					</div>									
 				</div>
 			</div>			
 		</div>
@@ -82,7 +77,7 @@
 					</div>
 					<div class="modal-body" id="detail">
 					
-					</div>
+					</div>				
 					<div class="modal-footer">
 					<form action="/REST/insertReview" method="post" id="reviewBtn" style="border: 1;">
 						<span id="star1" onclick="star1Click()">★</span>
@@ -141,7 +136,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">			
-	
+		
 		var statusCheck = "";
 		var page = 1;
 		var endCheck = false;
@@ -150,7 +145,7 @@
 			statusCheck = "whole";
 			dealList();	
 			infiniteScroll();
-		 //진행중, 거래완료 검색
+		 //진행중, 거래완료, 입금완료, 배송중, 거래취소 검색
 		 $(".selectDeal").on("change", function(){
 			if($(".selectDeal option:selected").val() == 'whole'){
 				statusCheck = "whole";
@@ -167,7 +162,22 @@
 				init();
 				statusList(page, "진행중");	
 				infiniteScroll(page, "진행중");
-			}	
+			} else if($(".selectDeal option:selected").val() == 'deposit'){
+				statusCheck = "deposit";
+				init();
+				statusList(page, "입금완료");	
+				infiniteScroll(page, "입금완료");
+			} else if($(".selectDeal option:selected").val() == 'shipping'){
+				statusCheck = "shipping";
+				init();
+				statusList(page, "배송중");	
+				infiniteScroll(page, "배송중");
+			} else if($(".selectDeal option:selected").val() == 'cancel'){
+				statusCheck = "cancel";
+				init();
+				statusList(page, "거래취소");	
+				infiniteScroll(page, "거래취소");
+			}
 	    });			
 	 }); 
 				
@@ -186,7 +196,13 @@
 			        	statusList(page, "완료");
 			        }else if(statusCheck == "whole"){
 			        	dealList();
-			        }	       
+			        }else if(statusCheck == "deposit"){
+			        	statusList(page, "입금완료");
+			        }else if(statusCheck == "shipping"){
+			        	statusList(page, "배송중");
+			        }else if(statusCheck == 'cancel'){
+			        	statusList(page, "거래취소");
+			        }     
 					++page;					
 				}
 			});			
@@ -210,13 +226,16 @@
 				type : "GET",
 				success : function(result){				
 				var length = result.list.length;
-				console.log("리스트 길이 : " + length);
-				
+				console.log("리스트 길이 : " + length);				
 				if(length < 9){
 					endCheck = true;
-				}				
-				$.each(result.list, function(index, element){									
-					showList(false, element);					
+				}
+				if(length < 1){
+			  		 str = '<div style="padding:200px 350px"><h2>진행중인 거래가 없습니다.</h2><div>';
+			  		 $('#dealList').append(str);
+				}
+				result.list.forEach(function(element){										
+					showList(element);					
 				});
 			}			
 		});			
@@ -228,8 +247,8 @@
 			  return
 		  }
 		  var param = new Object();			
-			param.page = page || 1;		
 			param.status = status;
+			param.page = page || 1;			
 			console.log(status);
 		    console.log("페이지번호 : " + page);
 			$.ajax({
@@ -239,13 +258,16 @@
 				data : param,
 				success : function(result){					
 				var length = result.list.length;
-				console.log("리스트 길이 : " + length);			
-				
+				console.log("리스트 길이 : " + length);						
 				if(length < 9){
 					endCheck = true;
-				}				
-				$.each(result.list, function(index, element){
-					showList(false, element);					
+				}	
+				if(length < 1){
+			  		 str = '<div style="padding:200px 350px"><h2>진행중인 거래가 없습니다.</h2><div>';
+			  		 $('#dealList').append(str);
+				}
+				result.list.forEach(function(element){	
+					showList(element);					
 				});
 			}			
 		});			
@@ -253,17 +275,9 @@
 		
 		
 	//화면에 뿌려질 태그
-	var showList = function(mode, element){			
-		var str = "";
-		//댓글 숫자 표시 ajax
-		var dealNo = element.dealNo;
-			$.ajax({
-				url : "/myPage/replyCnt/"+ dealNo,			
-				data : dealNo,
-				dataType : 'json',
-				type : "GET",
-				success : function(result){						
-			
+	var showList = function(element){	
+		//console.log(element.dealNo);
+		var str = "";				
 			str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';						
 			str += '<div class="car__item__pic__slider">';
 			if(element.picture != null){
@@ -274,38 +288,33 @@
 			str += '<div class="car__item__text"><div class="car__item__text__inner">';
 			str += '<div class="label-date">' + element.buyId +'</div>';
 			str += '<div class="label-date">' + element.sellId +'</div>';
-			str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + dealNo +'">';
+			str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
 			str += '<a class="detailModal" href="#" data-toggle="modal" data-target="#detailModal" data-backdrop="static" style="font-size: 25px;">' + element.itemName +'</a>';
-			str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
+			str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
 			str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" data-backdrop="static" style="font-size:40px;">';			
-			str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt">'+ result +'</span></div>';
+			str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt" id = "replyCnt">0</span></div>';  
 			str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 			str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 			if(element.status === "진행중"){
-				str += '<div class="car__item__price"><span id="statusColor" class="car-option">'+ element.status+'</span>';
+				str += '<div class="car__item__price"><span class="car-option">'+ element.status+'</span>';
 			} else {
-				str += '<div class="car__item__price"><span id="statusColor" class="car-option sale">'+ element.status+'</span>';
+				str += '<div class="car__item__price"><span class="car-option sale">'+ element.status+'</span>';
 			}													
-			str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';			
-	
-				if(mode){
-					$('#dealList').prepend(str);		
-				} else {
-					$('#dealList').append(str);
-				}
-			 }
-		});
-	}
+			str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';	
+				
+					$('#dealList').append(str);					
+		    }
 	
 	
-	//댓글 insert & list & delete
-	var dealNo = 0;
+	//댓글 insert & list & delete			
+	var dealNo =0;
 	$('#dealList').on("click", '.commentModal', function(){
-		dealNo = $(this).prev().prev().val();		
+		dealNo = $(this).prev().prev().val();	
+		console.log(dealNo);
 		replyList(dealNo);		
 	});		
 	
-	$('#insert').on('click', function(){
+	$('#insert').on('click', function(){		
 		replyInsert(dealNo);		
 	});		 
 	
@@ -319,8 +328,27 @@
 		var dealNo = $(this).prev().val();					
 		detailDeal(dealNo);
 	});	
-		
 	
+	/*  $(document).ready(function(){   
+	      replyCnt(dealNo)
+	   });	 
+	   
+	   function replyCnt(dealNo){   
+	      $.ajax({
+	         url : "/myPage/replyCnt/"+ dealNo,         
+	         data : dealNo,
+	         dataType : 'json',
+	         type : "GET",
+	         success : function(result){
+	        	 console.log(result);
+	        	 console.log(dealNo);
+	            $("#replyCnt").html(result);                        
+	         }
+	      });       
+	   }        */
+
+	
+	 
 	//댓글 insert Ajax
 	function replyInsert(dealNo){		
 		var reply = $('.content').prev().val();
@@ -414,18 +442,20 @@
    
 	
 	//Deal 상세보기
-	function detailDeal(dealNo)	{
-		var str = "";
+	function detailDeal(dealNo)	{			
 		$.ajax({
 		   url : "/myPage/dealDetail/" + dealNo,
 		   dataType : "json",
 		   data : dealNo,
 		   type : "GET",
-		   success : function(result){	
+		   success : function(result){
+			  var str = "";	
+			  var status = result.status; 
 			  $('#detail').html("");			 
 			  str += '<div class="car__details__pic">';
 			  str += '	<img src="/resources/img/upload_cyg/'+result.picture+'">';
-			  str += '</div>';					 
+			  str += '</div>';
+			  str += '<div><h2>진행상황 : '+result.status+'</h2></div><br>'
 			  str += '<div class="car__details__sidebar__model">';
 			  str += 	'<ul>';
 			  str += 		'<li>상품명 :<span>' + result.itemName + '</span></li>';
@@ -456,13 +486,41 @@
 			  str += '<div class="car__details__sidebar__payment">';
 			  str += 	'<ul>';
 			  str += 		'<li>가격 :<span><fmt:formatNumber type="number" maxFractionDigits="3" value=""/>'+ commas(result.price) +'원</span></li>';
-			  str += 	'</ul>';
-			  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';			  
-			
+			  str += 	'</ul>';			  
+			  str += '<input type="hidden" value="'+result.dealNo+'">';
+			  if(status == '진행중' || status == '입금완료' || status == '배송중'){				 
+				str += '<a href="#" class="primary-btn">판매자와 대화하기</a>';
+			  	str += '<a href="#" class="primary-btn" id="deleteDeal">거래취소</a></div>';
+			  } 
 				 $('#detail').append(str);
 		   }
 		});
 	}
+	
+	
+	$('#detail').on('click', '#deleteDeal', function(){
+		 var dealNo = $(this).prev().prev().val();
+		 var header = "${_csrf.headerName}";
+		 var token = "${_csrf.token}";
+		 
+		 $.ajax({
+			 url : "/myPage/deleteDeal/" + dealNo,
+			 data : dealNo,
+			 type : "POST",
+			 beforeSend : function(xhr)
+	         {   
+	         xhr.setRequestHeader(header, token);
+	         },
+	         success : function(result){
+	        	 if(confirm("정말로 거래를 취소하시겠습니까??")){
+	        		 alert("거래가 취소되었습니다.");
+	        		 location.href = "/myPage/dealList";
+	        	 } else {
+	        		 return false;
+	        	 }
+	         }
+		 });
+	});
 	
 	
 	//차트생성
@@ -476,18 +534,23 @@
             data.addColumn('number','건수');
  
             data.addRows([ 
-                ['진행중',parseInt(progressCnt)],
-                ['거래완료',parseInt(completeCnt)]               
+                ['진행중', parseInt(progressCnt)],
+                ['거래완료', parseInt(completeCnt)]               
             ]);
             var options = {                    
-            		chartArea:{width:'170', height:'170'},
-            		tooltip:{textStyle : {fontSize:15}, showColorCode : true},
-            		"fontSize" : 12,
-            		'pieSliceText':'label',
-            		'pieHole' : 0.35,
-                    legend:'none'                    
-            };
-            var chart = new google.visualization.PieChart(document.getElementById('myChart'));
+            		'width':250, 
+            		'height':250,            		
+            		tooltip:{textStyle : {fontSize:15}, showColorCode : true},            		
+            		'fontSize' : 12,
+            		'min' : 0,
+            		'max' : 40,           		
+            		legend: { position: "none" },
+                    animation: { 
+                    	startup: true,
+                        duration: 2000,
+                        easing: 'linear' }            		 
+           		 };
+            var chart = new google.visualization.ColumnChart(document.getElementById('myChart'));
             chart.draw(data,options);
         }
 	
@@ -512,8 +575,7 @@
 	
 	
 	function selectDealList(page, status){
-                $('.modal-body').append(str);
-                
+                $('.modal-body').append(str);                
                 if (result.sellId == "<%=id%>") {
                    if (result.status == '진행중') {
                      $('#reviewBtn').hide();

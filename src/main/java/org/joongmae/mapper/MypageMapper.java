@@ -34,6 +34,7 @@ public interface MypageMapper {
 	DealAndSell getDealDetail(int dealNo);
 	List<DealAndSell> selectDeal(Criteria cri);
 	int countSelectDeal(Criteria cri);
+	int deleteDeal(int dealNo);
 	int completeCnt(Criteria cri);
 	int progressCnt(Criteria cri); 
 	

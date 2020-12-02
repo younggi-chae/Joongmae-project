@@ -11,7 +11,7 @@
 		select
 		 	buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
 		 from 
-		 	( select /*+ INDEX_ASC(buy pk_buy) */
+		 	( select /*+ INDEX_DESC(buy pk_buy) */
 		 		rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
 		 	  from buy
 		 	  where		
@@ -44,12 +44,12 @@
 		select
 		 	buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
 		 from 
-		 	( select /*+ INDEX_ASC(buy pk_buy) */
+		 	( select /*+ INDEX_DESC(buy pk_buy) */
 		 		rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, minprice, maxprice, status, bigClassifier, mediumClassifier, regdate
 		 	  from buy
 		 	  where		
 		 	rownum <= #{pageNum} * #{amount} and regdate BETWEEN TO_DATE( #{startDate} , 'YYMMDD') 
-                   AND TO_DATE( #{endDate}, 'YYMMDD') and status = '등록' and id = #{id}
+                   AND TO_DATE( #{endDate}, 'YYMMDD')+1 and status = '등록' and id = #{id}
 		 	)
 		 where rn > (#{pageNum} -1) * #{amount}
 		  ]]>  		 
@@ -57,7 +57,7 @@
 	
 	<select id="dateCntRange" resultType="int">
 		select count(*) from buy where regdate BETWEEN TO_DATE( #{startDate} , 'YYMMDD') 
-                   AND TO_DATE( #{endDate}, 'YYMMDD') and status = '등록' and id = #{id}
+                   AND TO_DATE( #{endDate}, 'YYMMDD')+1 and status = '등록' and id = #{id}
 	</select>
 	
 	
@@ -147,6 +147,10 @@
 		  ]]>      
 	</select>
 	
+	<update id="deleteDeal" parameterType="int">
+		update deal set status = '거래취소' where dealno = #{dealNo}
+	</update>
+	
 	<select id="countSelectDeal" resultType="int">
 		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status = #{status} and (buyid = #{buyId} or sellid = #{sellId})
 	</select>
@@ -156,7 +160,7 @@
 	</select>		
 	
 	<select id="progressCnt" parameterType="org.joongmae.domain.Criteria" resultType="int">
-		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status = '진행중' and (buyid = #{buyId} or sellid = #{sellId})
+		select count(*) from deal d, sell s where d.sellno = s.sellno and d.status in('진행중','입금완료','배송중') and (buyid = #{buyId} or sellid = #{sellId})
 	</select>
 	
 		

@@ -12,5 +12,5 @@ import lombok.Getter;
 public class DealListWithPaging {
 	
 	private int dealCnt;
-	private List<DealAndSell> list;
+	private List<DealAndSell> list;	
 }

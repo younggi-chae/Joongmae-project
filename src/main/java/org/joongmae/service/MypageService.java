@@ -39,6 +39,7 @@ public interface MypageService {
 	public DealAndSell getDealDetail(int dealNo);
 	public DealListWithPaging getDealListWithPaging(Criteria cri);
 	public DealListWithPaging selectDeal(Criteria cri);	
+	public int deleteDeal(int dealNo);
 	public int completeCnt(Criteria cri);
 	public int progressCnt(Criteria cri);
 	
