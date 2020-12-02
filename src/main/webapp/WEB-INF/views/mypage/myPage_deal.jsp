@@ -497,7 +497,7 @@
 		});
 	}
 	
-	
+	//거래취소
 	$('#detail').on('click', '#deleteDeal', function(){
 		 var dealNo = $(this).prev().prev().val();
 		 var header = "${_csrf.headerName}";

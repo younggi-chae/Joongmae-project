@@ -112,11 +112,15 @@
 			</div><br><br>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12" align="center">
-					<div><h3>최근 본 견적서</h3></div>
+					<div><h3>최근 본 견적서</h3><br><br>
+						<div id="info"><h5>최근 본 견적서가 없습니다.</h5><br>
+				 			<a type="button" href="/myPage/sellList" class="btn btn-secondary">견적서 보러가기</a>
+				 		</div>
+					</div>
 				</div><br><br><br>
 			</div>			
 			<div class="row" id="latest">	
-			 
+			 	 
 			</div>     
 		</div>	
 	</section>
@@ -177,7 +181,7 @@
             legend: { position: "top" },
             isStacked: false,
             tooltip:{textStyle : {fontSize:12}, showColorCode : true},
-            animation: { //차트가 뿌려질때 실행될 애니메이션 효과
+            animation: { 
             	startup: true,
                 duration: 2000,
                 easing: 'linear' }               
@@ -190,7 +194,7 @@
    //최근 본 견적서 출력
    $(document).ready(function(){    	
     	var str = "";    	
-    	var sellNo = localStorage.getItem("sellNo");		
+    	var sellNo = sessionStorage.getItem("sellNo");		
 		var sellNo = sellNo.split(",");
 		console.log(sellNo);
 		for(var i = 0; i < sellNo.length; i++){
@@ -199,7 +203,8 @@
 		   dataType : "json",
 		   data : sellNo,
 		   type : "GET",
-		   success : function(result){			   
+		   success : function(result){
+			   $('#info').html("");
 			   str = 	'<div class="col-lg-4 col-md-6 col-sm-6">';
 			   str += 	'<div class="services__item">';
 			   str +=   '<img src="/resources/img/upload_cyg/'+result.picture+'">';
@@ -207,7 +212,8 @@
 			   str +=   '<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>';
 			   str += 	'</div>';			  		   
 			   		$('#latest').append(str);
-		   }
+			   
+		     }
          });
 	   }
    });    

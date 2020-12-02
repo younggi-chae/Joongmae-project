@@ -184,24 +184,31 @@
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">   
 
-
-	//최근 본 견적서 쿠키 저장
+	//최근 본 견적서 세션 저장
 	$('.targetModal').on("click", function(){
 		var sellNo = $(this).prev().val();
 		var array =[];
-		array.push(localStorage.getItem("sellNo").split(","));
-		console.log(array);
-		if(array[0].length < 3){		
-		array[0].unshift(sellNo);
-		localStorage.setItem("sellNo", array);
+		
+		if(sessionStorage.getItem("sellNo") == null){
+			array.push(sellNo);
+			console.log(array);
+			sessionStorage.setItem("sellNo", array);
 		} else {
-			array[0].pop();
-			array[0].unshift(sellNo);
-			localStorage.setItem("sellNo", array);
-	    }
+			array.push(sessionStorage.getItem("sellNo").split(","));
+			console.log(array);
+			
+			if(array[0].length < 3){		
+				array[0].unshift(sellNo);
+				sessionStorage.setItem("sellNo", array);
+				} else {
+					array[0].pop();
+					array[0].unshift(sellNo);
+					sessionStorage.setItem("sellNo", array);
+			    }						
+		  }		
 	});
 
-
+	
  
   $(document).ready(function () {		
 	
