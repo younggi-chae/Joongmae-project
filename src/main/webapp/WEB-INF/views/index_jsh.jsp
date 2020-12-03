@@ -54,53 +54,53 @@
 							<div class="tab-pane active" id="tabs-1" role="tabpanel">
 								<div class="hero__tab__form">
 									<h2>팔고싶은 물건 검색</h2>
-									<form
-										action="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">
-										<div class="select-list">
-											<div class="select-list-item">
-												<p>대분류</p>
-												<select name="bigClassifier">
-													<option value="의류">의류</option>
-													<option value="가전">가전</option>
-												</select>
-											</div>
-											<div class="select-list-item">
-												<p>중분류</p>
-												<select name="mediumClassifier">
-													<option value="상의">상의</option>
-													<option value="하의">하의</option>
-													<option value="악세서리">악세서리</option>
-													<option value="냉장고">냉장고</option>
-													<option value="에어컨">에어컨</option>
-													<option value="악세서리">세탁기</option>
-												</select>
-											</div>
-											<div class="select-list-item">
-												<p>키워드1</p>
-												<input type="text" name="keyword1">
-											</div>
-											<div class="select-list-item">
-												<p>키워드2</p>
-												<input type="text" name="keyword2">
-											</div>
-											<div class="select-list-item">
-												<p>키워드3</p>
-												<input type="text" name="keyword3">
-											</div>
-										</div>
-										<div class="car-price">
-											<p>Price Range:</p>
-											<div class="price-range-wrap">
-												<div class="price-range"></div>
-												<div class="range-slider">
-													<div class="price-input">
-														<input type="text" id="amount" name="price">
-													</div>
-												</div>
-											</div>
-										</div>
-										<button type="submit" class="site-btn">Searching</button>
-									</form>
+									<form action="/buyBoard/list" method="post">
+                              <div class="select-list">
+                                 <div class="select-list-item">
+                                    <p>대분류</p>
+                                    <select id="bigSelectBox" name="bigClassifier" onchange="setCategory()">
+										<option value="의류" selected="selected">의류</option>
+										<option value="가전">가전</option>
+									</select>
+                                 </div>
+                                 <div class="select-list-item">
+                                    <p>중분류</p>
+                                    <select id="mediumSelectBox" name="mediumClassifier">
+										<option value="상의">상의</option>
+										<option value="하의">하의</option>
+										<option value="악세사리">악세사리</option>
+										<option value="냉장고">냉장고</option>
+										<option value="에어컨">에어컨</option>
+										<option value="세탁기">세탁기</option>
+									</select>
+                                 </div>
+                                 <div class="select-list-item">
+                                    <p>키워드1</p>
+                                    <input type="text" name="keyword1">
+                                 </div>
+                                 <div class="select-list-item">
+                                    <p>키워드2</p>
+                                    <input type="text" name="keyword2">
+                                 </div>
+                                 <div class="select-list-item">
+                                    <p>키워드3</p>
+                                    <input type="text" name="keyword3">
+                                 </div>
+                              </div>
+                              <div class="car-price">
+                                 <p>Price Range:</p>
+                                 <div class="price-range-wrap">
+                                    <div class="price-range"></div>
+                                    <div class="range-slider">
+                                       <div class="price-input">
+                                          <input type="text" id="amount" name="price">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                              <button type="submit" class="site-btn">Searching</button>
+                           </form>
 								</div>
 							</div>
 
@@ -225,7 +225,7 @@
 
 
 	<%@include file="includes/footer.jsp"%>
-
+   <script src="/resources/js/main_kgj.js"></script>
 	<!-- Search Begin -->
 	<div class="search-model">
 		<div class="h-100 d-flex align-items-center justify-content-center">
@@ -262,6 +262,42 @@
 
 	
  <div id="frogue-container" class="position-right-bottom" data-chatbot="b99e517a-b869-414a-aa15-4b0f2cedbc88" data-user="sk03058@nate.com" data-init-key="value"></div>
+
+
+
+
+
+<script type="text/javascript">
+	function setCategory(){
+		
+		$('#mediumSelectBox').empty();
+	    
+		if($("#bigSelectBox option:selected").val() == "의류"){
+			
+			var str = "<option value='상의'>상의</option>" +
+					"<option value='하의'>하의</option>" +
+					"<option value='악세사리'>악세사리</option>";
+      
+			$('#mediumSelectBox').append(str);
+			
+			$('select').niceSelect('update');
+			
+		}else if($("#bigSelectBox option:selected").val() == "가전"){
+			
+			var str = "<option value='냉장고'>냉장고</option>" +
+			"<option value='에어컨'>에어컨</option>" +
+			"<option value='세탁기'>세탁기</option>";
+			
+			$('#mediumSelectBox').append(str);
+			
+			$('select').niceSelect('update');
+		}
+		
+	}
+</script>
+
+
+
 
 <script>
 (function(d, s, id){
