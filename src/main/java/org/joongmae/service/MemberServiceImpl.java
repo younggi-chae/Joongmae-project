@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
+
 import org.joongmae.domain.MemberAccountVO;
 import org.joongmae.domain.MemberAuthDTO;
 import org.joongmae.domain.MemberVO;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -39,6 +41,12 @@ public class MemberServiceImpl implements MemberService {
 	@Setter(onMethod_ = @Autowired)
 	private MemberMapper mapper;
 
+	
+	
+	
+	private static final String NS = "org.joongmae.mapper.MemberMapper";
+	private static final String GET_BY_SNS_NAVER = NS + ".getBySnsNaver";
+	
 	@Override
 	public void join(MemberVO member) {
 		mapper.insertMember(member);
@@ -73,6 +81,9 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
+	
+
+	
 	@Override
 	public String idCheck(String id) {
 		System.out.println(mapper.chk_id(id));
@@ -249,8 +260,14 @@ public class MemberServiceImpl implements MemberService {
              JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
              JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
+             String profile_image="";
              String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-             String profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
+             if(properties.getAsJsonObject().get("profile_image")!=null){
+            	 profile_image = properties.getAsJsonObject().get("profile_image").getAsString();
+             }else{
+            	 profile_image=" ";
+             }
+             
              String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
             String id =element.getAsJsonObject().get("id").toString();

@@ -85,7 +85,7 @@ function imgClick() {
 
 						<input type="hidden" name="id" value="${member.id}"> 
 						<input type="file" name="picture" id="imgUpload"
-							onchange="imgUplad2(this)" style="display: none;"> 
+							onchange="imgUpload2(this)" style="display: none;"> 
 							<span class="focus-input100"></span>
 
 

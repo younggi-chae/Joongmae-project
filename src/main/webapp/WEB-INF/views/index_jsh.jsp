@@ -21,6 +21,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="google-site-verification" content="pb9RN2mqNhlQVfHbO4o9zP7B9XW78fumQ9PMIDvELII" />
 <meta charset="utf-8">
 <title>Insert title here</title>
 
@@ -37,154 +38,6 @@
 	type="text/css">
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/fonts_jsh/font-awesome-4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/fonts_jsh/Linearicons-Free-v1.0.0/icon-font.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/animate/animate.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/css-hamburgers/hamburgers.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/animsition/css/animsition.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/select2/select2.min.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/vendor_jsh/daterangepicker/daterangepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/css/util_jsh.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/css/main_jsh.css">
-
-</head>
-<body>
-
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
-
-	<!-- Offcanvas Menu Begin -->
-	<div class="offcanvas-menu-overlay"></div>
-	<div class="offcanvas-menu-wrapper">
-		<div class="offcanvas__widget">
-
-
- 			<sec:authorize access="isAnonymous()">
-				 			 <c:if test="${userId eq null}">
-				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
-				</c:if>
-					 <c:if test="${userId ne null}">
-				<a href="/member/logout" class="primary-btn">로그아웃</a>
-				</c:if>
-			</sec:authorize>
-			<sec:authorize access="isAuthenticated()">
-				
-				<form action="/member/logout" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<button class="primary-btn">로그아웃</button>
-
-</form>
-
-			</sec:authorize>
-
-
-
-		</div>
-		<div class="offcanvas__logo">
-
-
-			<a href="/main"><img src="/resources/img/logo.png" alt=""></a>
-		</div>
-		<div id="mobile-menu-wrap"></div>
-	</div>
-	<!-- Offcanvas Menu End -->
-
-	<!-- Header Section Begin -->
-	<header class="header">
-
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-2">
-					<div class="header__logo">
-						<a href="controller_jsh/mainAction.sh"><img
-							src="/resources/img/logo.png" alt=""></a>
-					</div>
-				</div>
-				<div class="col-lg-10">
-					<div class="header__nav">
-						<nav class="header__menu">
-							<ul>
-								<li class="active"><a
-									href="http://localhost:8080/controller_jsh/mainAction.sh">Home</a></li>
-								<li><a
-									href="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">구매
-										게시판</a></li>
-								<li><a
-									href="http://localhost:8080/Controller_kgj/insertBuyRegistrationForm.kgj">구매
-										등록</a></li>
-
-
-								<li><a
-									href=<c:if test="${sessionScope.id !=null}">
-                                "http://localhost:8080/kjj/registerFormAction.kjj"
-                                </c:if>
-									<c:if test="${sessionScope.id ==null}">
-                                "#"
-                                 </c:if>>판매
-										등록</a></li>
-
-								<c:if test="${sessionScope.id !=null}">
-									<li><a
-										href="/myPage/main">마이페이지</a></li>
-								</c:if>
-
-								<c:if test="${sessionScope.id ==null}">
-									<li><a href="/myPage/main">마이페이지</a></li>
-								</c:if>
-
-							</ul>
-
-
-						</nav>
-						<div class="header__nav__widget">
-							<img id="alarmImg" src="" onclick="alarmClick()">
-
-
- 			<sec:authorize access="isAnonymous()">
-				 			 <c:if test="${userId eq null}">
-				<a href="/member/login" class="primary-btn">로그인/회원가입</a>
-				</c:if>
-					 <c:if test="${userId ne null}">
-				<a href="/member/logout" class="primary-btn">로그아웃</a>
-				</c:if>
-			</sec:authorize>
-			<sec:authorize access="isAuthenticated()">
-				
-				<form action="/member/logout" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<button class="primary-btn">로그아웃</button>
-
-</form>
-
-			</sec:authorize>
-
-						</div>
-					</div>
-
-				</div>
-
-			</div>
-			<div class="canvas__open">
-				<span class="fa fa-bars"></span>
-			</div>
-		</div>
-	</header>
-	<!-- Header Section End -->
 
 	<!-- Hero Section Begin -->
 	<section class="hero spad set-bg"
@@ -201,24 +54,25 @@
 							<div class="tab-pane active" id="tabs-1" role="tabpanel">
 								<div class="hero__tab__form">
 									<h2>팔고싶은 물건 검색</h2>
-									<form action="/buyBoard/list" method="post">
+									<form
+										action="http://localhost:8080/Controller_kgj/listBuyBoard.kgj">
 										<div class="select-list">
 											<div class="select-list-item">
 												<p>대분류</p>
-												<select id="bigSelectBox" name="bigClassifier" onchange="setCategory()">
-													<option value="의류" selected="selected">의류</option>
+												<select name="bigClassifier">
+													<option value="의류">의류</option>
 													<option value="가전">가전</option>
 												</select>
 											</div>
 											<div class="select-list-item">
 												<p>중분류</p>
-												<select id="mediumSelectBox" name="mediumClassifier">
+												<select name="mediumClassifier">
 													<option value="상의">상의</option>
 													<option value="하의">하의</option>
-													<option value="악세사리">악세사리</option>
+													<option value="악세서리">악세서리</option>
 													<option value="냉장고">냉장고</option>
 													<option value="에어컨">에어컨</option>
-													<option value="세탁기">세탁기</option>
+													<option value="악세서리">세탁기</option>
 												</select>
 											</div>
 											<div class="select-list-item">
@@ -245,7 +99,6 @@
 												</div>
 											</div>
 										</div>
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										<button type="submit" class="site-btn">Searching</button>
 									</form>
 								</div>
@@ -407,19 +260,8 @@
 		</div>
 	</div>
 
-	<!-- Js Plugins -->
-	<script src="/resources/js/jquery-3.3.1.min.js"></script>
-	<script src="/resources/js/bootstrap.min.js"></script>
-	<script src="/resources/js/jquery.nice-select.min.js"></script>
-	<script src="/resources/js/jquery-ui.min.js"></script>
-	<script src="/resources/js/jquery.magnific-popup.min.js"></script>
-	<script src="/resources/js/mixitup.min.js"></script>
-	<script src="/resources/js/jquery.slicknav.js"></script>
-	<script src="/resources/js/owl.carousel.min.js"></script>
-	<script src="/resources/js/main.js"></script>
-	<script src="/resources/js/main_kgj.js"></script>
-
-<!--  <div id="frogue-container" class="position-right-bottom" data-chatbot="b99e517a-b869-414a-aa15-4b0f2cedbc88" data-user="sk03058@nate.com" data-init-key="value"></div>
+	
+ <div id="frogue-container" class="position-right-bottom" data-chatbot="b99e517a-b869-414a-aa15-4b0f2cedbc88" data-user="sk03058@nate.com" data-init-key="value"></div>
 
 <script>
 (function(d, s, id){
@@ -429,41 +271,23 @@
     js.src = "https:\/\/danbee.ai/js/plugins/frogue-embed/frogue-embed.min.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'frogue-embed'));
-</script> -->
+</script> 
 
+<div id="frogue-container" class="position-right-bottom" data-chatbot="b99e517a-b869-414a-aa15-4b0f2cedbc88" data-user="sk03058@nate.com" data-init-key="value"></div>
+
+<script>
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https:\/\/danbee.ai/js/plugins/frogue-embed/frogue-embed.min.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'frogue-embed'));
+</script> 
 
 </body>
 
 </html>
-
-<script type="text/javascript">
-	function setCategory(){
-		
-		$('#mediumSelectBox').empty();
-	    
-		if($("#bigSelectBox option:selected").val() == "의류"){
-			
-			var str = "<option value='상의'>상의</option>" +
-					"<option value='하의'>하의</option>" +
-					"<option value='악세사리'>악세사리</option>";
-      
-			$('#mediumSelectBox').append(str);
-			
-			$('select').niceSelect('update');
-			
-		}else if($("#bigSelectBox option:selected").val() == "가전"){
-			
-			var str = "<option value='냉장고'>냉장고</option>" +
-			"<option value='에어컨'>에어컨</option>" +
-			"<option value='악세사리'>악세사리</option>";
-			
-			$('#mediumSelectBox').append(str);
-			
-			$('select').niceSelect('update');
-		}
-		
-	}
-</script>
 
 <script type="text/javascript">
 function readAlarm(alarmNo) {

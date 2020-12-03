@@ -28,22 +28,27 @@
 	</beans:bean>
 	
 	
-	
-
-
-<!-- google Class Bean설정 추가 -->
-<!-- 클라이언트ID와 보안비밀 세팅-->
-<beans:bean id="googleConnectionFactory"
-	class="org.springframework.social.google.connect.GoogleConnectionFactory">
-	<beans:constructor-arg value="303753286727-7g630f03llvjb1uh0b2f9tabvm77um3m.apps.googleusercontent.com" />
-	<beans:constructor-arg value="Z7NZuNO7azADKSBp0futH6Kf" />
-	
+	<!-- oauth2 로그인-->
+	<beans:bean id="naverClientID" class="java.lang.String">
+        <beans:constructor-arg value="3dk2AZ1OIgXouNsDlwlz" />
 </beans:bean>
-<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
-<beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
-	<beans:property name="scope" value="https://www.googleapis.com/auth/plus.login" />
-	<beans:property name="redirectUri" value="http://localhost:8081/member/googleLogin/oauth2callback" />
+<beans:bean id="naverClientSecret" class="java.lang.String">
+        <beans:constructor-arg value="BaHPE1I3HN" />
 </beans:bean>
-
+<beans:bean id="naverRedirectUrl" class="java.lang.String">
+        <beans:constructor-arg value="http://localhost:8081/auth/naver/callback" />
+</beans:bean>
+    
+<beans:bean id="naverSns" class="org.joongmae.auth.SnsValue">
+        <beans:constructor-arg value="naver" />
+        <beans:constructor-arg ref="naverClientID" />
+        <beans:constructor-arg ref="naverClientSecret" />
+        <beans:constructor-arg ref="naverRedirectUrl" />
+</beans:bean>
 	
+	
+	
+	
+	
+
 </beans:beans>

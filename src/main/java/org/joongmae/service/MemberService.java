@@ -1,7 +1,6 @@
 package org.joongmae.service;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.joongmae.domain.MemberAccountVO;
 import org.joongmae.domain.MemberAuthDTO;
@@ -20,9 +19,7 @@ public interface MemberService {
 	public String getAccessToken (String authorize_code);
 	public void registerAuth(MemberAuthDTO userInfo);
 	public void kakaoLogout(String access_Token);
-	
-	
 	public String findId(HashMap<String, String> map);
 	public HashMap<String, Object> getUserInfo(String access_Token);
-	
+
 }

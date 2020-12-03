@@ -54,6 +54,9 @@
      insert into users (username,password,enabled) values(#{id},#{password},1)
    </insert>
    
+   <select id="getBySnsNaver" resultType="org.joongmae.domain.User">
+	  select * from user where naverid=#{naverid}   
+   </select>
    
    
 </mapper>

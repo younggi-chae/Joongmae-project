@@ -18,7 +18,9 @@
       <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@kosta202.ch8knabo8o3a.ap-northeast-2.rds.amazonaws.com:1521:orcl"/>
       <property name="username" value="joongmae"/>
       <property name="password" value="joongmae123!"/>
-    </bean>
+    </bean> 
+
+
 
 
    <!-- HikariCP configuration -->
