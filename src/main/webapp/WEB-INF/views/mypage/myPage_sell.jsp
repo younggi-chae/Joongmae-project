@@ -36,12 +36,12 @@
                <div class="car__filter__option"
                   style="height: 74px; background-color: white;">
                   <div class="row">
-                     <div class="col-lg-8 col-md-6">                        
+                     <div class="col-lg-6 col-md-6">                        
                         <a href="#" class="btn btn-danger" id="deleteAll">전체삭제</a>
                         <a href="/myPage/wishList" class="btn btn-info">관심리스트</a>	
                         <a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>	
                      </div>
-                      <div class="col-lg-4 col-md-6">										
+                      <div class="col-lg-6 col-md-6">										
 							<div class="pull-right">
 								<form id='searchForm' action="/myPage/sellList" method='get'>
 									<select name='type'>										
@@ -205,8 +205,8 @@
 					array[0].unshift(sellNo);
 					sessionStorage.setItem("sellNo", array);
 			    }						
-		  }		
-	});
+		    }		
+	   });
 
 	
  
@@ -232,7 +232,7 @@
 	            xhr.setRequestHeader(header, token);
 	            },
 				success : function(result){
-					alert(sellNo + " 추가");
+					alert(sellNo + " 찜목록에 추가되었습니다.");
 					heart.attr("style", "color: red");	
 				}				
 			});
@@ -246,7 +246,7 @@
 	            xhr.setRequestHeader(header, token);
 	            },
 				success : function(result){
-					alert(sellNo + " 삭제");
+					alert(sellNo + " 찜목록에서 삭제되었습니다.");
 					heart.attr("style", "color: black");
 				}
 			});
@@ -308,6 +308,7 @@
 	             return false;
 	         } 
 	 });
+	
 	
 	 //견적서 전체삭제
 	 var count = $('#count').val();	 

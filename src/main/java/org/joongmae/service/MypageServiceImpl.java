@@ -209,10 +209,5 @@ public class MypageServiceImpl implements MypageService {
 	public int replyDelete(int replyNo) {		
 		return mapper.replyDelete(replyNo);
 	}
-
-	@Override
-	public int replyCnt(int dealNo) {	
-		return mapper.replyCnt(dealNo);
-	}
 	
 }

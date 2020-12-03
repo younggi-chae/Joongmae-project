@@ -92,16 +92,16 @@
 						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<input type="submit" class="btn btn-primary" value="리뷰쓰기">
 					</form>
-					<form action="" id="deliveryBtn" style="border: 1;">
+					<form action="" id="deliveryBtn" class="delivery" style="border: 1;">
 						<input type="text" id="deliveryNo" style="border: solid;border-width: thin;width: 250px;">
 						<input type="submit" class="btn btn-primary" value="송장 번호 입력">
 					</form>
-					<form action="" id="deliveryModBtn" style="border: 1;">
+					<form action="" id="deliveryModBtn" class="delivery" style="border: 1;">
 						<input type="text" id="deliveryModNo" style="border: solid;border-width: thin;width: 250px;">
 						<input type="submit" class="btn btn-primary" value="송장 번호 수정">
 					</form>
-					<button type="button" class="btn btn-primary" id="depositBtn" onclick="deposit()">입금 완료</button>
-					<button type="button" class="btn btn-primary" id="deliveryInfoBtn" onclick="deliveryInfo()">송장 번호 조회</button>
+					<button type="button" class="btn btn-primary delivery" id="depositBtn" onclick="deposit()">입금 완료</button>
+					<button type="button" class="btn btn-primary delivery" id="deliveryInfoBtn" onclick="deliveryInfo()">송장 번호 조회</button>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>						
 					</div>
 				</div>					
@@ -189,7 +189,7 @@
 				var windowHeight = $window.height();  // 화면 높이
 				var documentHeight = $(document).height();	//문서 전체 높이			
 				
-				if(scrollTop + windowHeight + 60 > documentHeight){									
+				if(scrollTop + windowHeight + 30 > documentHeight){									
 					if(statusCheck == "progress"){
 						statusList(page, "진행중");
 			        }else if(statusCheck == "complete"){
@@ -275,9 +275,8 @@
 		
 		
 	//화면에 뿌려질 태그
-	var showList = function(element){	
-		//console.log(element.dealNo);
-		var str = "";				
+	var showList = function(element){		
+		var str = "";		
 			str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';						
 			str += '<div class="car__item__pic__slider">';
 			if(element.picture != null){
@@ -288,11 +287,12 @@
 			str += '<div class="car__item__text"><div class="car__item__text__inner">';
 			str += '<div class="label-date">' + element.buyId +'</div>';
 			str += '<div class="label-date">' + element.sellId +'</div>';
+			str += '<div class="label-date">'+ formatDate(element.regDate) +'</div>';
 			str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
 			str += '<a class="detailModal" href="#" data-toggle="modal" data-target="#detailModal" data-backdrop="static" style="font-size: 25px;">' + element.itemName +'</a>';
 			str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
 			str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" data-backdrop="static" style="font-size:40px;">';			
-			str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt" id = "replyCnt">0</span></div>';  
+			str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt" id = "replyCnt">'+element.replyCnt+'</span></div>';  
 			str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
 			str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
 			if(element.status === "진행중"){
@@ -302,15 +302,15 @@
 			}													
 			str += '<h6 style="font-size: 18px;">'+ commas(element.price) +'원</h6></div></div></div></div>';	
 				
-					$('#dealList').append(str);					
+					$('#dealList').append(str);	
+				
 		    }
 	
 	
 	//댓글 insert & list & delete			
 	var dealNo =0;
 	$('#dealList').on("click", '.commentModal', function(){
-		dealNo = $(this).prev().prev().val();	
-		console.log(dealNo);
+		dealNo = $(this).prev().prev().val();		
 		replyList(dealNo);		
 	});		
 	
@@ -328,25 +328,6 @@
 		var dealNo = $(this).prev().val();					
 		detailDeal(dealNo);
 	});	
-	
-	/*  $(document).ready(function(){   
-	      replyCnt(dealNo)
-	   });	 
-	   
-	   function replyCnt(dealNo){   
-	      $.ajax({
-	         url : "/myPage/replyCnt/"+ dealNo,         
-	         data : dealNo,
-	         dataType : 'json',
-	         type : "GET",
-	         success : function(result){
-	        	 console.log(result);
-	        	 console.log(dealNo);
-	            $("#replyCnt").html(result);                        
-	         }
-	      });       
-	   }        */
-
 	
 	 
 	//댓글 insert Ajax
@@ -438,7 +419,7 @@
 		    } else {
 	            return false;
 	        }
-      }		    
+      }	
    
 	
 	//Deal 상세보기
@@ -491,6 +472,9 @@
 			  if(status == '진행중' || status == '입금완료' || status == '배송중'){				 
 				str += '<a href="#" class="primary-btn">판매자와 대화하기</a>';
 			  	str += '<a href="#" class="primary-btn" id="deleteDeal">거래취소</a></div>';
+			  } else {
+				 $('.delivery').html("");
+				 $('.delivery').hide();
 			  } 
 				 $('#detail').append(str);
 		   }

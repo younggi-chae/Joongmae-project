@@ -52,7 +52,6 @@ public interface MypageMapper {
 	
 	int replyInsert(ReplyVO reply);
 	List<ReplyVO> replyList(int dealNo);	
-	int replyDelete(int replyNo);
-	int replyCnt(int dealNo);
+	int replyDelete(int replyNo);	
 }
 

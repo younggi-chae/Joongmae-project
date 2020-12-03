@@ -112,10 +112,11 @@
 	<select id="getDealList" resultType="org.joongmae.domain.DealAndSell">		
 		<![CDATA[
 		select
-		 	dealno, buyid, sellid, itemname, picture, keyword1, keyword2, keyword3, price, regdate, status
+		 	dealno, buyid, sellid, itemname, picture, keyword1, keyword2, keyword3, price, regdate, status, replyCnt
 		 from 
 		 	( select /*+ INDEX_DESC(deal pk_deal) */
-		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3
+		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3,
+		 		(select count(*) from reply r where r.dealNo = d.dealNo) as replyCnt
 		 	  from deal d, sell s
 		 	  where		 
 		 	rownum <= #{pageNum} * #{amount} and d.sellno = s.sellno and (buyid = #{buyId} or sellid = #{sellId})
@@ -135,10 +136,11 @@
 	<select id="selectDeal" resultType="org.joongmae.domain.DealAndSell">
 		<![CDATA[
 		select
-		 	dealno, buyid, sellid, itemname, picture, keyword1, keyword2, keyword3, price, regdate, status
+		 	dealno, buyid, sellid, itemname, picture, keyword1, keyword2, keyword3, price, regdate, status, replyCnt
 		 from 
 		 	( select /*+ INDEX_DESC(deal pk_deal) */
-		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3
+		 		rownum rn, d.* , s.itemname, s.picture, s.keyword1, s.keyword2, s.keyword3,
+		 		(select count(*) from reply r where r.dealNo = d.dealNo) as replyCnt
 		 	  from deal d, sell s
 		 	  where		 
 		 	rownum <= #{pageNum} * #{amount} and d.sellno = s.sellno and d.status = #{status} and (buyid = #{buyId} or sellid = #{sellId})
@@ -251,11 +253,8 @@
 	
 	<delete id="replyDelete">
 		delete from reply where replyNo = #{replyNo}
-	</delete>
+	</delete>	
 	
-	<select id="replyCnt" resultType="int">
-		select count(*) from reply where dealNo = #{dealNo}	
-	</select>
 	
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->	

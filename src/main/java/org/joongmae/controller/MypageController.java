@@ -274,13 +274,7 @@ public class MypageController {
 		int insertCount = service.replyDelete(replyNo);		
 		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@GetMapping("/replyCnt/{dealNo}")
-	@ResponseBody
-	public int replyCnt(@PathVariable("dealNo") int dealNo){		
-		return service.replyCnt(dealNo);
-	}
+	}	
 	
 	@PostMapping("/uploadAjaxAction")
 	@ResponseBody

@@ -167,7 +167,7 @@
 	            return false;
 	        }	    
 	      
-	    }else if(operation === 'list'){      
+	    } else if(operation === 'list'){      
 	      formObj.attr("action", "/myPage/main").attr("method","get");      
 	      
 	    } else if(operation === 'modify'){	        	       

@@ -145,9 +145,9 @@
 	});
 	
 	
+	//buy상세보기
 	$('#list').on('click', '.targetModal', function(){
-		var buyNo = $(this).prev().val();
-		console.log(buyNo);
+		var buyNo = $(this).prev().val();		
 		buyDetail(buyNo);
 	});
 	
@@ -282,8 +282,16 @@
 	            },
 	         success : function(result){
 	        	 if(confirm("구매등록을 삭제하시겠습니까?")) {
-	        		 monthCheck = "all";
-		     		 buyList(pageNum, 1000);	
+	        		 showPage();
+	        		 if(monthCheck == "3"){
+	     	        	buyList(pageNum, 2);
+	     	        }else if(monthCheck == "6"){
+	     	        	buyList(pageNum, 5);
+	     	        }else if(monthCheck == "all"){
+	     	        	buyList(pageNum, 1000);
+	     	        }else if(monthCheck == "range"){	     	        	
+	     	        	searchRangeList(pageNum);
+	     	        }	        		
 	             } else {
 	                 return false;
 	             }        	
