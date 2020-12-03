@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-
-
 <mapper namespace="org.joongmae.mapper.MemberMapper">
-   
    
 	<select id="getList" resultType="org.joongmae.domain.MemberVO">
 	select * from member
 	</select>
 	
-	
 	<insert id="insertMember" parameterType="org.joongmae.domain.MemberAuthDTO">
 	insert into member values (#{id},#{password},#{name},#{phoneNo},#{email},#{sex},#{address},' ',' ',0,'y',' ',' ',' ','1')  
 	</insert>
-	
-
 	
 	<select id="chk_id" parameterType="String" resultType="int">
 	  select count(id) from member where id=#{chk_id}

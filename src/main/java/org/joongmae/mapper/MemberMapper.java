@@ -19,11 +19,9 @@ public interface MemberMapper {
 	public MemberAuthDTO getMember(String id);
 	public void addOption(MemberVO member);
 	public void memberAuth(MemberAuthDTO userInfo);
-
 	public MemberVO read(String userId);
 	public void addAuth(MemberAuthDTO userInfo);
-
-
 	public String findId(HashMap<String, String> map);
 	public String getPassword(Map<String, String> paramMap);
+	
 }

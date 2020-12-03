@@ -143,7 +143,9 @@
 							<img  width="250px" src="/resources/img_jsh/kakao_login.png" style="margin-left: 70px"/>
 						</a>
 						
-						<a href="/member/googleLogin">구글로그인</a>
+						
+						
+						<a href="${naver_url }"><img src='/resources/img_jsh/naver_g_c_login.png' width=250 border=0 style="margin-left: 70px"></a>
 					</div>	
 					
 				</form>
@@ -183,7 +185,7 @@
 		</div>
 </section>
 <section class="services spad"
-	style="padding =top: 300px; padding-bottom: 500px"></section>
+	style="padding =top: 300px; padding-bottom: 500px; height: 700px"></section>
 </c:if>
 
 

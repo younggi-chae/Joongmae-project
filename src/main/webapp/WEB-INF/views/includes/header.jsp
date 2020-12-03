@@ -85,27 +85,27 @@
    <div class="offcanvas-menu-wrapper">
       <div class="offcanvas__widget">
 
-         <sec:authorize access="isAnonymous()">
-            <c:if test="${userId eq null}">
+                           <sec:authorize access="isAnonymous()">
+           <c:if test="${userId eq null}"> 
                <a href="/member/login" class="primary-btn">로그인/회원가입</a>
             </c:if>
-            <c:if test="${userId ne null}">
+             <c:if test="${userId ne null}">
                <a href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout"
                   class="primary-btn">로그아웃</a>
-            </c:if>
+            </c:if> 
          </sec:authorize>
          <sec:authorize access="isAuthenticated()">
 
             <!--    그냥 로그인일떄 -->
-<c:if test="${userId ne null}">
+ <c:if test="${userId ne null}">
             <a href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout" class="primary-btn">로그아웃</a>
             </c:if> 
-   <c:if test="${userId eq null}">
+   <c:if test="${userId eq null}"> 
             <form action="/member/logout" method="post">
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <button class="primary-btn">로그아웃</button>
 </form>
-</c:if>
+ </c:if> 
 
          </sec:authorize>
 
@@ -139,14 +139,7 @@
                         <li><a href="/buyBoard/registerForm">구매 등록</a></li>
 
 
-                        <li><a
-                           href=<c:if test="${sessionScope.id !=null}">
-                                "http://192.168.0.156:8080/Architecture-kosta202/kjj/registerFormAction.kjj"
-                                </c:if>
-                           <c:if test="${sessionScope.id ==null}">
-                                "#"
-                                 </c:if>>판매
-                              등록</a></li>
+                        <li><a href="http://192.168.0.156:8080/Architecture-kosta202/kjj/registerFormAction.kjj">판매 등록</a></li>
 
                         <c:if test="${sessionScope.id !=null}">
                            <li><a
@@ -154,9 +147,9 @@
                         </c:if>
 
 
-                        <sec:authorize access="isAuthenticated()">
+                        
                            <li><a href="/myPage/main">마이페이지</a></li>
-                        </sec:authorize>
+                       
 
                      </ul>
 
@@ -165,19 +158,18 @@
                   <div class="header__nav__widget">
 
 
-                     <sec:authorize access="isAnonymous()">
-                        <c:if test="${userId eq null}">
-                           <a href="/member/login" class="primary-btn">로그인/회원가입</a>
-                        </c:if>
-                        <c:if test="${userId ne null}">
-                           <a
-                              href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout"
-                              class="primary-btn">로그아웃</a>
-                        </c:if>
-                     </sec:authorize>
-                     <sec:authorize access="isAuthenticated()">
+                             <sec:authorize access="isAnonymous()">
+           <c:if test="${userId eq null}"> 
+               <a href="/member/login" class="primary-btn">로그인/회원가입</a>
+            </c:if>
+             <c:if test="${userId ne null}">
+               <a href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout"
+                  class="primary-btn">로그아웃</a>
+            </c:if> 
+         </sec:authorize>
+         <sec:authorize access="isAuthenticated()">
 
-                        <!--    그냥 로그인일떄 -->
+            <!--    그냥 로그인일떄 -->
 <c:if test="${userId ne null}">
             <a href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout" class="primary-btn">로그아웃</a>
             </c:if> 
@@ -186,9 +178,9 @@
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <button class="primary-btn">로그아웃</button>
 </form>
-</c:if>
+ </c:if> 
 
-                     </sec:authorize>
+         </sec:authorize>
 
 
                   </div>

@@ -21,16 +21,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class EmailController {
 
-	@Autowired
-	private EmailSender emailSender;
-
-	@Autowired
-	private Email email;
-
-	@Autowired
-	private JavaMailSender mailSender;
 	
-
+	private EmailSender emailSender;
+	private Email email;
+	private JavaMailSender mailSender;
 	private EmailService service;
 	
 	@GetMapping("/sendPassword")
@@ -63,14 +57,6 @@ public class EmailController {
 						
 			return "0";
 		}
-		
-		
-		
-		
-		
 	}
-	
-	
-	
-	
+		
 }
