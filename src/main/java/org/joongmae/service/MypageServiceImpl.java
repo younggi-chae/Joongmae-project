@@ -116,6 +116,11 @@ public class MypageServiceImpl implements MypageService {
 	}
 	
 	@Override
+	public int deleteDeal(int dealNo) {		
+		return mapper.deleteDeal(dealNo);
+	}	
+	
+	@Override
 	public DealListWithPaging selectDeal(Criteria cri) {		
 		return new DealListWithPaging(mapper.countSelectDeal(cri), mapper.selectDeal(cri));
 	}
@@ -204,10 +209,5 @@ public class MypageServiceImpl implements MypageService {
 	public int replyDelete(int replyNo) {		
 		return mapper.replyDelete(replyNo);
 	}
-
-	@Override
-	public int replyCnt(int dealNo) {	
-		return mapper.replyCnt(dealNo);
-	}	
 	
 }

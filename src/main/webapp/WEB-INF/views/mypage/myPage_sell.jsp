@@ -36,11 +36,12 @@
                <div class="car__filter__option"
                   style="height: 74px; background-color: white;">
                   <div class="row">
-                     <div class="col-lg-8 col-md-6">                        
+                     <div class="col-lg-6 col-md-6">                        
                         <a href="#" class="btn btn-danger" id="deleteAll">전체삭제</a>
+                        <a href="/myPage/wishList" class="btn btn-info">관심리스트</a>	
                         <a href="/myPage/main" class="btn btn-info">마이페이지 메인</a>	
                      </div>
-                      <div class="col-lg-4 col-md-6">										
+                      <div class="col-lg-6 col-md-6">										
 							<div class="pull-right">
 								<form id='searchForm' action="/myPage/sellList" method='get'>
 									<select name='type'>										
@@ -85,7 +86,7 @@
                                     </div>
                                     <div class="car__item__text">
                                        <div class="car__item__text__inner">
-                                          <div class="label-date">${sell.id }</div>
+                                          <div class="label-date" id="sellId">${sell.id }</div>
                                           <h5>
                                            <label>  
                                           	<input id="modalNo" name="modalNo" type="hidden" value="${sell.sellNo }">                                        
@@ -182,13 +183,36 @@
 			
 <script src="/resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">   
+
+	//최근 본 견적서 세션 저장
+	$('.targetModal').on("click", function(){
+		var sellNo = $(this).prev().val();
+		var array =[];
+		
+		if(sessionStorage.getItem("sellNo") == null){
+			array.push(sellNo);
+			console.log(array);
+			sessionStorage.setItem("sellNo", array);
+		} else {
+			array.push(sessionStorage.getItem("sellNo").split(","));
+			console.log(array);
+			
+			if(array[0].length < 3){		
+				array[0].unshift(sellNo);
+				sessionStorage.setItem("sellNo", array);
+				} else {
+					array[0].pop();
+					array[0].unshift(sellNo);
+					sessionStorage.setItem("sellNo", array);
+			    }						
+		    }		
+	   });
+
+	
  
-
-
-$(document).ready(function () {		
+  $(document).ready(function () {		
 	
-	getWishList();	
-	
+	getWishList();
 	
 	//위시리스트 추가 및 삭제 (하트색 변경)
 	$(".addWish").on("click", function(){		
@@ -208,7 +232,7 @@ $(document).ready(function () {
 	            xhr.setRequestHeader(header, token);
 	            },
 				success : function(result){
-					alert(sellNo + " 추가");
+					alert(sellNo + " 찜목록에 추가되었습니다.");
 					heart.attr("style", "color: red");	
 				}				
 			});
@@ -222,7 +246,7 @@ $(document).ready(function () {
 	            xhr.setRequestHeader(header, token);
 	            },
 				success : function(result){
-					alert(sellNo + " 삭제");
+					alert(sellNo + " 찜목록에서 삭제되었습니다.");
 					heart.attr("style", "color: black");
 				}
 			});
@@ -285,6 +309,7 @@ $(document).ready(function () {
 	         } 
 	 });
 	
+	
 	 //견적서 전체삭제
 	 var count = $('#count').val();	 
 	 $('#deleteAll').on('click', function(){
@@ -311,10 +336,9 @@ $(document).ready(function () {
 			   dataType : "json",
 			   data : modalNo,
 			   type : "GET",
-			   success : function(result){			 
-				   
-				  $('.modal-body').html("");
+			   success : function(result){				 				 
 				  
+				  $('.modal-body').html("");				  
 				  if(result.picture != null){
 				  	str += '<div class="car__details__pic"><img id="pic" src="/resources/img/upload_cyg/'+result.picture+'"></div>';
 				  } else {

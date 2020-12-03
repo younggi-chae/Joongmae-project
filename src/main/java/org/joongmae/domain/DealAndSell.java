@@ -22,5 +22,6 @@ public class DealAndSell implements Serializable {
 	private int price;	
 	private String regDate;
 	private String status;	
+	private int replyCnt;
 	
 }

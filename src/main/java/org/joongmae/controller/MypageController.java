@@ -87,6 +87,7 @@ public class MypageController {
 	public String getDealList(Criteria cri ,Model model, Principal id) {		
 		cri.setBuyId(id.getName());
 		cri.setSellId(id.getName());
+		
 		model.addAttribute("completeCnt", service.completeCnt(cri));
 		model.addAttribute("progressCnt", service.progressCnt(cri));
 		return "mypage/myPage_deal";
@@ -128,6 +129,12 @@ public class MypageController {
 	public void deleteSell(@PathVariable("sellNo") int sellNo){
 		service.deleteWishList(sellNo);
 		service.deleteSell(sellNo);		
+	}
+	
+	@PostMapping("/deleteDeal/{dealNo}")
+	@ResponseBody
+	public void deleteDeal(@PathVariable("dealNo") int dealNo){
+		service.deleteDeal(dealNo);
 	}
 	
 	@RequestMapping("/deleteAllSell")	
@@ -198,7 +205,7 @@ public class MypageController {
 	public ResponseEntity<DealListWithPaging> dealList(@PathVariable("page") int page, Principal id, Criteria cri) {	
 		cri = new Criteria(page, 9);
 		cri.setBuyId(id.getName());
-		cri.setSellId(id.getName());
+		cri.setSellId(id.getName());		
 		return new ResponseEntity<>(service.getDealListWithPaging(cri), HttpStatus.OK);
 	}
 	
@@ -267,13 +274,7 @@ public class MypageController {
 		int insertCount = service.replyDelete(replyNo);		
 		return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@GetMapping("/replyCnt/{dealNo}")
-	@ResponseBody
-	public int replyCnt(@PathVariable("dealNo") int dealNo){		
-		return service.replyCnt(dealNo);
-	}
+	}	
 	
 	@PostMapping("/uploadAjaxAction")
 	@ResponseBody

@@ -87,7 +87,7 @@
 					<div class="modal-header">							
 						<h4 class="modal-title" id="myModalLabel">구매 상세보기</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" id="detail">
 					
 					</div>
 					<div class="modal-footer">
@@ -145,6 +145,13 @@
 	});
 	
 	
+	//buy상세보기
+	$('#list').on('click', '.targetModal', function(){
+		var buyNo = $(this).prev().val();		
+		buyDetail(buyNo);
+	});
+	
+	
 	 //리스트 Ajax
 	 function buyList(page, month){
 		var str = "";		
@@ -174,7 +181,7 @@
 			var str = "";
 			var startDate = $('#startDate').val();
 			var endDate = $('#endDate').val();			
-		
+			console.log(endDate);
 			$.ajax({
 				url : "/myPage/dateSearchRange/" + page + "/" + startDate + "/" + endDate,
 				dataType : "json",
@@ -193,7 +200,7 @@
 			   }
 	 
 	 
- 	var showList = function(element){
+ 	var showList = function(element){ 		
  		var str = ""; 					  
 			str  = '<tr>';				
 			str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
@@ -275,16 +282,73 @@
 	            },
 	         success : function(result){
 	        	 if(confirm("구매등록을 삭제하시겠습니까?")) {
-	        		 monthCheck = "all";
-		     		 buyList(pageNum, 1000);	
+	        		 showPage();
+	        		 if(monthCheck == "3"){
+	     	        	buyList(pageNum, 2);
+	     	        }else if(monthCheck == "6"){
+	     	        	buyList(pageNum, 5);
+	     	        }else if(monthCheck == "all"){
+	     	        	buyList(pageNum, 1000);
+	     	        }else if(monthCheck == "range"){	     	        	
+	     	        	searchRangeList(pageNum);
+	     	        }	        		
 	             } else {
 	                 return false;
 	             }        	
 			 }
 		 });
-	 } 	
- 	
-	   
+	 } 
+	 
+	 
+	 //buy 상세모달
+	 function buyDetail(buyNo){
+		 var str = "";
+		 $.ajax({
+			url : "/myPage/buyDetail/" + buyNo,
+			dataType : "json",
+			data : buyNo,
+			type : "GET",
+			success : function(result){				
+				$('#detail').html("");								 
+				  str += '<div class="car__details__sidebar__model">';
+				  str += 	'<ul>';
+				  str += 		'<li>제목 :<span>' + result.title + '</span></li>';
+				  str += 		'<li>등록자 :<span>' + result.id + '</span></li>';
+				  str += 		'<li>등록일 :<span>' + result.regDate + '</span></li>';
+				  str += 	'</ul>';
+				  str += '</div>';
+				  str += '<div class="car__details__sidebar__model">';
+				  str += 	'<ul>';
+				  str += 		'<li>거래방식 :<span>' + result.type + '</span></li>';
+				  str += 		'<li>거래지역 :<span>' + result.region + '</span></li>';		
+				  str += 	'</ul>';
+				  str += '</div>';
+				  str += '<div class="car__details__sidebar__model">';
+				  str += 	'<ul>';
+				  str += 		'<li>키워드 :<span>' + result.keyword1 +'</span></li>';
+				  str += 		'<li><span>' + result.keyword2 + '</span></li>';
+				  str += 		'<li><span>' + result.keyword3 +'</span></li>';
+				  str += 	'</ul>';
+				  str += '</div>';
+				  str += '<div class="car__details__sidebar__model">';
+				  str += 	'<ul>';
+				  str += 		'<li>대분류 :<span>' + result.bigClassifier + '</span></li>';
+				  str += 		'<li>중분류 :<span>' + result.mediumClassifier + '</span></li>';
+				  str += 	'</ul>';
+				  str += '</div>';
+				  str += '<div class="car__details__sidebar__payment">';
+				  str += 	'<ul>';
+				  str += 		'<li>최저가격 :<span><fmt:formatNumber type="number" maxFractionDigits="3" value=""/>'+ commas(result.minPrice) +'원</span></li>';
+				  str +=        '<li>최대가격 :<span><fmt:formatNumber type="number" maxFractionDigits="3" value=""/>'+ commas(result.maxPrice) +'원</span></li>';
+				  str += 	'</ul>';				  
+				  str += '<a href="/buyBoard/list" class="primary-btn">구매게시판 이동</a></div>';			  
+				
+					 $('#detail').append(str);
+		    
+				}
+	   		});
+		}
+	 
 	    
     //datePicker 옵션 설정
     $(function() { 

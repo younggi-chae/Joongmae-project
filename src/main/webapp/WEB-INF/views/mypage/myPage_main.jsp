@@ -44,7 +44,7 @@
 							class="fa fa-star"></i>
 					</div><br>					
 					<h5 id="checkId"><%=id%> 고객님</h5>															
-					<span>${member.email }</span>										
+					<span>${member.email }</span>												
 				</div>				
 			</div><br><br>					                       								
 			   <a class="login100-form-btn" href="/myPage/detailMember">정보 수정</a>
@@ -109,10 +109,19 @@
 					<a href="" onclick="setAlarm()"><i class="fa fa-long-arrow-right"></i></a>
 				</div>
 				</div>
-			</div>
+			</div><br><br>
 			<div class="row">
-		
-	</div>
+				<div class="col-lg-12 col-md-12 col-sm-12" align="center">
+					<div><h3>최근 본 견적서</h3><br><br>
+						<div id="info"><h5>최근 본 견적서가 없습니다.</h5><br>
+				 			<a type="button" href="/myPage/sellList" class="btn btn-secondary">견적서 보러가기</a>
+				 		</div>
+					</div>
+				</div><br><br><br>
+			</div>			
+			<div class="row" id="latest">	
+			 	 
+			</div>     
 		</div>	
 	</section>
 	
@@ -144,12 +153,10 @@
 </div>   	
 	<!-- Services Section End -->
 
-<%@include file="../includes/footer.jsp"%>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">    
-    
-    
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/resources/js/jquery-3.3.1.min.js"></script>   
+<script type="text/javascript">    
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -174,7 +181,7 @@
             legend: { position: "top" },
             isStacked: false,
             tooltip:{textStyle : {fontSize:12}, showColorCode : true},
-            animation: { //차트가 뿌려질때 실행될 애니메이션 효과
+            animation: { 
             	startup: true,
                 duration: 2000,
                 easing: 'linear' }               
@@ -182,6 +189,34 @@
       var bar_chart = new google.visualization.BarChart(document.getElementById('barchart_div'));
       bar_chart.draw(data, bar_options);
     }
+    
+    
+   //최근 본 견적서 출력
+   $(document).ready(function(){    	
+    	var str = "";    	
+    	var sellNo = sessionStorage.getItem("sellNo");		
+		var sellNo = sellNo.split(",");
+		console.log(sellNo);
+		for(var i = 0; i < sellNo.length; i++){
+		$.ajax({
+		   url : "/myPage/sellDetail/" + sellNo[i],
+		   dataType : "json",
+		   data : sellNo,
+		   type : "GET",
+		   success : function(result){
+			   $('#info').html("");
+			   str = 	'<div class="col-lg-4 col-md-6 col-sm-6">';
+			   str += 	'<div class="services__item">';
+			   str +=   '<img src="/resources/img/upload_cyg/'+result.picture+'">';
+			   str +=   '<h5>'+result.itemName+'</h5>';
+			   str +=   '<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>';
+			   str += 	'</div>';			  		   
+			   		$('#latest').append(str);
+			   
+		     }
+         });
+	   }
+   });    
 </script>
 
 
@@ -245,3 +280,4 @@
 		$('#alarmModal').hide();
 	}
 </script>
+<%@include file="../includes/footer.jsp"%>
