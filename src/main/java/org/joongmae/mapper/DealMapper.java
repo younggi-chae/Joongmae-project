@@ -21,4 +21,8 @@ public interface DealMapper {
 	public int refund(int dealNo);
 	
 	public int payDone(int dealNo);
+	
+	public PayVO detailDeal(int dealNo);
+	
+	public int registerPayDone(int dealNo);
 }

@@ -189,7 +189,9 @@ public class MypageController {
 	@GetMapping("/dealDetail/{dealNo}")
 	@ResponseBody
 	public DealAndSell getDealDetail(@PathVariable("dealNo") int dealNo){		
-		DealAndSell vo = service.getDealDetail(dealNo);		
+		DealAndSell vo = new DealAndSell();
+		vo = service.getDealDetail(dealNo);		
+		log.info(vo);
 		return vo;
 	}
 	

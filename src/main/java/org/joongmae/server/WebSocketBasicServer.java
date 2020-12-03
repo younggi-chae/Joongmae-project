@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class WebSocketBasicServer extends TextWebSocketHandler {
 
-	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
+	private static List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	
 	//접속시 실행되는 메소드
 	//session: 사용자의 웹소켓 정보(httpSession 아님!)
@@ -57,3 +57,4 @@ public class WebSocketBasicServer extends TextWebSocketHandler {
 	
 	
 }
+

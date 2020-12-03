@@ -19,4 +19,8 @@ public interface DealService {
 	public int registerPay(PayVO pay);
 	
 	public int refund(int dealNo);
+	
+	public PayVO detailDeal(int dealNo);
+	
+	public int registerPayDone(int dealNo);
 }

@@ -24,6 +24,10 @@
 		insert into pay values (#{dealNo}, sysdate, #{price}, #{sellAccount}, #{status})
 	</insert>
 	
+	<update id="registerPayDone" parameterType="int">
+		update deal set status = '입금완료' where dealNo = #{dealNo}
+	</update>
+	
 	<update id="refund" parameterType="int">
 		update pay set status = '환불' where dealNo = #{dealNo}
 	</update>
@@ -31,5 +35,9 @@
 	<update id="payDone" parameterType="int">
 		update pay set status = '완료' where dealNo = #{dealNo}
 	</update>
+	
+	<select id="detailDeal" parameterType="int" resultType="org.joongmae.domain.PayVO">
+		select d.dealno, d.price, m.ACCOUNTNO as sellaccount from deal d, memberaccount m where d.sellid = m.id and d.dealno = #{dealNo}
+	</select>
 
 </mapper>

@@ -19,9 +19,6 @@
 </head>
 <body>
 	<h1>Chatting Page (id: ${userid})</h1>
-	<hr>
-	<input type="button" id="enterBtn" value="채팅방 입장"/>
-	<hr>
 	<br>
 	<div>
 		<div>
@@ -38,20 +35,13 @@
 </body>
 <script type="text/javascript">
 //websocket을 지정한 URL로 연결
-var uri = "http://"+location.host+"/chatting";
-/* var sock= new SockJS(uri); */
+var uri = "<c:url value="/chatting"/>";
+var sock= new SockJS(uri);
 //websocket 서버에서 메시지를 보내면 자동으로 실행된다.
-/* sock.onmessage = onMessage; */
+sock.onmessage = onMessage;
 //websocket 과 연결을 끊고 싶을때 실행하는 메소드
-/* sock.onclose = onClose; */
+sock.onclose = onClose;
 $(function(){
-	
-	$("#enterBtn").click(function(){
-		sock= new SockJS(uri);
-		sock.onmessage = onMessage;
-		sock.onclose = onClose;
-	});
-	
 	$("#sendBtn").click(function(){
 		console.log('send message...');
         sendMessage();

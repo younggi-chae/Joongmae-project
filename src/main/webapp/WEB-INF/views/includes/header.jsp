@@ -139,7 +139,16 @@
                         <li><a href="/buyBoard/registerForm">구매 등록</a></li>
 
 
-                        <li><a href="http://192.168.0.156:8080/Architecture-kosta202/kjj/registerFormAction.kjj">판매 등록</a></li>
+
+                        <li><a
+                           href=<c:if test="${sessionScope.id !=null}">
+                                "http://192.168.0.156:8080/Architecture-kosta202/kjj/registerFormAction.kjj"
+                                </c:if>
+                           <c:if test="${sessionScope.id ==null}">
+                                "/sell/registerForm"
+                                 </c:if>>판매
+                              등록</a></li>
+
 
                         <c:if test="${sessionScope.id !=null}">
                            <li><a
@@ -148,26 +157,23 @@
 
 
                         
-                           <li><a href="/myPage/main">마이페이지</a></li>
-                       
+                           <li><a href="/myPage/main">마이페이지</a></li>       
 
                      </ul>
-
-
                   </nav>
                   <div class="header__nav__widget">
+                    <sec:authorize access="isAnonymous()">
+                        <c:if test="${userId eq null}">
+                           <a href="/member/login" class="primary-btn">로그인/회원가입</a>
+                        </c:if>
+                        <c:if test="${userId ne null}">
+                           <a
+                              href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout"
+                              class="primary-btn">로그아웃</a>
+                        </c:if>
+                     </sec:authorize>
+                     <sec:authorize access="isAuthenticated()">
 
-
-                             <sec:authorize access="isAnonymous()">
-           <c:if test="${userId eq null}"> 
-               <a href="/member/login" class="primary-btn">로그인/회원가입</a>
-            </c:if>
-             <c:if test="${userId ne null}">
-               <a href="https://kauth.kakao.com/oauth/logout?client_id=a714095760769a00001b4e03b10b2c3e&logout_redirect_uri=http://localhost:8081/member/logout"
-                  class="primary-btn">로그아웃</a>
-            </c:if> 
-         </sec:authorize>
-         <sec:authorize access="isAuthenticated()">
 
             <!--    그냥 로그인일떄 -->
 <c:if test="${userId ne null}">
@@ -184,6 +190,8 @@
 
 
                   </div>
+                  
+					<img src="" id="alarmImg" onclick="alarmClick()">
                </div>
             </div>
 
