@@ -44,7 +44,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		$("#secondModal").modal("show");
 		
-		var sellNo = $(this).parent().prev().find(".sellNo").val();
+		var sellNo = $(this).parent().prev().text();
 		
 		$.ajax({
 			
@@ -86,11 +86,9 @@ $(document).ready(function(){
 			success : function(result){
 				alert("견적서를 보냈습니다.");
 				
-				$("input.checkThis[checked='checked']").each(
-						function(){
-							$("input.checkThis[checked='checked']").prop("checked", false);
-						}
-				);
+				$("input[type=checkbox]:checked").each(function(){
+					$(this).prop("checked", false);
+				});
 				
 				$("#myModal").modal("hide");
 				
@@ -102,4 +100,18 @@ $(document).ready(function(){
 		
 	});//end #sendSell
 	
+	
 });
+
+
+
+
+
+
+
+
+
+
+
+
+

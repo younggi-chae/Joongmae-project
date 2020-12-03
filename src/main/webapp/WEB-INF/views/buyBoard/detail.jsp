@@ -8,6 +8,8 @@
 <%@ include file="../includes/header.jsp" %>
 	
 	<link rel="stylesheet" href="/resources/css/style_kgj.css" type="text/css">
+	<!-- SocketJS CDN -->
+	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 
 
     <!-- Breadcrumb End -->
@@ -98,13 +100,13 @@
                      	<form action="/buyBoard/list?pageNum=${pageMaker.cri.
 		                     	pageNum}&amount=${pageMaker.cri.amount}&bigClassifier=${pageMaker.cri.bigClassifier }&mediumClassifier=${pageMaker.cri.
 		                     	mediumClassifier }&keyword1=${pageMaker.cri.keyword1 }&keyword2=${pageMaker.cri.keyword2 }&keyword3=${pageMaker
-		                     	.cri.keyword3 }&price=${price}" method="post">
+		                     	.cri.keyword3 }&price=${price}&sort=${pageMaker.cri.sort}" method="post">
 		                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                     	<button type="submit" class="site-btn">목록</button>
 		                </form>
                      </c:if>
                      <c:if test="${pageMaker.cri.bigClassifier eq null }">
-                     	<form action="/buyBoard/list?pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}" method="post">
+                     	<form action="/buyBoard/list?pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}&sort=${pageMaker.cri.sort}" method="post">
                      	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                     	<button type="submit" class="site-btn">목록</button>
 		                </form>
@@ -135,16 +137,16 @@
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<table border="1" id="modalTable">
 									<colgroup>								
-										<col style="width: 5%;" />
-										<col style="width: 8%;" />
-										<col style="width: auto;" />
-										<col style="width: 8%;" />
-										<col style="width: 8%;" />									
-										<col style="width: 10%;" />
-										<col style="width: 10%;" />
-										<col style="width: 10%;" />
-										<col style="width: 15%;" />
-										<col style="width: 25%;" />
+										<col style="width: 30px;" />
+										<col style="width: 50px;" />
+										<col style="width: 200px;" />
+										<col style="width: 60px;" />
+										<col style="width: 60px;" />									
+										<col style="width: 80px;" />
+										<col style="width: 80px;" />
+										<col style="width: 80px;" />
+										<col style="width: 80px;" />
+										<col style="width: 80px;" />
 									</colgroup>
 									<thead>
 										<tr>
@@ -172,12 +174,15 @@
 												<td>${sell.keyword2 }</td>
 												<td>${sell.keyword3 }</td>
 												<td>${sell.price }</td>
-												<td>${sell.regDate }</td>
+												<td>
+												<fmt:parseDate value="${sell.regDate }" var="sellRegDate" pattern="yyyy-MM-dd"/>
+												<fmt:formatDate value="${sellRegDate }" pattern="yyyy-MM-dd"/>
+												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
-								<a href="" id="load">견적서 더보기</a>
+								<button id="load">견적서 더보기</button>
 						</div>
 						<div class="modal-footer">
 							<button type="button" id="sendSell" class="btn btn-danger">보내기</button>

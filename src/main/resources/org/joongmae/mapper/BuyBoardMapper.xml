@@ -17,7 +17,25 @@
 			from 
 				(select /*+ INDEX_DESC (buy pk_buy) */ rownum rn, buyno, id, title, keyword1, keyword2, keyword3, type, region, 
 						minprice, maxprice,	status, bigclassifier, mediumclassifier, regdate
-					from buy where
+					from 
+					<choose>
+					<when test="sort == 'highPrice'">
+						(select row_number() over (order by maxprice desc) rn,
+         					 buyno, id, title, keyword1, keyword2, keyword3, type, region, 
+							minprice, maxprice,	status, bigclassifier, mediumclassifier, regdate
+          					from buy where status = '등록' order by maxprice desc)
+					</when>
+					<when test="sort == 'lowPrice'">
+						(select row_number() over (order by minprice) rn,
+         					 buyno, id, title, keyword1, keyword2, keyword3, type, region, 
+							minprice, maxprice,	status, bigclassifier, mediumclassifier, regdate
+          					from buy where status = '등록' order by minprice)
+					</when>
+					<when test="sort == 'latest'">
+						buy
+					</when>
+					</choose>
+					where
 					
 					<if test="bigClassifier != null">
 					<![CDATA[

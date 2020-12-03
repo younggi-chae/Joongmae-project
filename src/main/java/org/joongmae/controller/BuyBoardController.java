@@ -90,6 +90,10 @@ public class BuyBoardController {
     	  model.addAttribute("alarm", service.alarmList(id));
       }
       
+      if(request.getParameter("sort") != null){
+    	  cri.setSort(request.getParameter("sort"));
+      }
+      
       model.addAttribute("list", service.list(cri));
       System.out.println("cri : " + cri);
       System.out.println(service.list(cri));
@@ -153,11 +157,11 @@ public class BuyBoardController {
    
    //재등록
    @PostMapping("/reRegister")
-   public String reRegister(@RequestParam("buyNo") int buyNo, BuyDTO dto){
+   public String reRegister(@RequestParam("buyNo") int buyNo, BuyDTO dto, Principal principal){
       
       BuyVO buy = new BuyVO();
       
-      buy.setId("test");
+      buy.setId(principal.getName());
       buy.setTitle(dto.getTitle());
       buy.setKeyword1(dto.getKeyword1());
       buy.setKeyword2(dto.getKeyword2());

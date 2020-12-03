@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -44,6 +46,17 @@
 	<beans:property name="scope" value="https://www.googleapis.com/auth/plus.login" />
 	<beans:property name="redirectUri" value="http://localhost:8081/member/googleLogin/oauth2callback" />
 </beans:bean>
+
+
+
+<!-- webSocket 설정 -->
+<beans:bean id="basicServer" class="org.joongmae.server.WebSocketBasicServer"></beans:bean>
+<websocket:handlers>
+	<!-- 접속주소는 ws://localhost:8081/websocket/basic -->
+	<websocket:mapping handler="basicServer" path="/chatting"/>
+	<websocket:sockjs/>
+</websocket:handlers>
+
 
 	
 </beans:beans>

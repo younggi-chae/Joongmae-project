@@ -125,16 +125,48 @@
 			                    	<input type="hidden" name="keyword3" value='<c:out value="${ pageMaker.cri.keyword3 }"/>'>
 			                    	<input type="hidden" name="price" value='<c:out value="${ price }"/>'>
 			                    	</c:if>
+			                    	<c:if test="${pageMaker.cri.sort != null }">
+			                    	<input type="hidden" name="sort" value='<c:out value="${ pageMaker.cri.sort }"/>'>
+			                    	</c:if>
                                 </form>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="car__filter__option__item car__filter__option__item--right">
+                                	<form id="sortControlForm" action="/buyBoard/list" method="post">
                                     <h6>정렬</h6>
-                                    <select id="sortControl">
-                                        <option value="">높은 가격순</option>
-                                        <option value="">낮은 가격순</option>
+                                    <select id="sortControl" name="sort">
+                                        <c:if test="${pageMaker.cri.sort == 'latest' }">
+                                    	<option value="latest" selected="selected">최신순</option>
+                                        <option value="highPrice">높은 가격순</option>
+                                        <option value="lowPrice">낮은 가격순</option>
+                                        </c:if>
+                                    	<c:if test="${pageMaker.cri.sort == 'highPrice' }">
+                                    	<option value="latest">최신순</option>
+                                        <option value="highPrice" selected="selected">높은 가격순</option>
+                                        <option value="lowPrice">낮은 가격순</option>
+                                        </c:if>
+                                        <c:if test="${pageMaker.cri.sort == 'lowPrice' }">
+                                        <option value="latest">최신순</option>
+                                        <option value="highPrice">높은 가격순</option>
+                                        <option value="lowPrice" selected="selected">낮은 가격순</option>
+                                        </c:if>
                                     </select>
+                                    <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+                    				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+                    				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    				<c:if test="${pageMaker.cri.bigClassifier != null }">
+			                    	<input type="hidden" name="bigClassifier" value='<c:out value="${ pageMaker.cri.bigClassifier }"/>'>
+			                    	<input type="hidden" name="mediumClassifier" value='<c:out value="${ pageMaker.cri.mediumClassifier }"/>'>
+			                    	<input type="hidden" name="keyword1" value='<c:out value="${ pageMaker.cri.keyword1 }"/>'>
+			                    	<input type="hidden" name="keyword2" value='<c:out value="${ pageMaker.cri.keyword2 }"/>'>
+			                    	<input type="hidden" name="keyword3" value='<c:out value="${ pageMaker.cri.keyword3 }"/>'>
+			                    	<input type="hidden" name="price" value='<c:out value="${ price }"/>'>
+			                    	</c:if>
+			                    	<c:if test="${pageMaker.cri.sort != null }">
+                    				<input type="hidden" name="sort" value='<c:out value="${ pageMaker.cri.sort }"/>'>
+                    				</c:if>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -150,14 +182,15 @@
                                            <h5>
                                            <c:choose>
                                            	<c:when test="${pageMaker.cri.bigClassifier eq null }">
-	                                           <a href="/buyBoard/detail?buyNo=${listBuy.buyNo }&id=${listBuy.id}&pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}">
+	                                           <a href="/buyBoard/detail?buyNo=${listBuy.buyNo }&id=${listBuy.id}&pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri
+	                                           .amount}&sort=${pageMaker.cri.sort}">
 	                                           		${listBuy.title }
 	                                           </a>
                                            </c:when>
                                            <c:when test="${pageMaker.cri.bigClassifier ne null }">
 	                                           <a href="/buyBoard/detail?buyNo=${listBuy.buyNo }&id=${listBuy.id}&pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri
 	                                           .amount}&bigClassifier=${pageMaker.cri.bigClassifier}&mediumClassifier=${pageMaker.cri.mediumClassifier}&keyword1=${pageMaker
-	                                           .cri.keyword1}&keyword2=${pageMaker.cri.keyword2}&keyword3=${pageMaker.cri.keyword3}&price=${price}">
+	                                           .cri.keyword1}&keyword2=${pageMaker.cri.keyword2}&keyword3=${pageMaker.cri.keyword3}&price=${price}&sort=${pageMaker.cri.sort}">
 	                                           		${listBuy.title }
 	                                           </a>
                                            </c:when>
@@ -232,6 +265,9 @@
                     	<input type="hidden" name="keyword2" value='<c:out value="${ pageMaker.cri.keyword2 }"/>'>
                     	<input type="hidden" name="keyword3" value='<c:out value="${ pageMaker.cri.keyword3 }"/>'>
                     	<input type="hidden" name="price" value='<c:out value="${ price }"/>'>
+                    	</c:if>
+                    	<c:if test="${pageMaker.cri.sort != null }">
+                    	<input type="hidden" name="sort" value='<c:out value="${ pageMaker.cri.sort }"/>'>
                     	</c:if>
                     </form>
                 </div>

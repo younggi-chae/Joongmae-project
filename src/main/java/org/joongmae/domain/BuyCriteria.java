@@ -18,6 +18,8 @@ public class BuyCriteria {
 	private int minPrice;
 	private int maxPrice;
 	
+	private String sort = "latest";
+	
 	public BuyCriteria(){
 		this(1, 3);
 	}

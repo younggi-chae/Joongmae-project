@@ -48,6 +48,15 @@ $(document).ready(function(){
 		
 	});//end 페이지 보기 컨트롤 코드
 	
+	//정렬시 1페이지 이동 코드
+	$("#sortControl").on("change", function(){
+		
+		$("#sortControlForm").find("input[name='pageNum']").val("1");
+		$("#sortControlForm").submit();
+		
+		
+	});//end 정렬시 1페이지 이동코드
+	
 	
 	//대분류 선택시 중분류 바뀌는 코드
 	$("#searchForm #bigSelectBox").on("change", function(){
@@ -68,7 +77,7 @@ $(document).ready(function(){
 			
 			var str = "<option value='냉장고'>냉장고</option>" +
 			"<option value='에어컨'>에어컨</option>" +
-			"<option value='악세사리'>악세사리</option>";
+			"<option value='세탁기'>세탁기</option>";
 			
 			$('#mediumSelectBox').append(str);
 			

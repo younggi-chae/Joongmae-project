@@ -76,7 +76,7 @@
 			
 			var str = "<option value='냉장고'>냉장고</option>" +
 			"<option value='에어컨'>에어컨</option>" +
-			"<option value='악세사리'>악세사리</option>";
+			"<option value='세탁기'>세탁기</option>";
 			
 			$('#mediumSelectBox').append(str);
 			
