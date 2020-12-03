@@ -51,4 +51,16 @@ public class DealServiceImpl implements DealService {
 		return mapper.refund(dealNo);
 	}
 
+	@Override
+	public PayVO detailDeal(int dealNo) {
+		
+		return mapper.detailDeal(dealNo);
+	}
+
+	@Override
+	public int registerPayDone(int dealNo) {
+		
+		return mapper.registerPayDone(dealNo);
+	}
+
 }

@@ -42,11 +42,12 @@ public class DealController {
 		return i == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping(value = "/send", produces = {MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> send(int dealNo){
-		int i = service.send(dealNo);
+	@GetMapping(value = "/send")
+	public String send(int dealNo){
 		
-		return i == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+		service.send(dealNo);
+		
+		return "redirect:/myPage/dealList";
 	}
 	
 	@GetMapping(value = "/done", produces = {MediaType.TEXT_PLAIN_VALUE})
@@ -56,12 +57,15 @@ public class DealController {
 		return i == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@PostMapping(value = "/pay", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> pay(@RequestBody PayVO pay){
+	@GetMapping(value = "/pay", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> pay(int dealNo){
+		
+		PayVO pay = service.detailDeal(dealNo);
 		
 		int i = service.registerPay(pay);
+		service.registerPayDone(dealNo);
 		
-		return i == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+		return i == 1 ? new ResponseEntity<String>(Integer.toString(dealNo), HttpStatus.OK) : new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping(value = "/refund", produces = {MediaType.TEXT_PLAIN_VALUE})

@@ -144,7 +144,6 @@ public class BuyBoardController {
    //재등록 폼 이동
    @GetMapping("/reRegisterForm")
    public String reRegisterForm(@RequestParam("buyNo") int buyNo, Model model){
-      
       model.addAttribute("buy", service.detail(buyNo));
       
       return "/buyBoard/reRegisterForm";

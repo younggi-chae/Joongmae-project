@@ -97,11 +97,13 @@
 						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<input type="submit" class="btn btn-primary" value="리뷰쓰기">
 					</form>
-					<form action="" id="deliveryBtn" style="border: 1;">
+					<form action="/deal/send" id="deliveryBtn" style="border: 1;">
+						<input type="hidden" id="sendDealNo" name="dealNo">
 						<input type="text" id="deliveryNo" style="border: solid;border-width: thin;width: 250px;">
 						<input type="submit" class="btn btn-primary" value="송장 번호 입력">
 					</form>
-					<form action="" id="deliveryModBtn" style="border: 1;">
+					<form action="/deal/send" id="deliveryModBtn" style="border: 1;">
+						<input type="hidden" id="modDealNo" name="dealNo">
 						<input type="text" id="deliveryModNo" style="border: solid;border-width: thin;width: 250px;">
 						<input type="submit" class="btn btn-primary" value="송장 번호 수정">
 					</form>
@@ -314,9 +316,11 @@
 		replyDelete(replyNo);
 	});
 	
+	var dealNo;
+	
 	 //Deal 상세보기 모달
 	$('#dealList').on("click", '.detailModal', function(){
-		var dealNo = $(this).prev().val();					
+		dealNo = $(this).prev().val();					
 		detailDeal(dealNo);
 	});	
 		
@@ -416,10 +420,14 @@
 	//Deal 상세보기
 	function detailDeal(dealNo)	{
 		var str = "";
+		$('#sendDealNo').val(dealNo);
+		$('#modDealNo').val(dealNo);
+		console.log("dealNo : " + dealNo);
 		$.ajax({
 		   url : "/myPage/dealDetail/" + dealNo,
 		   dataType : "json",
 		   data : dealNo,
+		   cache:'false',
 		   type : "GET",
 		   success : function(result){	
 			  $('#detail').html("");			 
@@ -460,6 +468,69 @@
 			  str += '<a href="#" class="primary-btn">판매자와 대화하기</a></div>';			  
 			
 				 $('#detail').append(str);
+	                
+	                console.log("login id : " + "<%=id%>");
+	                console.log("sellId : " + result.sellId);
+	                console.log("buyId : " + result.buyId);
+	                console.log("status : " + result.status);
+	                
+	                if (result.sellId == "<%=id%>") {
+	                   if (result.status == '진행중') {
+	                     $('#reviewBtn').hide();
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').hide();
+	                     $('#deliveryModBtn').hide();
+	                  } else if (result.status == '입금완료') {
+	                     $('#reviewBtn').hide();
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').show();
+	                     $('#deliveryInfoBtn').hide();
+	                     $('#deliveryModBtn').hide();
+	                  } else if (result.status == '배송중') {
+	                     $('#reviewBtn').hide();
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').show();
+	                     $('#deliveryModBtn').show();
+	                  } else if (result.status == '완료') {
+	                     $('#reviewBtn').show();
+	                     $('#reviewId').val(result.buyId)
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').hide();
+	                     $('#deliveryModBtn').hide();
+	                  }
+	               } else if (result.buyId == "<%=id%>") {
+	                  if (result.status == '진행중') {
+	                     $('#reviewBtn').hide();
+	                     $('#depositBtn').show();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').hide();
+	                     $('#deliveryModBtn').hide();
+	                  } else if (result.status == '입금완료') {
+	                     $('#reviewBtn').hide();
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').hide();
+	                     $('#deliveryModBtn').hide();
+	                  } else if (result.status == '배송중') {
+	                     $('#reviewBtn').hide();
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').show();
+	                     $('#deliveryModBtn').hide();
+	                  } else if (result.status == '완료') {
+	                     $('#reviewBtn').show();
+	                     $('#reviewId').val(result.sellId)
+	                     $('#depositBtn').hide();
+	                     $('#deliveryBtn').hide();
+	                     $('#deliveryInfoBtn').hide();
+	                     $('#deliveryModBtn').hide();
+	                  }
+	                     
+	               }
+	                
 		   }
 		});
 	}
@@ -512,65 +583,6 @@
 	
 	
 	function selectDealList(page, status){
-                $('.modal-body').append(str);
-                
-                if (result.sellId == "<%=id%>") {
-                   if (result.status == '진행중') {
-                     $('#reviewBtn').hide();
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').hide();
-                     $('#deliveryModBtn').hide();
-                  } else if (result.status == '입금완료') {
-                     $('#reviewBtn').hide();
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').show();
-                     $('#deliveryInfoBtn').hide();
-                     $('#deliveryModBtn').hide();
-                  } else if (result.status == '배송중') {
-                     $('#reviewBtn').hide();
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').show();
-                     $('#deliveryModBtn').show();
-                  } else if (result.status == '완료') {
-                     $('#reviewBtn').show();
-                     $('#reviewId').val(result.buyId)
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').hide();
-                     $('#deliveryModBtn').hide();
-                  }
-               } else if (result.buyId == "<%=id%>") {
-                  if (result.status == '진행중') {
-                     $('#reviewBtn').hide();
-                     $('#depositBtn').show();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').hide();
-                     $('#deliveryModBtn').hide();
-                  } else if (result.status == '입금완료') {
-                     $('#reviewBtn').hide();
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').hide();
-                     $('#deliveryModBtn').hide();
-                  } else if (result.status == '배송중') {
-                     $('#reviewBtn').hide();
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').show();
-                     $('#deliveryModBtn').hide();
-                  } else if (result.status == '완료') {
-                     $('#reviewBtn').show();
-                     $('#reviewId').val(result.sellId)
-                     $('#depositBtn').hide();
-                     $('#deliveryBtn').hide();
-                     $('#deliveryInfoBtn').hide();
-                     $('#deliveryModBtn').hide();
-                  }
-                     
-               }
-                
             } 
 
 </script>
@@ -622,19 +634,15 @@ function star5Click() {
 }
 
 function deposit() {
+	
 	$.ajax({
-		url : "/deal/pay",
+		url : "/deal/pay?dealNo=" + dealNo,
 		dataType : "json",
-		data : selectDeal,
-		type : "POST",
+		type : "GET",
 		success : function(result){
 			alert(result);
 		}
 	});
-}
-
-function deliveryInfo() {
-	
 }
 
 </script>

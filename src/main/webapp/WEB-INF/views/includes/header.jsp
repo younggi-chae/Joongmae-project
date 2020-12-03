@@ -144,7 +144,7 @@
                                 "http://192.168.0.156:8080/Architecture-kosta202/kjj/registerFormAction.kjj"
                                 </c:if>
                            <c:if test="${sessionScope.id ==null}">
-                                "#"
+                                "/sell/registerForm"
                                  </c:if>>판매
                               등록</a></li>
 
@@ -163,7 +163,6 @@
 
                   </nav>
                   <div class="header__nav__widget">
-
 
                      <sec:authorize access="isAnonymous()">
                         <c:if test="${userId eq null}">
@@ -192,6 +191,8 @@
 
 
                   </div>
+                  
+					<img src="" id="alarmImg" onclick="alarmClick()">
                </div>
             </div>
 
