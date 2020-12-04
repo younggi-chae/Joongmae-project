@@ -261,7 +261,7 @@
 	<select id="matchingSellList" resultType="org.joongmae.domain.SellVO">
 		<![CDATA[
 		select
-		 	sellno, id, itemname, keyword1, keyword2, keyword3, type, region, itemcondition, price, picture, status, MediumClassifier, bigClassifier
+		 	sellno, id, itemname, keyword1, keyword2, keyword3, type, region, itemcondition, price, picture, status, MediumClassifier, bigClassifier, regdate
 		 from 
 		 	( select /*+ INDEX_DESC(sell pk_sell) */
 		 		rownum rn, a.alarmno, a.buyid, a.buyno, a.sellid, a.sellno as sellnoA, a.status as statusA, 
