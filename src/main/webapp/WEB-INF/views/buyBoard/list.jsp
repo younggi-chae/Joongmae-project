@@ -197,9 +197,15 @@
                                            </c:choose>
                                            </h5>
                                            <ul>
-                                               <li>${listBuy.keyword1 }</li>
-                                               <li>${listBuy.keyword2 }</li>
-                                               <li>${listBuy.keyword3 }</li>
+                                           <c:if test="${listBuy.keyword1 != null }">
+                                           	<li>${listBuy.keyword1 }</li>
+                                           </c:if>
+                                           <c:if test="${listBuy.keyword2 != null }">
+                                           	<li>${listBuy.keyword2 }</li>
+                                           </c:if>
+                                           <c:if test="${listBuy.keyword3 != null }">
+                                           	<li>${listBuy.keyword3 }</li>
+                                           </c:if>
                                            </ul>
                                        </div>
                                        <div class="car__item__price">
