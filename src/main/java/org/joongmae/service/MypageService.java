@@ -10,6 +10,7 @@ import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.domain.ReplyVO;
+import org.joongmae.domain.SellListWithPaging;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 
@@ -32,7 +33,10 @@ public interface MypageService {
 	public SellVO getSellDetail(int sellNo);
 	public int deleteSell(int sellNo);
 	public int deleteAllSell();
-	public int sellCnt(String id);
+	public int sellCnt(String id);	
+	
+	public SellListWithPaging matchingSellList(Criteria cri);
+	public int countMatchingSell(Criteria cri);
 	
 	public List<DealAndSell> getDealList(Criteria cri);
 	public int countDeal(Criteria cri);

@@ -113,7 +113,7 @@
       <div class="offcanvas__logo">
 
 
-         <a href="mainAction.sh"><img src="/resources/img/logo.png" alt=""></a>
+         <a href="mainAction.sh"><img src="/resources/img/logo.jpg" width="130px" alt=""></a>
       </div>
       <div id="mobile-menu-wrap"></div>
    </div>
@@ -126,7 +126,7 @@
          <div class="row">
             <div class="col-lg-2">
                <div class="header__logo">
-                  <a href="/main"><img src="/resources/img/logo.png" alt=""></a>
+                  <a href="/main"><img src="/resources/img/logo.jpg" width="130px" alt=""></a>
                </div>
             </div>
             <div class="col-lg-10">
@@ -191,7 +191,7 @@
 
                   </div>
                   
-					<img src="" id="alarmImg" onclick="alarmClick()">
+               <img src="" id="alarmImg" onclick="alarmClick()">
                </div>
             </div>
 

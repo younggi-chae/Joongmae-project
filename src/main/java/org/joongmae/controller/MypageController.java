@@ -17,6 +17,7 @@ import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.domain.PageDTO;
 import org.joongmae.domain.ReplyVO;
+import org.joongmae.domain.SellListWithPaging;
 import org.joongmae.domain.SellVO;
 
 import org.joongmae.domain.WishListVO;
@@ -78,10 +79,15 @@ public class MypageController {
 		model.addAttribute("wishlist", service.getWishList(cri));
 		model.addAttribute("count", service.countSell(cri));		
 		int total = service.countSell(cri);
-		model.addAttribute("pageMaker", new PageDTO(cri, total));	
-		
+		model.addAttribute("pageMaker", new PageDTO(cri, total));			
 		return "mypage/myPage_sell";
 	}	
+	
+	@GetMapping("/matchingSellList")
+	public String getMatchingSellList(Principal id, Criteria cri, Model model){
+		cri.setBuyId(id.getName());		
+		return "mypage/myPage_matching";		
+	}
 
 	@GetMapping("/dealList")
 	public String getDealList(Criteria cri ,Model model, Principal id) {		
@@ -217,9 +223,17 @@ public class MypageController {
 				Criteria cri ,@PathVariable("month") int month, Principal id) {		
 		cri = new Criteria(page, 5);			
 		cri.setMonth(month);
-		cri.setId(id.getName());
-		System.out.println(month);
+		cri.setId(id.getName());		
 		return new ResponseEntity<>(service.getBuyListWithPaging(cri), HttpStatus.OK);
+	}
+	
+	@GetMapping("/sellListAjax/{page}")
+	@ResponseBody
+	public ResponseEntity<SellListWithPaging> sellList(@PathVariable("page") int page,
+			Principal id, Criteria cri){
+		cri = new Criteria(page, 6);
+		cri.setBuyId(id.getName());
+		return new ResponseEntity<>(service.matchingSellList(cri), HttpStatus.OK);
 	}
 	
 	@GetMapping("/dateSearchRange/{page}/{startDate}/{endDate}")

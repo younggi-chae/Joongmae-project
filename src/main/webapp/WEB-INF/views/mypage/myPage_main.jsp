@@ -82,33 +82,32 @@
 			</div>
 			<div class="col-lg-4 col-md-6 col-sm-6">
 				<div class="services__item">
+					<img src="/resources/img/services/services-2.png" alt="">
+					<h5>알림 설정</h5>
+					<a href="" onclick="setAlarm()"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>				
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
 					<img src="/resources/img/services/services-3.png" alt="">
 					<h5>견적서 확인</h5>
 					<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>
 				</div>
-			</div>				
+			</div>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="services__item">
+					<img src="/resources/img/services/services-1.png" alt="">
+					<h5>받은 견적서 확인</h5>
+					<a href="/myPage/matchingSellList"><i class="fa fa-long-arrow-right"></i></a>
+				</div>
+			</div>						
 			<div class="col-lg-4 col-md-6 col-sm-6">
 				<div class="services__item">
 					<img src="/resources/img/services/services-4.png" alt="">
 					<h5>견적서 관심리스트</h5>
 					<a href="/myPage/wishList"><i class="fa fa-long-arrow-right"></i></a>
 				</div>
-			</div>
-				
-			<div class="col-lg-4 col-md-6 col-sm-6">
-				<div class="services__item">
-					<img src="/resources/img/services/services-1.png" alt="">
-					<h5>나의 평점 및 리뷰</h5>
-					<a href="#"><i class="fa fa-long-arrow-right"></i></a>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-6 col-sm-6">
-				<div class="services__item">
-					<img src="/resources/img/services/services-2.png" alt="">
-					<h5>알림 설정</h5>
-					<a href="" onclick="setAlarm()"><i class="fa fa-long-arrow-right"></i></a>
-				</div>
-				</div>
+			</div>				
 			</div><br><br>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12" align="center">

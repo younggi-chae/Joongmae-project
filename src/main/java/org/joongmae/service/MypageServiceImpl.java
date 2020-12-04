@@ -10,6 +10,7 @@ import org.joongmae.domain.DealAndSell;
 import org.joongmae.domain.DealListWithPaging;
 import org.joongmae.domain.MemberVO;
 import org.joongmae.domain.ReplyVO;
+import org.joongmae.domain.SellListWithPaging;
 import org.joongmae.domain.SellVO;
 import org.joongmae.domain.WishAndSell;
 import org.joongmae.domain.WishListVO;
@@ -208,6 +209,16 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int replyDelete(int replyNo) {		
 		return mapper.replyDelete(replyNo);
+	}
+
+	@Override
+	public SellListWithPaging matchingSellList(Criteria cri) {		
+		return new SellListWithPaging(mapper.countMatchingSell(cri), mapper.matchingSellList(cri));
+	}
+
+	@Override
+	public int countMatchingSell(Criteria cri) {		
+		return mapper.countMatchingSell(cri);
 	}
 	
 }

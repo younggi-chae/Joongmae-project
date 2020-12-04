@@ -29,6 +29,9 @@ public interface MypageMapper {
 	int deleteAllSell();
 	int sellCnt(String id);
 	
+	List<SellVO> matchingSellList(Criteria cri);
+	int countMatchingSell(Criteria cri);
+	
 	List<DealAndSell> getDealList(Criteria cri);
 	int countDeal(Criteria cri);
 	DealAndSell getDealDetail(int dealNo);
@@ -53,5 +56,6 @@ public interface MypageMapper {
 	int replyInsert(ReplyVO reply);
 	List<ReplyVO> replyList(int dealNo);	
 	int replyDelete(int replyNo);	
+	
 }
 

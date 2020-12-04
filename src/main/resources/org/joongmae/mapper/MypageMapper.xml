@@ -253,12 +253,36 @@
 	
 	<delete id="replyDelete">
 		delete from reply where replyNo = #{replyNo}
-	</delete>	
+	</delete>
+	
+	<!--=====================================================================================================================-->
+	<!--=====================================================================================================================-->	
+	<!-- matchingsell -->
+	<select id="matchingSellList" resultType="org.joongmae.domain.SellVO">
+		<![CDATA[
+		select
+		 	sellno, id, itemname, keyword1, keyword2, keyword3, type, region, itemcondition, price, picture, status, MediumClassifier, bigClassifier
+		 from 
+		 	( select /*+ INDEX_DESC(sell pk_sell) */
+		 		rownum rn, a.alarmno, a.buyid, a.buyno, a.sellid, a.sellno as sellnoA, a.status as statusA, 
+       			s.sellno, s.id, s.itemname, s.keyword1, s.keyword2, s.keyword3, s.type, s.region, s.itemcondition, 
+       			s.price, s.picture, s.status, s.mediumclassifier, s.bigclassifier, s.regdate
+		 	  from alarm a , sell s
+		 	  where		 
+		 	rownum <= #{pageNum} * #{amount} and a.sellNo= s.sellNo and a.status = '등록' and a.buyid = #{buyId}
+		 	)
+		 where rn > (#{pageNum} -1) * #{amount}
+		  ]]>      
+	</select>
+	
+	<select id="countMatchingSell" resultType="int">
+		 select count(*) from alarm a, sell s where		
+		 a.sellno > 0 and a.sellNo= s.sellNo and a.status = '등록' and a.buyid = #{buyId}
+	</select>
 	
 	
 	<!--=====================================================================================================================-->
 	<!--=====================================================================================================================-->	
-	
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 			<foreach item="type" collection="typeArr">
