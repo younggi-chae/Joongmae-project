@@ -49,10 +49,10 @@
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__widget">
-            <a href="#" class="primary-btn">로그인/회원가입</a>
+            <a href="#" class="primary-btn">로그아웃</a>
         </div>
         <div class="offcanvas__logo">
-            <a href="./index.html"><img src="/resources/img/logo.png" alt=""></a>
+            <a href="./index.html"><img src="/resources/img/logo.jpg" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
     </div>   
@@ -64,7 +64,7 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="/resources/img/logo.png" alt=""></a>
+                        <a href="./index.html"><img src="/resources/img/logo.jpg" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -80,7 +80,7 @@
                             </ul>
                         </nav>
                         <div class="header__nav__widget">
-                            <a href="controller_jsh/loginFormAction.sh" class="primary-btn">로그인/회원가입</a>
+                            <a href="controller_jsh/loginFormAction.sh" class="primary-btn">로그아웃</a>
                         </div>
                     </div>
                 </div>

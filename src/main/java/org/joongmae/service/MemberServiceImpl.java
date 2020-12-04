@@ -114,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	private static final String SAVE_PATH = "/upload/temp";
-	private static final String PREFIX_URL = "/upload/";
+	private static final String PREFIX_URL = "/resources/img/upload_cyg/";
 
 	@Override
 	public String restore(MultipartFile multipartFile) {

@@ -242,7 +242,11 @@
             });
          }         
       });         
+<<<<<<< HEAD
       }
+=======
+   }
+>>>>>>> refs/heads/master
       
      //진행중 & 거래완료 리스트 가져오기
      var statusList = function(page, status){        
@@ -428,7 +432,10 @@
    
    
    //Deal 상세보기
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/heads/master
    function detailDeal(dealNo)   {
       var str = "";
       $('#sendDealNo').val(dealNo);
