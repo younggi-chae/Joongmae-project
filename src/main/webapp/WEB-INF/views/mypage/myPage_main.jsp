@@ -90,7 +90,7 @@
 			<div class="col-lg-4 col-md-6 col-sm-6">
 				<div class="services__item">
 					<img src="/resources/img/services/services-3.png" alt="">
-					<h5>견적서 확인</h5>
+					<h5>나의 견적서 확인</h5>
 					<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>
 				</div>
 			</div>
@@ -206,7 +206,11 @@
 			   $('#info').html("");
 			   str = 	'<div class="col-lg-4 col-md-6 col-sm-6">';
 			   str += 	'<div class="services__item">';
+			   if(result.picture != null){
 			   str +=   '<img src="/resources/img/upload_cyg/'+result.picture+'">';
+			   } else {
+				   str += '<img src="/resources/img/upload_cyg/noImage.jpg">';
+			   }
 			   str +=   '<h5>'+result.itemName+'</h5>';
 			   str +=   '<a href="/myPage/sellList"><i class="fa fa-long-arrow-right"></i></a>';
 			   str += 	'</div>';			  		   

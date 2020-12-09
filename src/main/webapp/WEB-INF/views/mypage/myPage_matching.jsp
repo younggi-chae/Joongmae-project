@@ -144,7 +144,7 @@ function showPage(sellCnt){
      var str = "<ul class='pagination pull-left'>";	      
      
      if(prev){
-       str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Previous</a></li>";
+       str+= "<li class='paginate_button previous'><a href='"+(startNum -1)+"'>Prev</a></li>";
      }         
      
      for(var i = startNum ; i <= endNum; i++){ 	    	  
