@@ -160,8 +160,8 @@ public class MemberController {
 			auth.setId((String) userInfo.get("id"));
 			auth.setPassword("0000");
 
-			model.addAttribute("nickname", (String) userInfo.get("nickname"));
-			model.addAttribute("pic", (String) userInfo.get("profile_image"));
+			model.addAttribute("nickname", userInfo.get("nickname"));
+			model.addAttribute("pic", userInfo.get("profile_image"));
 
 			service.join(member);
 			service.registerAuth(auth);

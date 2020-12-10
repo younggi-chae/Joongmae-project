@@ -2,7 +2,6 @@ package org.joongmae.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.joongmae.domain.BuyVO;
 import org.joongmae.domain.Criteria;
 import org.joongmae.domain.DealAndSell;

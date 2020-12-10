@@ -198,7 +198,6 @@
                                            </h5>
                                            <ul>
                                            <c:if test="${listBuy.keyword1 != null }">
-<<<<<<< HEAD
                                            	<li>${listBuy.keyword1 }</li>
                                            </c:if>
                                            <c:if test="${listBuy.keyword2 != null }">
@@ -206,15 +205,6 @@
                                            </c:if>
                                            <c:if test="${listBuy.keyword3 != null }">
                                            	<li>${listBuy.keyword3 }</li>
-=======
-                                              <li>${listBuy.keyword1 }</li>
-                                           </c:if>
-                                           <c:if test="${listBuy.keyword2 != null }">
-                                              <li>${listBuy.keyword2 }</li>
-                                           </c:if>
-                                           <c:if test="${listBuy.keyword3 != null }">
-                                              <li>${listBuy.keyword3 }</li>
->>>>>>> refs/heads/master
                                            </c:if>
                                            </ul>
                                        </div>

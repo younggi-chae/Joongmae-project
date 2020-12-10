@@ -1,12 +1,8 @@
 package org.joongmae.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.joongmae.domain.SellVO;
 import org.joongmae.service.SellService;

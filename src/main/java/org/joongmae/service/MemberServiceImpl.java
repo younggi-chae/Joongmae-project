@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
 		params.put("app_version", "test app 1.2"); // application name and version
 
 		try {
-			JSONObject obj = (JSONObject) coolsms.send(params);
+			JSONObject obj = coolsms.send(params);
 			System.out.println(obj.toString());
 		} catch (CoolsmsException e) {
 			System.out.println(e.getMessage());

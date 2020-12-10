@@ -1,10 +1,7 @@
 package org.joongmae.mapper;
 
-import java.util.List;
-
 import org.joongmae.domain.DealVO;
 import org.joongmae.domain.PayVO;
-import org.joongmae.domain.SellVO;
 
 public interface DealMapper {
 	

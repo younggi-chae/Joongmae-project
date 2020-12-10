@@ -2,7 +2,6 @@ package org.joongmae.mapper;
 
 import org.joongmae.domain.MemberVO;
 import org.joongmae.mapper.MemberMapper;
-import org.joongmae.service.MemberServiceTests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

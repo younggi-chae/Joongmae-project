@@ -2,7 +2,6 @@ package org.joongmae.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.annotation.Repeatable;
 import java.nio.file.Files;
 import java.security.Principal;
 import java.util.HashMap;
@@ -25,9 +24,7 @@ import org.joongmae.domain.WishListWithPaging;
 import org.joongmae.service.MypageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -39,9 +36,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;

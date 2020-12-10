@@ -1,7 +1,5 @@
 package org.joongmae.mapper;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.joongmae.domain.Criteria;

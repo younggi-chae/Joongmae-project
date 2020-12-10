@@ -6,7 +6,6 @@ import java.util.Map;
 import org.joongmae.service.EmailService;
 import org.joongmae.service.email.Email;
 import org.joongmae.service.email.EmailSender;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

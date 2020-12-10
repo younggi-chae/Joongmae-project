@@ -2,7 +2,6 @@ package org.joongmae.controller;
 
 import org.joongmae.security.domain.CustomUser;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
