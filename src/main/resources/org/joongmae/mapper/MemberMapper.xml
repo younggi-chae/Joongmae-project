@@ -3,45 +3,45 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.joongmae.mapper.MemberMapper">
    
-	<select id="getList" resultType="org.joongmae.domain.MemberVO">
-	select * from member
-	</select>
-	
-	<insert id="insertMember" parameterType="org.joongmae.domain.MemberAuthDTO">
-	insert into member values (#{id},#{password},#{name},#{phoneNo},#{email},#{sex},#{address},' ',' ',0,'y',' ',' ',' ','1')  
-	</insert>
-	
-	<select id="chk_id" parameterType="String" resultType="int">
-	  select count(id) from member where id=#{chk_id}
-	</select>
-	
-	<insert id="insertAccount" parameterType="org.joongmae.domain.MemberAccountVO">
-	insert into memberAccount values(#{accountNo},#{id},' ')
-	
-	</insert>
+   <select id="getList" resultType="org.joongmae.domain.MemberVO">
+   select * from member
+   </select>
+   
+   <insert id="insertMember" parameterType="org.joongmae.domain.MemberAuthDTO">
+   insert into member values (#{id},#{password},#{name},#{phoneNo},#{email},#{sex},#{address},' ',' ',0,'y','true','00:00','23:59','1')  
+   </insert>
+   
+   <select id="chk_id" parameterType="String" resultType="int">
+     select count(id) from member where id=#{chk_id}
+   </select>
+   
+   <insert id="insertAccount" parameterType="org.joongmae.domain.MemberAccountVO">
+   insert into memberAccount values(#{accountNo},#{id},' ')
+   
+   </insert>
 
- 	<select id="getMember" parameterType="String" resultType="org.joongmae.domain.MemberAuthDTO">
-	  select * from member_auth where id =#{id}
-	</select> 
-	
-	<update id="addOption" parameterType="org.joongmae.domain.MemberVO">
-	 update member set introduction=#{introduction} , picture = #{picture} where id=#{id}
-	</update>
-	
-	
-	<insert id="memberAuth" parameterType="org.joongmae.domain.MemberVO">
-	  insert into member_auth (id,password) values(#{id},#{password})
-	</insert>
-	
-	
-	<resultMap type="org.joongmae.domain.MemberVO" id="memberMap">
+    <select id="getMember" parameterType="String" resultType="org.joongmae.domain.MemberAuthDTO">
+     select * from member_auth where id =#{id}
+   </select> 
+   
+   <update id="addOption" parameterType="org.joongmae.domain.MemberVO">
+    update member set introduction=#{introduction} , picture = #{picture} where id=#{id}
+   </update>
+   
+   
+   <insert id="memberAuth" parameterType="org.joongmae.domain.MemberVO">
+     insert into member_auth (id,password) values(#{id},#{password})
+   </insert>
+   
+   
+   <resultMap type="org.joongmae.domain.MemberVO" id="memberMap">
    <id property="id" column="id"/>
     <result property="id" column="id"/>
     <result property="password" column="password"/>
     <result property="name" column="name"/>
     <result property="phoneNo" column="phoneNo"/>
     <result property="email" column="email"/>
-	<result property="sex" column="sex"/>
+   <result property="sex" column="sex"/>
     <result property="address" column="address"/>
     <result property="picture" column="picture"/>
     <result property="introduction" column="introduction"/>
@@ -78,4 +78,3 @@ select password from member where id=#{id} and email=#{emailId}
 
 
 </mapper>
-

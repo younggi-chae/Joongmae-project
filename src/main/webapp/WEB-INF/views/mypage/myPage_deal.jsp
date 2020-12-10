@@ -190,7 +190,7 @@
             var $window = $(this);
             var scrollTop = $window.scrollTop(); //스크롤 top이 위치하는 높이
             var windowHeight = $window.height();  // 화면 높이
-            var documentHeight = $(document).height();   //문서 전체 높이         
+            var documentHeight = $(document).height(); //문서 전체 높이         
             
             if(scrollTop + windowHeight + 30 > documentHeight){                           
                if(statusCheck == "progress"){
@@ -234,7 +234,7 @@
                endCheck = true;
             }
             if(length < 1){
-                  str = '<div style="padding:200px 350px"><h2>진행중인 거래가 없습니다.</h2><div>';
+                  str = '<div><h2>진행중인 거래가 없습니다.</h2><div>';
                   $('#dealList').append(str);
             }
             result.list.forEach(function(element){                              
@@ -251,28 +251,26 @@
         }
         var param = new Object();         
          param.status = status;
-         param.page = page || 1;         
-         console.log(status);
-          console.log("페이지번호 : " + page);
+         param.page = page || 1;        
+         console.log("페이지번호 : " + page);
          $.ajax({
             url : "/myPage/selectDeal/" + page + "/" + status,
             dataType : "json",            
             type : "GET",   
             data : param,
             success : function(result){               
-            var length = result.list.length;
-            console.log("리스트 길이 : " + length);                  
+            var length = result.list.length;                              
             if(length < 9){
                endCheck = true;
             }   
             if(length < 1){
-                  str = '<div style="padding:200px 350px"><h2>진행중인 거래가 없습니다.</h2><div>';
+                  str = '<div><h2>진행중인 거래가 없습니다.</h2><div>';
                   $('#dealList').append(str);
             }
             result.list.forEach(function(element){   
                showList(element);               
             });
-         }         
+          }         
       });         
      }
       
@@ -281,23 +279,26 @@
    var showList = function(element){      
       var str = "";      
          str =  '<div class="col-lg-4 col-md-4"><div class="car__item">';                  
-         str += '<div class="car__item__pic__slider">';
+         str += 	'<div class="car__item__pic__slider">';
          if(element.picture != null){
               str += '<img style="height: 330px;" src="/resources/img/upload_cyg/'+element.picture+'"></div>';
            } else {
-            str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';     
+              str += '<img style="height: 330px;" src="/resources/img/upload_cyg/noImage.jpg"></div>';     
            }
-         str += '<div class="car__item__text"><div class="car__item__text__inner">';
-         str += '<div class="label-date">' + element.buyId +'</div>';
-         str += '<div class="label-date">' + element.sellId +'</div>';
-         str += '<div class="label-date">'+ formatDate(element.regDate) +'</div>';
-         str += '<div><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
-         str += '<a class="detailModal" href="#" data-toggle="modal" data-target="#detailModal" data-backdrop="static" style="font-size: 25px;">' + element.itemName +'</a>';
+         str += 	'<div class="car__item__text">';
+         str += 		'<div class="car__item__text__inner">';
+         str += 			'<div class="label-date">' + element.buyId +'</div>';
+         str += 			'<div class="label-date">' + element.sellId +'</div>';
+         str += 			'<div class="label-date">'+ formatDate(element.regDate) +'</div>';
+         str += 			'<div><input id="modalNo" name="modalNo" type="hidden" value="' + element.dealNo +'">';
+         str += 				'<a class="detailModal" href="#" data-toggle="modal" data-target="#detailModal" data-backdrop="static" style="font-size: 25px;">' + element.itemName +'</a>';
          str += '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;';
-         str += '<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" data-backdrop="static" style="font-size:40px;">';         
-         str += '<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt" id = "replyCnt">'+element.replyCnt+'</span></div>';  
-         str += '<ul><li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
-         str += '<li><span>'+ element.keyword3 +'</span></li></ul></div>';
+         str += 				'<a class="commentModal" href="#" data-toggle="modal" data-target="#commentModal" data-backdrop="static" style="font-size:40px;">';         
+         str += 				'<i class="fa fa-comments"></i></a><span class="badge badge-danger replyCnt" id = "replyCnt">'+element.replyCnt+'</span></div>';  
+         str += 				'<ul>';
+         str += 					'<li><span>'+ element.keyword1 +'</span></li><li><span>'+ element.keyword2 +'</span></li>';
+         str += 					'<li><span>'+ element.keyword3 +'</span></li>';
+         str += 				'</ul></div>';
          if(element.status === "진행중"){
             str += '<div class="car__item__price"><span class="car-option">'+ element.status+'</span>';
          } else {
@@ -324,10 +325,8 @@
    $('.reply').on('click', '.replyDelete', function(){
       var replyNo = $(this).prev().val();
       replyDelete(replyNo);
-   });
-   
-   var dealNo;
-   
+   });   
+  
     //Deal 상세보기 모달
    $('#dealList').on("click", '.detailModal', function(){
       dealNo = $(this).prev().val();               
@@ -423,7 +422,7 @@
       });
           } else {
                return false;
-           }
+          }
       }   
    
    
@@ -493,7 +492,7 @@
                    if (result.sellId == "<%=id%>") {
                       if (result.status == '진행중') {
                         $('#reviewBtn').hide();
-                        $('#depositBtn').hide();
+                        $('#depositBtn').show();
                         $('#deliveryBtn').hide();
                         $('#deliveryInfoBtn').hide();
                         $('#deliveryModBtn').hide();
@@ -555,11 +554,9 @@
                         $('#deliveryBtn').hide();
                         $('#deliveryInfoBtn').hide();
                         $('#deliveryModBtn').hide(); 
-                     }
-                        
-                  }
-                   
-         }
+                     }                        
+                  }                   
+              }
       });
    }
    

@@ -103,35 +103,30 @@
 	<script type="text/javascript">	
 	
 	var monthCheck = 0;	
-	var pageNum = 1;
-	
+	var pageNum = 1;	
 	//리스트 출력
 	$(document).ready(function(){
 		monthCheck = "all";		
 		buyList(pageNum, 1000);		
-	});		
-	
+	});			
 	//최근 3개월 검색
 	$('#search3month').on('click', function(){
 		monthCheck = "3";
 		showPage();
 		buyList(pageNum, 2);	
-	});
-	
+	});	
 	//최근 6개월 검색
 	$('#search6month').on('click', function(){
 		monthCheck = "6";
 		showPage();
 		buyList(pageNum, 5);		 
-	});
-	
+	});	
 	//전체기간 검색
 	$('#searchWhole').on('click', function(){
 		monthCheck = "all";
 		showPage();
 		buyList(pageNum, 1000);
-	});
-	
+	});	
 	//범위 지정 검색
 	$('#searchRange').on('click', function(){		
 		monthCheck = "range";
@@ -153,8 +148,7 @@
 	
 	
 	 //리스트 Ajax
-	 function buyList(page, month){
-		var str = "";		
+	 function buyList(page, month){				
 		var param = new Object();		
 		param.page = page || 1;
 		param.month = month;		
@@ -200,19 +194,19 @@
 			   }
 	 
 	 
- 	var showList = function(element){ 		
+ 	function showList(element){ 		
  		var str = ""; 					  
 			str  = '<tr>';				
-			str += '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
-			str += '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
-			str += '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a></h5>';
-			str += '<td>'+element.type+'</td>';
-			str += '<td>'+element.keyword1+'</td>';
-			str += '<td>'+element.keyword2+'</td>';					
-			str += '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
-			str += '<td>'+formatDate(element.regDate)+'</td>';
-			str += '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
-			str += '</tr></tbody></table></div></div></div>';									  
+			str += 	 '<td>'+ element.bigClassifier+'</td><td><h5 style="font-weight: bold;">';
+			str += 	   '<input id="modalNo" name="modalNo" type="hidden" value="'+element.buyNo+'">';
+			str += 	   '<a class="targetModal" id="targetModal" href="#" data-toggle="modal" data-target="#myModal">'+element.title+'</a>';
+			str += 	 '<td>'+element.type+'</td>';
+			str +=   '<td>'+element.keyword1+'</td>';
+			str +=   '<td>'+element.keyword2+'</td>';					
+			str +=   '<td>'+commas(element.minPrice)+'~'+commas(element.maxPrice)+'</td>';
+			str +=   '<td>'+element.regDate+'</td>';
+			str +=   '<td><button id="deleteBtn" class="btn btn-success" value="'+element.buyNo+'">등록취소</button></td>';
+			str += '</tr>';									  
 		    
 				$('#list').append(str);				 		
  		}
@@ -257,7 +251,8 @@
  	function showButton(length, page, buyCnt){
  		if(length < 1){
 			str =  '<tr><td colspan="9" align="center">';
-			str += '<a type="button" href="/buyBoard/registerForm" class="btn btn-secondary">구매등록 하기</a></td></tr>';
+			str += '<a type="button" href="/buyBoard/registerForm" class="btn btn-secondary">구매등록 하기</a>';
+			str += '</tr>';
 			$('#list').append(str);
 		}  		
 		if(length < 5 || page*5 === buyCnt){
@@ -372,7 +367,7 @@
 	 
 	   
 	 //날짜 포맷팅	 
-	 function formatDate(dateVal){
+	/*  function formatDate(dateVal){
    		var date = new Date(dateVal);
 		var year = date.getFullYear();              
    		 var month = (1 + date.getMonth());          
@@ -380,7 +375,7 @@
     	 var day = date.getDate();                  
    		     day = day >= 10 ? day : '0' + day;      
     	return  year + '-' + month + '-' + day;       
-	}	    
+	}	     */
 	
 	//숫자 콤마 찍기
 	function commas(num) {

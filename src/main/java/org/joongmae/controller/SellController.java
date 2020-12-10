@@ -79,7 +79,7 @@ public class SellController {
 		service.register(sell);
 		service.registerAlarm(sell);
 		
-		return "redirect:/sell/list";
+		return "redirect:/myPage/sellList";
 	}
 	
 	@PostMapping("/modify")

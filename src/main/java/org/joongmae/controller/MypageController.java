@@ -161,18 +161,6 @@ public class MypageController {
 		service.deleteWishList(sellNo);
 	}
 	
-	@RequestMapping(value="/deleteWish", method={RequestMethod.GET, RequestMethod.POST})
-	@ResponseBody
-	public void deleteWish(@RequestParam(value="checkArr[]", required=false) List<String> checkArr){		
-		service.deleteWish(checkArr);		
-	}
-	
-	@RequestMapping("/deleteAllWish")
-	public String deleteAllWish(){
-		service.deleteAllWish();
-		return "redirect:/myPage/wishList";
-	}
-	
 	@GetMapping("/heartColor")
 	@ResponseBody
 	public Map<String,List<?>> heartColor(Criteria cri, Principal id) {			
@@ -185,6 +173,18 @@ public class MypageController {
 		return jsonMap;
 	}	
 	
+	@RequestMapping(value="/deleteWish", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public void deleteWish(@RequestParam(value="checkArr[]", required=false) List<String> checkArr){		
+		service.deleteWish(checkArr);		
+	}
+	
+	@RequestMapping("/deleteAllWish")
+	public String deleteAllWish(){
+		service.deleteAllWish();
+		return "redirect:/myPage/wishList";
+	}	
+		
 	@GetMapping("/sellDetail/{sellNo}")
 	@ResponseBody
 	public SellVO getSellDetail(@PathVariable("sellNo") int sellNo){		

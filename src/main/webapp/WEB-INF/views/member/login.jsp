@@ -138,7 +138,7 @@
 <!-- #######소셜로그인 버튼 들어갈 자리 -->
 				<div class="container-login100-form-btn" style="text-align: center;">
 					
-						<a href="https://kauth.kakao.com/oauth/authorize?client_id=a38a9db2ca25c9b8affcea3c3f017c31&redirect_uri=http://localhost:8081/member/kakao_login&response_type=code"_blank">
+						<a href="https://kauth.kakao.com/oauth/authorize?client_id=a38a9db2ca25c9b8affcea3c3f017c31&redirect_uri=http://localhost:8096/member/kakao_login&response_type=code"_blank">
 							
 							<img  width="250px" src="/resources/img_jsh/kakao_login.png" style="margin-left: 70px"/>
 						</a>

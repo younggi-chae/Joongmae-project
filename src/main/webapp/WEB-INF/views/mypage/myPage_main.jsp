@@ -176,11 +176,13 @@
       var bar_options = {        			   
       		'title':'나의 진행 상황',  
       		'width':500,
-            'height':266,                        
+            'height':266, 
+             'max' : 40,
+        	 'min' : 0,
             legend: { position: "top" },
             isStacked: false,
             tooltip:{textStyle : {fontSize:12}, showColorCode : true},
-            animation: { 
+            animation: {             	
             	startup: true,
                 duration: 2000,
                 easing: 'linear' }               
@@ -220,6 +222,7 @@
          });
 	   }
    });    
+
 </script>
 
 
@@ -256,12 +259,12 @@
 		var customSwitch = $("#customSwitch1").is(":checked");
 		
 		var data = {
-				"id":id,
+				"id": "<%=id%>",
 				"isAlarm":customSwitch,
 				"alarmStartTime":startTime,
 				"alarmEndTime":endTime
 				};
-		
+		console.log(data);
 		console.log("startTime : " + startTime + ", endTime : " + endTime + ", customSwitch : " + customSwitch);
 		
 		$.ajax({
@@ -274,6 +277,7 @@
 				xhr.setRequestHeader(header, token);
             },
 			success : function(result){
+				console.log(result);
 				if (result == 'success') {
 					alert("변경되었습니다.");
 				}
