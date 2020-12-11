@@ -223,7 +223,7 @@
 	    
 		if(heart.attr("style") === "color: black"){
 			$.ajax({
-				url : "/myPage/addWishList/" + sellNo,
+				url : "/restMyPage/addWishList/" + sellNo,
 				data : sellNo,
 				contentType: "application/json; charset-utf-8",
 				type : "POST",
@@ -238,9 +238,9 @@
 			});
 		} else if(heart.attr("style") === "color: red"){
 			$.ajax({
-				url : "/myPage/deleteWishList/" + sellNo,
+				url : "/restMyPage/deleteWishList/" + sellNo,
 				data : sellNo,
-				type : "POST",
+				type : "DELETE",
 				beforeSend : function(xhr)
 	            {   
 	            xhr.setRequestHeader(header, token);
@@ -259,7 +259,7 @@
 		var sellNo = "";
 		
 		$.ajax({
-			url : "/myPage/heartColor",
+			url : "/restMyPage/heartColor",
 			dataType: "json",
 			data : sellNo,
 			type : "GET",
@@ -289,10 +289,10 @@
 		 if(confirm("해당 견적서를 삭제하시겠습니까?")) {     	 
             	
 		 $.ajax({
-			 url : "/myPage/deleteSell/" + sellNo,			 
+			 url : "/restMyPage/deleteSell/" + sellNo,			 
 			 data : sellNo,
 			 contentType: "application/json; charset-utf-8",
-			 type : "POST",				 
+			 type : "PUT",				 
 			 beforeSend : function(xhr)
 	           {   
 	        xhr.setRequestHeader(header, token);
@@ -332,7 +332,7 @@
 			var list = "";
 			var str = "";
 			$.ajax({
-			   url : "/myPage/sellDetail/" + modalNo,
+			   url : "/restMyPage/sellDetail/" + modalNo,
 			   dataType : "json",
 			   data : modalNo,
 			   type : "GET",

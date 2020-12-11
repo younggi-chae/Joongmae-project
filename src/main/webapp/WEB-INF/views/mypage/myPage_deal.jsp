@@ -224,7 +224,7 @@
          }         
           console.log("페이지번호 : " + page);
          $.ajax({
-            url : "/myPage/dealListAjax/" + page,
+            url : "/restMyPage/dealListAjax/" + page,
             dataType : "json",            
             type : "GET",
             success : function(result){            
@@ -254,7 +254,7 @@
          param.page = page || 1;        
          console.log("페이지번호 : " + page);
          $.ajax({
-            url : "/myPage/selectDeal/" + page + "/" + status,
+            url : "/restMyPage/selectDeal/" + page + "/" + status,
             dataType : "json",            
             type : "GET",   
             data : param,
@@ -263,10 +263,10 @@
             if(length < 9){
                endCheck = true;
             }   
-            if(length < 1){
+             if(length < 1){
                   str = '<div><h2>진행중인 거래가 없습니다.</h2><div>';
                   $('#dealList').append(str);
-            }
+            } 
             result.list.forEach(function(element){   
                showList(element);               
             });
@@ -346,7 +346,7 @@
       param.id = id;
       
       $.ajax({
-         url : "/myPage/replyInsert",         
+         url : "/restMyPage/replyInsert",         
          data : JSON.stringify(param),
          type : "POST",      
          contentType : "application/json; charset=utf-8",
@@ -367,7 +367,7 @@
    //댓글 List Ajax
    function replyList(dealNo){         
       $.ajax({
-         url : "/myPage/replyList/" + dealNo,
+         url : "/restMyPage/replyList/" + dealNo,
          dataType : "json",
          data : dealNo,
          type : "GET",
@@ -407,7 +407,7 @@
        if(confirm("댓글을 삭제하시겠습니까?")) {         
         
       $.ajax({
-         url : "/myPage/replyDelete/" + replyNo,         
+         url : "/restMyPage/replyDelete/" + replyNo,         
          data : replyNo,
          type : "POST",
          beforeSend : function(xhr)
@@ -433,7 +433,7 @@
       $('#modDealNo').val(dealNo);
       console.log("dealNo : " + dealNo);
       $.ajax({
-         url : "/myPage/dealDetail/" + dealNo,
+         url : "/restMyPage/dealDetail/" + dealNo,
          dataType : "json",
          data : dealNo,
          cache:'false',
@@ -567,9 +567,9 @@
        var token = "${_csrf.token}";
        
        $.ajax({
-          url : "/myPage/deleteDeal/" + dealNo,
+          url : "/restMyPage/deleteDeal/" + dealNo,
           data : dealNo,
-          type : "POST",
+          type : "PUT",
           beforeSend : function(xhr)
             {   
             xhr.setRequestHeader(header, token);

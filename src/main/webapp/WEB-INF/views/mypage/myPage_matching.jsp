@@ -82,7 +82,7 @@ var sellList = function(page){
 	var param = new Object();		
 	param.page = page || 1;
 	$.ajax({
-      url : "/myPage/sellListAjax/" + page,
+      url : "/restMyPage/sellListAjax/" + page,
       dataType : "json",
       data : param,
       type : "GET",      

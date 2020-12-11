@@ -195,7 +195,7 @@
 			formData.append("uploadFile", files[0]);			
 			
 			$.ajax({
-				url : '/myPage/uploadAjaxAction',
+				url : '/restMyPage/uploadAjaxAction',
 				processData : false,
 				contentType : false,
 				data : formData,

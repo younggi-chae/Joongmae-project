@@ -156,6 +156,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="/resources/js/jquery-3.3.1.min.js"></script>   
 <script type="text/javascript">    
+    
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -171,8 +172,7 @@
         ['받은 견적서', parseInt(sellCnt)],
         ['거래중', parseInt(progressCnt)],
         ['거래완료', parseInt(completeCnt)]          
-      ]);       
-      
+      ]);      
       var bar_options = {        			   
       		'title':'나의 진행 상황',  
       		'width':500,
@@ -192,6 +192,7 @@
     }
     
     
+    
    //최근 본 견적서 출력
    $(document).ready(function(){    	
     	var str = "";    	
@@ -200,7 +201,7 @@
 		console.log(sellNo);
 		for(var i = 0; i < sellNo.length; i++){
 		$.ajax({
-		   url : "/myPage/sellDetail/" + sellNo[i],
+		   url : "/restMyPage/sellDetail/" + sellNo[i],
 		   dataType : "json",
 		   data : sellNo,
 		   type : "GET",

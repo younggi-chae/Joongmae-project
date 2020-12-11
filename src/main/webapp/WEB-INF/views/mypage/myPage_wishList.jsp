@@ -120,7 +120,7 @@
 		param.page = page || 1;			
 		
 		$.ajax({
-			url : "/myPage/wishListAjax/" + page,
+			url : "/restMyPage/wishListAjax/" + page,
 			dataType : "json",
 			data : param,
 			type : "GET",
@@ -218,7 +218,7 @@
 		});
 		
 		$.ajax({
-			url : '/myPage/deleteWish',
+			url : '/restMyPage/deleteWish',
 			type : 'POST',
 			dataType : 'text',
 			data : {checkArr : checkArr},
@@ -273,7 +273,7 @@
 			var list = "";
 			var str = "";
 			$.ajax({
-			   url : "/myPage/sellDetail/" + modalNo,
+			   url : "/restMyPage/sellDetail/" + modalNo,
 			   dataType : "json",
 			   data : modalNo,
 			   type : "GET",

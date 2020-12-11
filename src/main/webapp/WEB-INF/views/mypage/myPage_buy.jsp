@@ -154,7 +154,7 @@
 		param.month = month;		
 		
 		$.ajax({
-			url : "/myPage/buyListAjax/" + page + "/" + month,
+			url : "/restMyPage/buyListAjax/" + page + "/" + month,
 			dataType : "json",
 			data : param,
 			type : "GET",			
@@ -177,7 +177,7 @@
 			var endDate = $('#endDate').val();			
 			console.log(endDate);
 			$.ajax({
-				url : "/myPage/dateSearchRange/" + page + "/" + startDate + "/" + endDate,
+				url : "/restMyPage/dateSearchRange/" + page + "/" + startDate + "/" + endDate,
 				dataType : "json",
 				data : {page : page, startDate : startDate, endDate : endDate},
 				type : "GET",
@@ -268,7 +268,7 @@
 		 var token = "${_csrf.token}";		 
 		 
 		 $.ajax({
-			 url : "/myPage/deleteBuy/" + buyNo,			 
+			 url : "/restMyPage/deleteBuy/" + buyNo,			 
 			 data : buyNo,
 			 type : "POST",
 			 beforeSend : function(xhr)
@@ -299,7 +299,7 @@
 	 function buyDetail(buyNo){
 		 var str = "";
 		 $.ajax({
-			url : "/myPage/buyDetail/" + buyNo,
+			url : "/restMyPage/buyDetail/" + buyNo,
 			dataType : "json",
 			data : buyNo,
 			type : "GET",
